@@ -6,7 +6,7 @@
 ' @site http://xheditor.com/
 ' @licence LGPL(http://www.opensource.org/licenses/lgpl-license.php)
 ' 
-' @Version: 0.9.3 (build 100504)
+' @Version: 0.9.4 (build 111027)
 '
 ' 注1：本程序仅为演示用，请您根据自己需求进行相应修改，或者重开发
 ' 注2：本程序调用的无惧上传类 V2.2为xhEditor特别针对HTML5上传而修改过的版本
@@ -264,7 +264,7 @@ Public Sub GetData (MaxSize)
 			iFindEnd = InStr (iFindStart,sHtml5FileInfo,"""",1)
 			sFileName = Trim(Mid(sHtml5FileInfo,iFindStart,iFindEnd-iFindStart))
 			Set oFileInfo = new FileInfo_Class
-			oFileInfo.FileName = GetFileName(sFileName)
+			oFileInfo.FileName = URLDecode(GetFileName(sFileName))
 			oFileInfo.FilePath = GetFilePath(sFileName)
 			oFileInfo.FileExt = GetFileExt(sFileName)
 			oFileInfo.FileStart = 0
@@ -483,4 +483,54 @@ End Sub
 Class FileInfo_Class
 Dim FormName,FileName,FilePath,FileSize,FileMIME,FileStart,FileExt
 End Class
+
+function URLDecode(strIn)
+	URLDecode = ""
+	Dim sl: sl = 1
+	Dim tl: tl = 1
+	Dim key: key = "%"
+	Dim kl: kl = Len(key)
+	sl = InStr(sl, strIn, key, 1)
+	Do While sl>0
+	If (tl=1 And sl<>1) Or tl<sl Then
+	URLDecode = URLDecode & Mid(strIn, tl, sl-tl)
+	End If
+	Dim hh, hi, hl
+	Dim a
+	Select Case UCase(Mid(strIn, sl+kl, 1))
+	Case "U":'Unicode URLEncode
+	a = Mid(strIn, sl+kl+1, 4)
+	URLDecode = URLDecode & ChrW("&H" & a)
+	sl = sl + 6
+	Case "E":'UTF-8 URLEncode
+	hh = Mid(strIn, sl+kl, 2)
+	a = Int("&H" & hh)'ascii码
+	If Abs(a)<128 Then
+	sl = sl + 3
+	URLDecode = URLDecode & Chr(a)
+	Else
+	hi = Mid(strIn, sl+3+kl, 2)
+	hl = Mid(strIn, sl+6+kl, 2)
+	a = ("&H" & hh And &H0F) * 2 ^12 Or ("&H" & hi And &H3F) * 2 ^ 6 Or ("&H" & hl And &H3F)
+	If a<0 Then a = a + 65536
+	URLDecode = URLDecode & ChrW(a)
+	sl = sl + 9
+	End If
+	Case Else:'Asc URLEncode
+	hh = Mid(strIn, sl+kl, 2)'高位
+	a = Int("&H" & hh)'ascii码
+	If Abs(a)<128 Then
+	sl = sl + 3
+	Else
+	hi = Mid(strIn, sl+3+kl, 2)'低位
+	a = Int("&H" & hh & hi)'非ascii码
+	sl = sl + 6
+	End If
+	URLDecode = URLDecode & Chr(a)
+	End Select
+	tl = sl
+	sl = InStr(sl, strIn, key, 1)
+	Loop
+	URLDecode = URLDecode & Mid(strIn, tl)
+End function
 %>

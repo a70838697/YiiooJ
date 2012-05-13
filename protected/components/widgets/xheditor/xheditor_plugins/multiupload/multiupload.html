@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>MultiUpload Demo</title>
 <link href="multiupload.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../../jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="../../jquery/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="swfupload/swfupload.js"></script>
 <script type="text/javascript" src="multiupload.js"></script>
 <script type="text/javascript">
@@ -71,6 +71,32 @@ function pageInit()
 }
 function fixHeight(){$('#listArea').css('height',(document.body.clientHeight-56)+'px');}
 function getQuery(item){var svalue = location.search.match(new RegExp('[\?\&]' + item + '=([^\&]*)(\&?)','i'));return svalue?decodeURIComponent(svalue[1]):'';} 
+
+//----------------跨域支持代码开始(非跨域环境请删除这段代码)----------------
+var JSON = JSON || {};
+JSON.stringify = JSON.stringify || function (obj) {
+	var t = typeof (obj);
+	if (t != "object" || obj === null) {
+		if (t == "string")obj = '"'+obj+'"';
+		return String(obj);
+	}
+	else {
+		var n, v, json = [], arr = (obj && obj.constructor == Array);
+		for (n in obj) {
+			v = obj[n]; t = typeof(v);
+			if (t == "string") v = '"'+v+'"';
+			else if (t == "object" && v !== null) v = JSON.stringify(v);
+			json.push((arr ? "" : '"' + n + '":') + String(v));
+		}
+		return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+	}
+};
+var callback= callback || function(v){
+	v=JSON.stringify(v);
+	window.name=escape(v);
+	window.location='http://'+location.search.match(/[\?&]parenthost=(.*)(&|$)/i)[1]+'/xheditorproxy.html';//这个文件最好是一个0字节文件，如果无此文件也会正常工作
+}
+//----------------跨域支持代码结束----------------
 </script>
 </head>
 <body>

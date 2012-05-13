@@ -17,11 +17,10 @@ form{
 	background:#F4F4F4;
 	border-bottom:1px solid #999;
 	line-height:normal;
+	_position: absolute;
+	_top: expression(eval(TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop));
 }
-* html #header-nav { /* ie6 hack */
-position: absolute !important;
-margin-top: expression((TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');
-}
+*html{background:url(about:blank) fixed;}
 #header-nav ul{
 	margin:0;
 	padding:10px 5px 0 12px;

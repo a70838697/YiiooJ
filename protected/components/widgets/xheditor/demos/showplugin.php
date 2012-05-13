@@ -15,27 +15,12 @@ $sHtml=preg_replace_callback('/(<pre(?:\s+[^>]*?)?>)([\s\S]+?)(<\/pre>)/i','fixP
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>demo09插件显示测试页</title>
 <style type="text/css">
-body{margin:5px;border:2px solid #ccc;padding:5px;}
+body{margin:5px;border:2px solid #ccc;padding:5px;font:12px tahoma,arial,sans-serif;line-height:1.2}
 </style>
-<link type="text/css" rel="stylesheet" href="syntaxhighlighter/SyntaxHighlighter.css"/>
-<script type="text/javascript" src="syntaxhighlighter/shCore.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushXml.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushJScript.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushCss.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushPhp.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushCSharp.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushCpp.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushJava.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushPython.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushRuby.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushVb.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushDelphi.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushSql.js"></script>
-<script type="text/javascript" src="syntaxhighlighter/shBrushPlain.js"></script>
-<script type="text/javascript">
-window.onload=function(){dp.SyntaxHighlighter.HighlightAll('code');}
-</script>
+<link type="text/css" rel="stylesheet" href="prettify/prettify.css"/>
+<script type="text/javascript" src="prettify/prettify.js"></script>
 <body>
 	<?php echo $sHtml?>
+	<script type="text/javascript">prettyPrint();</script>
 </body>
 </html>

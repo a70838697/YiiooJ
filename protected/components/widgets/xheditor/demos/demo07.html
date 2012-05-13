@@ -7,7 +7,7 @@
 <style type="text/css">
 <!--
 .btnCode {
-	background:transparent url(syntaxhighlighter/code.gif) no-repeat 16px 16px;
+	background:transparent url(prettify/code.gif) no-repeat 16px 16px;
 	background-position:2px 2px;
 }
 .btnFlv {
@@ -20,8 +20,8 @@
 }
 -->
 </style>
-<script type="text/javascript" src="../jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="../xheditor-zh-cn.min.js?v=1.1.5"></script>
+<script type="text/javascript" src="../jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../xheditor-1.1.13-zh-cn.min.js"></script>
 <script type="text/javascript" src="../xheditor_plugins/ubb.min.js"></script>
 <script type="text/javascript">
 $(pageInit);
@@ -30,13 +30,14 @@ function pageInit()
 	var plugins={
 		Code:{c:'btnCode',t:'插入代码',h:1,e:function(){
 			var _this=this;
-			var htmlCode='<div><select id="xheCodeType"><option value="html">HTML/XML</option><option value="javascript">JavaScript</option><option value="css">CSS</option><option value="php">PHP</option><option value="csharp">C#</option><option value="cpp">C++</option><option value="java">Java</option><option value="python">Python</option><option value="ruby">Ruby</option><option value="vb">Visual Basic</option><option value="delphi">Delphi</option><option value="sql">SQL</option><option value="plain">其它</option></select></div><div><textarea id="xheCodeValue" wrap="soft" spellcheck="false" style="width:300px;height:100px;" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';			var jCode=$(htmlCode),jType=$('#xheCodeType',jCode),jValue=$('#xheCodeValue',jCode),jSave=$('#xheSave',jCode);
+			var htmlCode='<div><select id="xheCodeType"><option value="html">HTML/XML</option><option value="js">Javascript</option><option value="css">CSS</option><option value="php">PHP</option><option value="java">Java</option><option value="py">Python</option><option value="pl">Perl</option><option value="rb">Ruby</option><option value="cs">C#</option><option value="c">C++/C</option><option value="vb">VB/ASP</option><option value="">其它</option></select></div><div><textarea id="xheCodeValue" wrap="soft" spellcheck="false" style="width:300px;height:100px;" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';			var jCode=$(htmlCode),jType=$('#xheCodeType',jCode),jValue=$('#xheCodeValue',jCode),jSave=$('#xheSave',jCode);
 			jSave.click(function(){
 				_this.loadBookmark();
 				_this.pasteText('[code='+jType.val()+']\r\n'+jValue.val()+'\r\n[/code]');
 				_this.hidePanel();
 				return false;	
 			});
+			_this.saveBookmark();
 			_this.showDialog(jCode);
 		}},
 		Flv:{c:'btnFlv',t:'插入Flv视频',h:1,e:function(){
@@ -49,11 +50,13 @@ function pageInit()
 				_this.hidePanel();
 				return false;	
 			});
+			_this.saveBookmark();
 			_this.showDialog(jFlv);
 		}},
 		map:{c:'btnMap',t:'插入Google地图',e:function(){
 			var _this=this;
-			_this.showIframeModal('Google 地图','googlemap/googlemap.html',function(v){_this.pasteHTML('<img src="'+v+'" />');},538,404);
+			_this.saveBookmark();
+			_this.showIframeModal('Google 地图','googlemap/googlemap.html',function(v){_this.loadBookmark();_this.pasteHTML('<img src="'+v+'" />');},538,404);
 		}}
 	},emots={
 		msn:{name:'MSN',count:40,width:22,height:22,line:8},
@@ -79,6 +82,7 @@ function submitForm(){$('#frmDemo').submit();}
 		<li><a href="demo09.html"><span>插件扩展</span></a></li>
 		<li><a href="demo10.html"><span>iframe调用上传</span></a></li>
 		<li><a href="demo11.html"><span>异步加载</span></a></li>
+		<li><a href="demo12.html"><span>远程抓图</span></a></li>
 		<li><a href="../wizard.html" target="_blank"><span>生成代码</span></a></li>
 	</ul>
 </div>
@@ -91,7 +95,7 @@ function submitForm(){$('#frmDemo').submit();}
 [s][i][u][b]粗体下划斜体删除线 Abc[/b][/u][/i][/s]
 [color=red]红颜色[/color]
 [back=#cccccc]背景灰色[/back]
-[size=3]文字大小为 3[/size]
+[size=16px]文字大小为 16px[/size]
 [font=FangSong_GB2312]字体为仿宋[/font]
 [align=Center]内容居中[/align]
 [img]img/xheditor.gif[/img]

@@ -18,7 +18,7 @@
  * @author Jediwolf<jediwolf@gmail.com>
  * @licence LGPL(http://www.opensource.org/licenses/lgpl-license.php)
  * 
- * @Version: 0.1.3 (build 100504)
+ * @Version: 0.1.4 (build 111027)
  * 
  * 注1：本程序仅为演示用，请您务必根据自己需求进行相应修改，或者重开发
  * 注2：本程序将HTML5上传与普通POST上传转换为byte类型统一处理
@@ -48,7 +48,7 @@ protected void Page_Load(object sender, EventArgs e)
     {
         // HTML5上传
         file = Request.BinaryRead(Request.TotalBytes);
-        localname = Regex.Match(disposition, "filename=\"(.+?)\"").Groups[1].Value;// 读取原始文件名
+        localname = Server.UrlDecode(Regex.Match(disposition, "filename=\"(.+?)\"").Groups[1].Value);// 读取原始文件名
     }
     else 
     {        

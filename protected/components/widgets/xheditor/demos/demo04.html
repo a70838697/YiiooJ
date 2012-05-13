@@ -4,22 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>xhEditor demo4 : 其它选项</title>
 <link rel="stylesheet" href="common.css" type="text/css" media="screen" />
-<script type="text/javascript" src="../jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="../xheditor-zh-cn.min.js?v=1.1.5"></script>
+<script type="text/javascript" src="../jquery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../xheditor-1.1.13-zh-cn.min.js"></script>
 <script type="text/javascript">
 $(pageInit);
 function pageInit()
 {
-	$('#elm1').xheditor({urlType:'rel',shortcuts:{'ctrl+enter':submitForm}});
-	$('#elm2').xheditor({urlType:'root',shortcuts:{'ctrl+enter':submitForm}});
-	$('#elm3').xheditor({urlType:'abs',shortcuts:{'ctrl+enter':submitForm}});
-	$('#elm4').xheditor({urlBase:'img/',shortcuts:{'ctrl+enter':submitForm}});
+	$.extend(xheditor.settings,{shortcuts:{'ctrl+enter':submitForm}});
+	$('#elm1').xheditor({urlType:'rel'});
+	$('#elm2').xheditor({urlType:'root'});
+	$('#elm3').xheditor({urlType:'abs'});
+	$('#elm4').xheditor({urlBase:'img/'});
 	var emots={
 		msn:{name:'MSN',count:40,width:22,height:22,line:8},
 		pidgin:{name:'Pidgin',width:22,height:25,line:8,list:{smile:'微笑',cute:'可爱',wink:'眨眼',laugh:'大笑',victory:'胜利',sad:'伤心',cry:'哭泣',angry:'生气',shout:'大骂',curse:'诅咒',devil:'魔鬼',blush:'害羞',tongue:'吐舌头',envy:'羡慕',cool:'耍酷',kiss:'吻',shocked:'惊讶',sweat:'汗',sick:'生病',bye:'再见',tired:'累',sleepy:'睡了',question:'疑问',rose:'玫瑰',gift:'礼物',coffee:'咖啡',music:'音乐',soccer:'足球',good:'赞同',bad:'反对',love:'心',brokenheart:'伤心'}},
 		ipb:{name:'IPB',width:20,height:25,line:8,list:{smile:'微笑',joyful:'开心',laugh:'笑',biglaugh:'大笑',w00t:'欢呼',wub:'欢喜',depres:'沮丧',sad:'悲伤',cry:'哭泣',angry:'生气',devil:'魔鬼',blush:'脸红',kiss:'吻',surprised:'惊讶',wondering:'疑惑',unsure:'不确定',tongue:'吐舌头',cool:'耍酷',blink:'眨眼',whistling:'吹口哨',glare:'轻视',pinch:'捏',sideways:'侧身',sleep:'睡了',sick:'生病',ninja:'忍者',bandit:'强盗',police:'警察',angel:'天使',magician:'魔法师',alien:'外星人',heart:'心动'}}
 	};
-	$('#elm5').xheditor({tools:'full',skin:'default',width:800,height:200,clickCancelDialog:false,fullscreen:false,layerShadow:3,linkTag:false,wordDeepClean:false,defLinkText:'默认超链接文字',sourceMode:false,showBlocktag:true,forcePtag:false,internalScript:true,inlineScript:true,internalStyle:true,inlineStyle:true,hoverExecDelay:-1,loadCSS:'http://xheditor.com/css/global.css',emots:emots,shortcuts:{'ctrl+enter':submitForm}});
+	$('#elm5').xheditor({tools:'full',skin:'default',width:800,height:200,clickCancelDialog:false,fullscreen:false,layerShadow:3,linkTag:false,cleanPaste:0,defLinkText:'默认超链接文字',sourceMode:false,showBlocktag:true,forcePtag:false,internalScript:true,inlineScript:true,internalStyle:true,inlineStyle:true,hoverExecDelay:-1,loadCSS:'http://xheditor.com/css/common.css',emots:emots});
 }
 function submitForm(){$('#frmDemo').submit();}
 </script>
@@ -38,6 +39,7 @@ function submitForm(){$('#frmDemo').submit();}
 		<li><a href="demo09.html"><span>插件扩展</span></a></li>
 		<li><a href="demo10.html"><span>iframe调用上传</span></a></li>
 		<li><a href="demo11.html"><span>异步加载</span></a></li>
+		<li><a href="demo12.html"><span>远程抓图</span></a></li>
 		<li><a href="../wizard.html" target="_blank"><span>生成代码</span></a></li>
 	</ul>
 </div>
@@ -61,7 +63,7 @@ function submitForm(){$('#frmDemo').submit();}
 	</textarea><br /><br />
 	5,其它更多选项:<br />
 	<textarea id="elm5" name="elm5" rows="8" cols="80" style="width: 80%;background:url(img/xheditorbg.gif) no-repeat right bottom fixed">
-&lt;p&gt;当前实例调用的Javascript源代码为：&lt;/p&gt;&lt;p&gt;$('#elm5').xheditor({tools:'full',skin:'default',width:800,height:200,clickCancelDialog:false,fullscreen:false,layerShadow:3,linkTag:false,wordDeepClean:false,defLinkText:'默认超链接文字',sourceMode:false,showBlocktag:true,forcePtag:false,internalScript:true,inlineScript:true,internalStyle:true,inlineStyle:true,hoverExecDelay:-1,loadCSS:'http://xheditor.com/css/global.css',emots:{msn:{name:'MSN',count:40,width:22,height:22,line:8}},shortcuts:{'ctrl+enter':submitForm}});&lt;/p&gt;&lt;br /&gt;&lt;br /&gt;注：本实例演示其它大部分的初始化参数，详细帮助信息请查看：&lt;a href="http://xheditor.com/manual/2#chapter2"&gt;http://xheditor.com/manual/2#chapter2&lt;/a&gt;
+&lt;p&gt;当前实例调用的Javascript源代码为：&lt;/p&gt;&lt;p&gt;$('#elm5').xheditor({tools:'full',skin:'default',width:800,height:200,clickCancelDialog:false,fullscreen:false,layerShadow:3,linkTag:false,cleanPaste:0,defLinkText:'默认超链接文字',sourceMode:false,showBlocktag:true,forcePtag:false,internalScript:true,inlineScript:true,internalStyle:true,inlineStyle:true,hoverExecDelay:-1,loadCSS:'http://xheditor.com/css/global.css',emots:{msn:{name:'MSN',count:40,width:22,height:22,line:8}},shortcuts:{'ctrl+enter':submitForm}});&lt;/p&gt;&lt;br /&gt;&lt;br /&gt;注：本实例演示其它大部分的初始化参数，详细帮助信息请查看：&lt;a href="http://xheditor.com/manual/2#chapter2"&gt;http://xheditor.com/manual/2#chapter2&lt;/a&gt;
 	</textarea>
 	<br/><br />
 	<input type="submit" name="save" value="Submit" />

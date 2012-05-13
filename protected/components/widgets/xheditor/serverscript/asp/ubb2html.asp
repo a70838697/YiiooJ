@@ -7,30 +7,33 @@
  * @site http://xheditor.com/
  * @licence LGPL(http://www.opensource.org/licenses/lgpl-license.php)
  * 
- * @Version: 0.9.7 (build 100513)
+ * @Version: 0.9.13 (build 120228)
  */
 function ubb2html(sUBB)
 {
 	var emotPath='../xheditor_emot/';//表情根路径
 	
 	var i,sHtml=String(sUBB),arrcode=new Array(),cnum=0;
+	var arrFontsize=['10px','13px','16px','18px','24px','32px','48px'];
 	
 	sHtml=sHtml.replace(/\[code\s*(?:=\s*([^\]]+?))?\]([\s\S]*?)\[\/code\]/ig,function(all,t,c){//code特殊处理
 		cnum++;arrcode[cnum]=all;
 		return "[\tubbcodeplace_"+cnum+"\t]";
 	});
 	
-	sHtml=sHtml.replace(/&/ig, '&amp;');
-	sHtml=sHtml.replace(/[<>]/g,function(c){return {'<':'&lt;','>':'&gt;'}[c];});
+	sHtml=sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
 	sHtml=sHtml.replace(/\r?\n/g,"<br />");
 	
 	sHtml=sHtml.replace(/\[(\/?)(b|u|i|s|sup|sub)\]/ig,'<$1$2>');
 	sHtml=sHtml.replace(/\[color\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/ig,'<font color="$1">');
-	sHtml=sHtml.replace(/\[size\s*=\s*(\d+?)\s*\]/ig,'<font size="$1">');
 	sHtml=sHtml.replace(/\[font\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/ig,'<font face="$1">');
-	sHtml=sHtml.replace(/\[\/(color|size|font)\]/ig,'</font>');
+	sHtml=sHtml.replace(/\[\/(color|font)\]/ig,'</font>');
+	sHtml=sHtml.replace(/\[size\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/ig,function(all,size){
+		if(size.match(/^\d+$/))size=arrFontsize[size-1];
+		return '<span style="font-size:'+size+';">';
+	});
 	sHtml=sHtml.replace(/\[back\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/ig,'<span style="background-color:$1;">');
-	sHtml=sHtml.replace(/\[\/back\]/ig,'</span>');
+	sHtml=sHtml.replace(/\[\/(size|back)\]/ig,'</span>');
 	for(i=0;i<3;i++)sHtml=sHtml.replace(/\[align\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\](((?!\[align(?:\s+[^\]]+)?\])[\s\S])*?)\[\/align\]/ig,'<p align="$1">$2</p>');
 	sHtml=sHtml.replace(/\[img\]\s*(((?!")[\s\S])+?)(?:"[\s\S]*?)?\s*\[\/img\]/ig,'<img src="$1" alt="" />');
 	sHtml=sHtml.replace(/\[img\s*=([^,\]]*)(?:\s*,\s*(\d*%?)\s*,\s*(\d*%?)\s*)?(?:,?\s*(\w+))?\s*\]\s*(((?!")[\s\S])+?)(?:"[\s\S]*)?\s*\[\/img\]/ig,function(all,alt,p1,p2,p3,src){
@@ -50,7 +53,8 @@ function ubb2html(sUBB)
 	sHtml=sHtml.replace(/\[url\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]\s*([\s\S]*?)\s*\[\/url\]/ig,'<a href="$1">$2</a>');
 	sHtml=sHtml.replace(/\[email\]\s*(((?!")[\s\S])+?)(?:"[\s\S]*?)?\s*\[\/email\]/ig,'<a href="mailto:$1">$1</a>');
 	sHtml=sHtml.replace(/\[email\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]\s*([\s\S]+?)\s*\[\/email\]/ig,'<a href="mailto:$1">$2</a>');
-	sHtml=sHtml.replace(/\[quote\]([\s\S]*?)\[\/quote\]/ig,'<blockquote>$1</blockquote>');
+	sHtml=sHtml.replace(/\[quote\]/ig,'<blockquote>');
+	sHtml=sHtml.replace(/\[\/quote\]/ig,'</blockquote>');
 	sHtml=sHtml.replace(/\[flash\s*(?:=\s*(\d+)\s*,\s*(\d+)\s*)?\]\s*(((?!")[\s\S])+?)(?:"[\s\S]*?)?\s*\[\/flash\]/ig,function(all,w,h,url){
 		if(!w)w=480;if(!h)h=400;
 		return '<embed type="application/x-shockwave-flash" src="'+url+'" wmode="opaque" quality="high" bgcolor="#ffffff" menu="false" play="true" loop="true" width="'+w+'" height="'+h+'"/>';
@@ -80,6 +84,7 @@ function ubb2html(sUBB)
 		return str+'>';
 	});
 	sHtml=sHtml.replace(/\[\/list\]/ig,'</ul>');
+	sHtml=sHtml.replace(/\[hr\/\]/ig,'<hr />');
 	
 	for(i=1;i<=cnum;i++)sHtml=sHtml.replace("[\tubbcodeplace_"+i+"\t]", arrcode[i]);
 
@@ -93,7 +98,6 @@ function ubb2html(sUBB)
 
 function html2ubb(sHtml)
 {
-	var mapSize={'xx-small':1,'8pt':1,'x-small':2,'10pt':2,'small':3,'12pt':3,'medium':4,'14pt':4,'large':5,'18pt':5,'x-large':6,'24pt':6,'xx-large':7,'36pt':7};
 	var regSrc=/\s+src\s*=\s*(["']?)\s*(.+?)\s*\1(\s|$)/i,regWidth=/\s+width\s*=\s*(["']?)\s*(\d+(?:\.\d+)?%?)\s*\1(\s|$)/i,regHeight=/\s+height\s*=\s*(["']?)\s*(\d+(?:\.\d+)?%?)\s*\1(\s|$)/i,regBg=/(?:background|background-color|bgcolor)\s*[:=]\s*(["']?)\s*((rgb\s*\(\s*\d{1,3}%?,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*\))|(#[0-9a-f]{3,6})|([a-z]{1,20}))\s*\1/i
 	var i,sUBB=String(sHtml),arrcode=new Array(),cnum=0;
 
@@ -102,7 +106,7 @@ function html2ubb(sHtml)
 	sUBB = sUBB.replace(/<(script|style)(\s+[^>]*?)?>[\s\S]*?<\/\1>/ig, '');
 	sUBB = sUBB.replace(/<\!--[\s\S]*?-->/ig,'');
 
-	sUBB=sUBB.replace(/<br\s*?\/?>/ig,"\r\n");
+	sUBB=sUBB.replace(/<br(\s+[^>]*)?\/?>/ig,"\r\n");
 	
 	sUBB=sUBB.replace(/\[code\s*(=\s*([^\]]+?))?\]([\s\S]*?)\[\/code\]/ig,function(all,t,c){//code特殊处理
 		cnum++;arrcode[cnum]=all;
@@ -114,18 +118,56 @@ function html2ubb(sHtml)
 	sUBB=sUBB.replace(/<(\/?)em(\s+[^>]*?)?>/ig,'[$1i]');
 	sUBB=sUBB.replace(/<(\/?)(strike|del)(\s+[^>]*?)?>/ig,'[$1s]');
 	sUBB=sUBB.replace(/<(\/?)(sup|sub)(\s+[^>]*?)?>/ig,'[$1$2]');
+
+	//font转ubb
+	function font2ubb(all,tag,attrs,content)
+	{
+		if(!attrs)return content;
+		var arrStart=[],arrEnd=[];
+		var match;
+		match=attrs.match(/ face\s*=\s*"\s*([^"]+)\s*"/i);
+		if(match){
+			arrStart.push('[font='+match[1]+']');
+			arrEnd.push('[/font]');
+		}
+		match=attrs.match(/ size\s*=\s*"\s*(\d+)\s*"/i);
+		if(match){
+			arrStart.push('[size='+match[1]+']');
+			arrEnd.push('[/size]');
+		}
+		match=attrs.match(/ color\s*=\s*"\s*([^"]+)\s*"/i);
+		if(match){
+			arrStart.push('[color='+formatColor(match[1])+']');
+			arrEnd.push('[/color]');
+		}
+		return arrStart.join('')+content+arrEnd.join('');
+	}
+	sUBB = sUBB.replace(/<(font)(\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,font2ubb);//第3层
+	sUBB = sUBB.replace(/<(font)(\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?)<\/\1>/ig,font2ubb);//第2层
+	sUBB = sUBB.replace(/<(font)(\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S])*?)<\/\1>/ig,font2ubb);//最里层
+
 	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(span)(?:\s+[^>]*?)?\s+style\s*=\s*"((?:[^"]*?;)*\s*(?:font-family|font-size|color|background|background-color)\s*:[^"]*)"(?: [^>]+)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,function(all,tag,style,content){
 		var face=style.match(/(?:^|;)\s*font-family\s*:\s*([^;]+)/i),size=style.match(/(?:^|;)\s*font-size\s*:\s*([^;]+)/i),color=style.match(/(?:^|;)\s*color\s*:\s*([^;]+)/i),back=style.match(/(?:^|;)\s*(?:background|background-color)\s*:\s*([^;]+)/i),str=content;
-		if(face)str='[font='+face[1]+']'+str+'[/font]';
-		if(size)
-		{
-			size=mapSize[size[1].toLowerCase()];
-			if(size)str='[size='+size+']'+str+'[/size]';
+		var arrStart=[],arrEnd=[];
+		if(face){
+			arrStart.push('[font='+face[1]+']');
+			arrEnd.push('[/font]');
 		}
-		if(color)str='[color='+formatColor(color[1])+']'+str+'[/color]';
-		if(back)str='[back='+formatColor(back[1])+']'+str+'[/back]';
-		return str;
+		if(size){
+			arrStart.push('[size='+size[1]+']');
+			arrEnd.push('[/size]');
+		}
+		if(color){
+			arrStart.push('[color='+formatColor(color[1])+']');
+			arrEnd.push('[/color]');
+		}
+		if(back){
+			arrStart.push('[back='+formatColor(back[1])+']');
+			arrEnd.push('[/back]');
+		}
+		return arrStart.join('')+str+arrEnd.join('');
 	});
+	
 	function formatColor(c)
 	{
 		var matchs;
@@ -135,8 +177,8 @@ function html2ubb(sHtml)
 	}
 	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(div|p)(?:\s+[^>]*?)?[\s"';]\s*(?:text-)?align\s*[=:]\s*(["']?)\s*(left|center|right)\s*\2[^>]*>(((?!<\1(\s+[^>]*?)?>)[\s\S])+?)<\/\1>/ig,'[align=$3]$4[/align]');
 	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(center)(?:\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S])*?)<\/\1>/ig,'[align=center]$2[/align]');
-	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(p|div)(?:\s+[^>]*?)?\s+style\s*=\s*"((?:[^"]*?;)*\s*text-align\s*:[^"]*)"(?: [^>]+)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,function(all,tag,style,content){
-		
+	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(p|div)(?:\s+[^>]*?)?\s+style\s*=\s*"(?:[^;"]*;)*\s*text-align\s*:([^;"]*)[^"]*"(?: [^>]+)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,function(all,tag,align,content){
+		return '[align='+align+']'+content+'[/align]';
 	});
 	sUBB=sUBB.replace(/<a(?:\s+[^>]*?)?\s+href=(["'])\s*(.+?)\s*\1[^>]*>\s*([\s\S]*?)\s*<\/a>/ig,function(all,q,url,text){
 		if(!(url&&text))return '';
@@ -162,15 +204,16 @@ function html2ubb(sHtml)
 		str+=']'+url[2]+'[/img]';
 		return str;
 	});
-	sUBB=sUBB.replace(/<blockquote(?:\s+[^>]*?)?>([\s\S]+?)<\/blockquote>/ig,'[quote]$1[/quote]');
-	sUBB=sUBB.replace(/<embed((?:\s+[^>]*?)?(?:\s+type\s*=\s*"\s*application\/x-shockwave-flash\s*"|\s+classid\s*=\s*"\s*clsid:d27cdb6e-ae6d-11cf-96b8-4445535400000\s*")[^>]*?)\/>/ig,function(all,attr){
+	sUBB=sUBB.replace(/<blockquote(?:\s+[^>]*?)?>/ig,'[quote]');
+	sUBB=sUBB.replace(/<\/blockquote>/ig,'[/quote]');
+	sUBB=sUBB.replace(/<embed((?:\s+[^>]*?)?(?:\s+type\s*=\s*"\s*application\/x-shockwave-flash\s*"|\s+classid\s*=\s*"\s*clsid:d27cdb6e-ae6d-11cf-96b8-4445535400000\s*")[^>]*?)\/?>/ig,function(all,attr){
 		var url=attr.match(regSrc),w=attr.match(regWidth),h=attr.match(regHeight),str='[flash';
 		if(!url)return '';
 		if(w&&h)str+='='+w[2]+','+h[2];
 		str+=']'+url[2];
 		return str+'[/flash]';
 	});
-	sUBB=sUBB.replace(/<embed((?:\s+[^>]*?)?(?:\s+type\s*=\s*"\s*application\/x-mplayer2\s*"|\s+classid\s*=\s*"\s*clsid:6bf52a52-394a-11d3-b153-00c04f79faa6\s*")[^>]*?)\/>/ig,function(all,attr){
+	sUBB=sUBB.replace(/<embed((?:\s+[^>]*?)?(?:\s+type\s*=\s*"\s*application\/x-mplayer2\s*"|\s+classid\s*=\s*"\s*clsid:6bf52a52-394a-11d3-b153-00c04f79faa6\s*")[^>]*?)\/?>/ig,function(all,attr){
 		var url=attr.match(regSrc),w=attr.match(regWidth),h=attr.match(regHeight),p=attr.match(/\s+autostart\s*=\s*(["']?)\s*(.+?)\s*\1(\s|$)/i),str='[media',auto='0';
 		if(!url)return '';
 		if(p)if(p[2]=='true')auto='1';
@@ -228,6 +271,8 @@ function html2ubb(sHtml)
 	sUBB=sUBB.replace(/<\/h[1-6]>/ig,'[/b][/size]\r\n\r\n');
 	sUBB=sUBB.replace(/<address(\s+[^>]*?)?>/ig,'\r\n[i]');
 	sUBB=sUBB.replace(/<\/address>/ig,'[i]\r\n');
+	sUBB=sUBB.replace(/<hr(\s+[^>]*?)?\/>/ig,'[hr/]');
+	
 	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(p)(?:\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,"\r\n\r\n$2\r\n\r\n");
 	for(i=0;i<3;i++)sUBB=sUBB.replace(/<(div)(?:\s+[^>]*?)?>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,"\r\n$2\r\n");
 	
@@ -238,10 +283,11 @@ function html2ubb(sHtml)
 	for(i=1;i<=cnum;i++)sUBB=sUBB.replace("[\tubbcodeplace_"+i+"\t]", arrcode[i]);
 
 	sUBB=sUBB.replace(/<[^<>]+?>/g,'');//删除所有HTML标签
-	sUBB=sUBB.replace(/&lt;/ig, '<');
-	sUBB=sUBB.replace(/&gt;/ig, '>');
-	sUBB=sUBB.replace(/&nbsp;/ig, ' ');
-	sUBB=sUBB.replace(/&amp;/ig, '&');
+	var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+	sUBB=sUBB.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+	
+	//清除空内容的UBB标签
+	sUBB=sUBB.replace(/\[([a-z]+)(?:=[^\[\]]+)?\]\s*\[\/\1\]/ig,'');
 	
 	return sUBB;
 }

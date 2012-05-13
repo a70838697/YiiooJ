@@ -7,7 +7,7 @@
  * @site http://xheditor.com/
  * @licence LGPL(http://www.opensource.org/licenses/lgpl-license.php)
  * 
- * @Version: 0.9.8 (build 100505)
+ * @Version: 0.9.10 (build 110801)
  */
 function ubb2html($sUBB)
 {	
@@ -35,10 +35,11 @@ function ubb2html($sUBB)
 	if(!$bUbb2htmlFunctionInit){
 	function getSizeName($match)
 	{
-		$arrSize=array('8pt','10pt','12pt','14pt','18pt','24pt','36pt');
-		return '<span style="font-size:'.$arrSize[$match[1]-1].';">';
+		$arrSize=array('10px','13px','16px','18px','24px','32px','48px');
+		if(preg_match("/^\d+$/",$match[1]))$match[1]=$arrSize[$match[1]-1];
+		return '<span style="font-size:'.$match[1].';">';
 	}}
-	$sHtml=preg_replace_callback("/\[size\s*=\s*(\d+?)\s*\]/i",'getSizeName',$sHtml);
+	$sHtml=preg_replace_callback('/\[size\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/i','getSizeName',$sHtml);
 	$sHtml=preg_replace('/\[font\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/i','<span style="font-family:$1;">',$sHtml);
 	$sHtml=preg_replace('/\[back\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]/i','<span style="background-color:$1;">',$sHtml);
 	$sHtml=preg_replace("/\[\/(color|size|font|back)\]/i",'</span>',$sHtml);
@@ -67,7 +68,8 @@ function ubb2html($sUBB)
 	$sHtml=preg_replace('/\[url\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]\s*([\s\S]*?)\s*\[\/url\]/i','<a href="$1">$2</a>',$sHtml);
 	$sHtml=preg_replace('/\[email\]\s*(((?!")[\s\S])+?)(?:"[\s\S]*?)?\s*\[\/email\]/i','<a href="mailto:$1">$1</a>',$sHtml);
 	$sHtml=preg_replace('/\[email\s*=\s*([^\]"]+?)(?:"[^\]]*?)?\s*\]\s*([\s\S]+?)\s*\[\/email\]/i','<a href="mailto:$1">$2</a>',$sHtml);
-	$sHtml=preg_replace("/\[quote\]([\s\S]*?)\[\/quote\]/i",'<blockquote>$1</blockquote>',$sHtml);
+	$sHtml=preg_replace("/\[quote\]/i",'<blockquote>',$sHtml);
+	$sHtml=preg_replace("/\[\/quote\]/i",'</blockquote>',$sHtml);
 	if(!$bUbb2htmlFunctionInit){
 	function getFlash($match)
 	{
@@ -110,6 +112,7 @@ function ubb2html($sUBB)
 	}}
 	$sHtml=preg_replace_callback('/\[list\s*(?:=\s*([^\]"]+))?(?:"[^\]]*?)?\s*\]/i','getUL',$sHtml);
 	$sHtml=preg_replace("/\[\/list\]/i",'</ul>',$sHtml);
+	$sHtml=preg_replace("/\[hr\/\]/i",'<hr />',$sHtml);
 
 	for($i=1;$i<=$cnum;$i++)$sHtml=str_replace("[\tubbcodeplace_".$i."\t]", $arrcode[$i],$sHtml);
 
