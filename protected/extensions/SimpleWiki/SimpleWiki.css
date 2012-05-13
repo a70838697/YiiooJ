@@ -1,0 +1,123 @@
+/* for quicktoc... */
+div#quicktoc-platform {
+	position:relative
+}
+div#quicktoc-header {
+	position:absolute;
+	right:5px;
+	width:250px;
+	background-color:white;
+	border:1px solid darkcyan;
+	box-shadow:5px 5px 3px #ccc;
+	-moz-box-shadow:5px 5px 3px #ccc;
+	-webkit-box-shadow:5px 5px 3px #ccc;
+    filter: /* IE */
+        progid:DXImageTransform.Microsoft.Shadow(color=#eeeeee,direction=0,strength=7)
+        progid:DXImageTransform.Microsoft.Shadow(color=#dddddd,direction=90,strength=10)
+        progid:DXImageTransform.Microsoft.Shadow(color=#dddddd,direction=180,strength=10)
+        progid:DXImageTransform.Microsoft.Shadow(color=#eeeeee,direction=270,strength=7);
+}
+div#quicktoc-caption {
+	padding:3px;
+	cursor:pointer;
+}
+div#quicktoc-body {
+	display:none;
+	max-height:365px;
+	position:absolute;
+	right:5px;
+	top:2em;
+	width:250px;
+	overflow:auto;
+	background-color:white;
+	border:1px solid darkcyan;
+	box-shadow:5px 5px 3px #ccc;
+	-moz-box-shadow:5px 5px 3px #ccc;
+	-webkit-box-shadow:5px 5px 3px #ccc;
+    filter: /* IE */
+        progid:DXImageTransform.Microsoft.Shadow(color=#eeeeee,direction=0,strength=7)
+        progid:DXImageTransform.Microsoft.Shadow(color=#dddddd,direction=90,strength=10)
+        progid:DXImageTransform.Microsoft.Shadow(color=#dddddd,direction=180,strength=10)
+        progid:DXImageTransform.Microsoft.Shadow(color=#eeeeee,direction=270,strength=7);
+}
+div#quicktoc-body ul {
+	margin-top:2px;
+}
+
+div.quicktoc-open {
+	background:url('arrowup.gif') no-repeat 98% center;
+}
+div.quicktoc-closed {
+	background:url('arrowdown.gif') no-repeat 98% center;
+}
+/* for block dividers... */
+div.divider {
+	margin:0;
+	clear:both;
+}
+div.spacer {
+	margin:0;
+	clear:both;
+	height:1em;
+	overflow:hidden;
+}
+div.fence {
+	border-style:dashed;
+	border-width:1px 0 0 0;
+	border-color:#888;
+	margin:1em 0;
+}
+div.dots {
+	border-style:dotted;
+	border-width:1px 0 0 0;
+	border-color:#888;
+	margin:1em 0;
+}
+div.line {
+	border-style:solid;
+	border-width:1px 0 0 0;
+	border-color:#888;
+	margin:1em 0;
+}
+/* span effects */
+span.underline {
+	text-decoration:underline;
+}
+span.overline {
+	text-decoration:overline;
+}
+span.strikeout {
+	text-decoration:line-through;
+}
+span.larger {
+	font-size:larger;
+}
+span.smaller {
+	font-size:smaller;
+}
+span.mono {
+	font-family:monospace;
+}
+/* image frame */
+div.frame { 
+	border:1px solid #cccccc; 
+	padding:4px;
+	background-color:#f9f9f9;
+	text-align:center;
+	font-size:smaller;
+}
+div.rframe {
+	float:right;
+	margin-left:3px;
+}
+div.lframe {
+	float:left;
+	margin-right:3px;
+}
+/* general effects */
+.hide {
+	display:none;
+}
+/* footnote block */
+div.footnoteblock {
+}

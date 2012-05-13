@@ -1,0 +1,5 @@
+ul.yiiPager .first,
+ul.yiiPager .last
+{
+display:inline;
+}

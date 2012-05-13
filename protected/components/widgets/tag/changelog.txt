@@ -1,0 +1,16 @@
+0.2
+---
+Not compatible with Yii 1.1.3 and older.
+Clean up your assets after updating.
+
+- Removed label (Sam Dark)
+- Corrected and cleaned up CSS (Sam Dark)
+- Used default jQueryUI theme instead of custom one (Sam Dark)
+- Now you can place widget anywhere you want (Sam Dark)
+- Fixed including jQueryUI for Yii 1.1.4 (Sam Dark)
+- Fixed tags splitting (Sam Dark)
+- Better compatibility with older PHP versions without json_encode (Sam Dark)
+
+0.1
+---
+- Initial release.

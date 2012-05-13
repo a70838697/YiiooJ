@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'OOJJ: Open Online Judge of JNU',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -16,19 +16,22 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'ext.giix-components.*', // giix components
 		'application.modules.user.models.*',
-		'application.modules.user.components.*',			
-		'application.modules.rights.*',
-		'application.modules.rights.components.*',
-	),
+        'application.modules.user.components.*',
 
+	),
 	'modules'=>array(
+        'user',
 		// uncomment the following to enable the Gii tool
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'123456',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
+			'generatorPaths' => array(
+				'ext.giix-core', // giix generators
+			),
 		),
 		'user'=>array(
 			'hash' => 'md5',                                     # encrypting method (php hash function)
@@ -41,49 +44,55 @@ return array(
 			'loginUrl' => array('/user/login'),                  # login form path
 			'returnUrl' => array('/user/profile'),               # page after login
 			'returnLogoutUrl' => array('/user/login'),           # page after logout
+		),			
+		// RBAM Configuration
+		'rbam'=>array(
+			'initialise'=>true,
+			'rbacManagerRole'=>'RBAC Manager',
+		 	'authItemsManagerRole'=>'Auth Items Manager',
+			'authAssignmentsManagerRole'=>'Auth Assignments Manager',
+			'authenticatedRole'=>'Authenticated',
+			'guestRole'=>'Guest',
+			'pageSize'=>10,
+			'relationshipsPageSize'=>5,
+			'userClass'=>'User',
+			'userIdAttribute'=>'id',
+			'userNameAttribute'=>'username',
+			'userCriteria'=>array(),
+			'layout'=>'rbam.views.layouts.main',
+			'applicationLayout'=>'application.views.layouts.main',
+			'baseUrl'=>null,
+			'baseScriptUrl'=>null,
+			'cssFile'=>null,
+			'showConfirmation'=>3000,
+			'juiShow'=>'fade',
+			'juiHide'=>'puff',
+			'juiScriptUrl'=>null,
+			'juiThemeUrl'=>null,
+			'juiTheme'=>'base',
+			'juiScriptFile'=>'jquery-ui.min.js',
+			'juiCssFile'=>'jquery-ui.css',
+			'initialise'=>null,
+			'exclude'=>'rbam',
+			'development'=>true,		
 		),
-		'rights'=>array(
-			'superuserName'=>'RBAC Manager', // Name of the role with super user privileges.
-			'authenticatedName'=>'Authenticated', // Name of the authenticated user role.
-			'userIdColumn'=>'id', // Name of the user id column in the database.
-			'userNameColumn'=>'username', // Name of the user name column in the database.
-			'enableBizRule'=>true, // Whether to enable authorization item business rules.
-			'enableBizRuleData'=>false, // Whether to enable data for business rules.
-			'displayDescription'=>true, // Whether to use item description instead of name.
-			'flashSuccessKey'=>'RightsSuccess', // Key to use for setting success flash messages.
-			'flashErrorKey'=>'RightsError', // Key to use for setting error flash messages.
-			'install'=>true, // Whether to install rights.
-			'baseUrl'=>'/rights', // Base URL for Rights. Change if module is nested.
-			'layout'=>'rights.views.layouts.main', // Layout to use for displaying Rights.
-			'appLayout'=>'application.views.layouts.main', // Application layout.
-			#'cssFile'=>'rights.css', // Style sheet file to use for Rights.
-			'install'=>false, // Whether to enable installer.
-			'debug'=>false, // Whether to enable debug mode.
-		),				
 	),
 
 	// application components
 	'components'=>array(
+		'syntaxhighlighter' => array(
+			'class' => 'ext.JMSyntaxHighlighter.JMSyntaxHighlighter',
+		),
 		'user'=>array(
-            // enable cookie-based authentication
+			// enable cookie-based authentication
             'class' => 'WebUser',
             'allowAutoLogin'=>true,
             'loginUrl' => array('/user/login'),
 		),
 		// uncomment the following to enable URLs in path-format
-		/*
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-			'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-			),
-		),
-		*/
-		'urlManager'=>array(
-			'urlFormat'=>'path',
-			'showScriptName'=>false,
+			'showScriptName' => false, 
 			'rules'=>array(
 				'entry/index'=>'entry/index',
 				'entry/view/<id:.+>'=>'entry/view',
@@ -94,31 +103,37 @@ return array(
 				'<controller:\w+>/<action:\w+>/<id:\d+>/*'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
-		),			
+		),
+
 		/*
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),
-		*/
 		// uncomment the following to use a MySQL database
+		*/
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=csp_yiiooj',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',
-            'tablePrefix' => 'tbl_',			
+			'tablePrefix' => 'tbl_',
 		),
+        'authManager'=>array(
+            'class'=>'CDbAuthManager',
+            'connectionID'=>'db',
+			'defaultRoles'=>array('Authenticated', 'Guest', 'Student', 'Teacher', 'Admin'),
+        ),		
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
-			'errorAction'=>'site/error',
-		),
+            'errorAction'=>'site/error',
+        ),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+					'levels'=>'error, warning,trace',
 				),
 				// uncomment the following to show log messages on web pages
 				/*
@@ -128,25 +143,12 @@ return array(
 				*/
 			),
 		),
-		'user'=>array(
-			// enable cookie-based authentication
-			'class' => 'RWebUser',
-			'allowAutoLogin'=>true,
-			'loginUrl' => array('/user/login'),
-		),
-		'authManager'=>array(
-			'class'=>'RDbAuthManager', // Provides support authorization item sorting.
-			'itemTable' => 'authitem',//table for auth
-			'itemChildTable' => 'authitemchild',//
-			'assignmentTable' => 'authassignment',//
-			'rightsTable' => 'rights',//table for rights
-		),			
 	),
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'worthful@qq.com',
 	),
 );
