@@ -103,7 +103,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:740px;height:120px'),true); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:740px;height:120px','config'=>array('upImgUrl'=>UCHtml::url('upload/create/type/report/course/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 	<div class="row buttons">

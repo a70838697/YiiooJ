@@ -141,7 +141,7 @@ class Problem extends CActiveRecord
     public function lookupComiplers($attribute,$params)
     {
     	$compiler_bit_set=0;
-    	foreach ($this->compiler_set as $bit)
+    	if(is_array($this->compiler_set))foreach ($this->compiler_set as $bit)
     	{
     		$compiler_bit_set|=$bit;
     	}

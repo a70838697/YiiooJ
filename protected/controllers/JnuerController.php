@@ -106,6 +106,15 @@ class JnuerController extends Controller
 			{
 				if($bsaved&&isset($_POST['UProfile'])){
 					if(!UUserIdentity::isAdmin())unset($_POST['UProfile']['group']);
+                           if (strlen($_POST['Jnuer']['identitynumber'])==10){ $_POST['UProfile']['group']=UUserIdentity::GROUP_STUDENT;
+$model->status=1;
+$_POST['Jnuer']['status']=1;
+}
+                           if (strlen($_POST['Jnuer']['identitynumber'])==7){
+$_POST['UProfile']['group']=UUserIdentity::GROUP_TEACHER;
+$model->status=1;
+$_POST['Jnuer']['status']=1;
+}
 					$model->profile->attributes=$_POST['UProfile'];
 					//if($model->profile->birthday==null)$model->profile->birthday= new DateTime('0000-00-00');
 					$bsaved=$model->profile->save();
@@ -113,8 +122,10 @@ class JnuerController extends Controller
 				$model->attributes=$_POST['Jnuer'];
 				if($bsaved)
 				{
-					if($model->save())
+					if($model->save()){
+                                         if(Yii::app()->user->id==$model->user_id)Yii::app()->user->group=$model->profile->group;
 						$this->redirect(array('view','id'=>$model->user_id));
+                                  }
 				}
 			}
 	

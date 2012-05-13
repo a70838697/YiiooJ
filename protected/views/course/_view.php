@@ -2,7 +2,7 @@
 <table>
 	<tr>
 	<td style="width:40px;" align="right"><b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b></td>
-	<td><?php echo CHtml::link(CHtml::encode($data->title),array('view', 'id'=>$data->id)); ?></td>
+	<td><?php echo CHtml::link(CHtml::encode($data->title),array('experiments', 'id'=>$data->id)); ?></td>
 	<td style="width:108px"><b><?php echo CHtml::encode($data->getAttributeLabel('sequence')); ?>:</b></td>
 	<td><?php echo CHtml::encode($data->sequence); ?></td>
 	</tr>
