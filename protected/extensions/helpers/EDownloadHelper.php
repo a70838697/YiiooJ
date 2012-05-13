@@ -44,11 +44,12 @@ class EDownloadHelper{
 	 * 
 	 * Download a file with resume, stream and speed options
 	 * 
-	 * @param string $filename path to file including filename
+	 * @param string $filepath path to file including filename
+	 * @param string $filename real filename
 	 * @param integer $speed maximum download speed
 	 * @param boolean $doStream if stream or not
 	 */
-	public static function download( $filepath,$filename=null, $maxSpeed = 100, $doStream = false ){
+	public static function download( $filepath, $filename = null, $maxSpeed = 100, $doStream = false ){
 	
 		$seek_start 	=  0;
 		$seek_end 		= -1;
@@ -59,7 +60,7 @@ class EDownloadHelper{
 			throw new CException(Yii::t('EDownloadHelper','Filepath does not exists on specified location or is not a regular file'));
 		
 		$mimeType = CFileHelper::getMimeType( $filepath );
-		if($filename===null)
+		if(is_null($filename))
 			$filename = basename( $filepath );
 		
 		if($mimeType == null) $mimeType = "application/octet-stream";

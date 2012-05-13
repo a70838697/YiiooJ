@@ -7,9 +7,12 @@ class UCHtml
     public static function image($url) {
         return CHtml::image( Yii::app()->baseUrl."/images/".$url);
     }
+    public static function theUrl($url) {
+        return CHtml::normalizeUrl($url);
+    }
     public static function url($url) {
         return Yii::app()->baseUrl.'/'.$url;
-    }    
+    }
     public static function imageFile($url) {
         return ( Yii::app()->baseUrl."/images/".$url);
     }    

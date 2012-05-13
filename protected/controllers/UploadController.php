@@ -74,6 +74,7 @@ class UploadController extends Controller
 	{
         Yii::import("ext.EAjaxUpload.qqFileUploader");
  
+        //$basedir = dirname(__FILE__).'/../../';
         $folder='upload/';// folder for uploaded files
         $type=Yii::app()->request->getQuery('type',null);
         $allowedExtensions = array("jpg","jpeg","png","gif","txt","rar","zip","chm","ppt","pdf","doc","7z");//array("jpg","jpeg","gif","exe","mov" and etc...
@@ -82,7 +83,7 @@ class UploadController extends Controller
         {
         	if($type=="wiki")
         	{
-		       	$folder.="wiki/";
+        		$folder.="wiki/1/";
         		$filefieldname="qqfile";
         	}
         	if($type=="report"){
@@ -109,7 +110,7 @@ class UploadController extends Controller
 	      	$model->revision=1;
 	      	$model->filesize=$result['size'];
 	      	$model->user_id=Yii::app()->user->id;
-			$model->ip=ip2long(Yii::app()->request->userHostAddress);
+			$model->ip=UCApp::getIpAsInt();
         
 			if($model->save())
 			{
@@ -117,6 +118,7 @@ class UploadController extends Controller
 			}
 			else 
 			{
+				@unlink($model->location);
 				$result['success']=false;
 				$result['error']='Can not save to database!';
 			}

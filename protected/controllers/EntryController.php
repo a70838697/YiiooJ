@@ -60,10 +60,34 @@ class EntryController extends Controller
 	}
 
 	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionCreate()
+	{
+		$model=new Entry;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Entry']))
+		{
+			$model->attributes=$_POST['Entry'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
+
 	public function actionUpdate($id)
 	{
 
@@ -71,7 +95,7 @@ class EntryController extends Controller
 		if($model==null)
 		{
 			$model=new Entry;
-			$model->ip=ip2long(Yii::app()->request->userHostAddress);
+			$model->ip=UCApp::getIpAsInt();
 			$model->title=$id;
 		}
 		
@@ -80,29 +104,42 @@ class EntryController extends Controller
 
 		if(isset($_POST['Entry']))
 		{
+			$needsave=true;
+			$revision=null;
 			if(!($model->isNewRecord))
 			{
 				if($model->content!=$_POST['Entry']['content'])
 				{
 					$revision=new EntryRevision;
 					$revision->attributes=$model->attributes;
+					$revision->entry_id=$model->id;
+					//error not catched
 					$revision->save();
+					
+					$model->revision=$model->revision+1;
+					$model->content=$_POST['Entry']['content'];
 				}
-				$model->revision=$model->revision+1;
+				else $needsave=false;
+			}else {
+				$model->attributes=$_POST['Entry'];
 			}
-			$model->attributes=$_POST['Entry'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->title));
+			else 
+			{
+				if($revision)$revision->delete();
+			}
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
 		));
 	}
+	
 
 	/**
 	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{entry}}".
+ * This is the model class for table "{{entries}}".
  *
- * The followings are the available columns in table '{{entry}}':
+ * The followings are the available columns in table '{{entries}}':
  * @property integer $id
  * @property string $title
  * @property string $content
@@ -13,13 +13,16 @@
  * @property integer $revision
  * @property integer $create_time
  * @property integer $update_time
- * @property integer $accessed_time
+ *
+ * The followings are the available model relations:
+ * @property Users $user
+ * @property EntryRevisions[] $entryRevisions
  */
 class Entry extends CActiveRecord
 {
-	public $wiki=null;
 	/**
 	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
 	 * @return Entry the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -44,15 +47,37 @@ class Entry extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, content', 'required'),
-			array('access, revision, create_time, update_time, accessed_time', 'numerical', 'integerOnly'=>true),
+			array('access, create_time, update_time', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
-			// The following rule is used by search().
+			array('revision','default',
+				'value'=>1,
+				'setOnEmpty'=>false,'on'=>'insert'),				
+			array('create_time','default',
+				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
+				'setOnEmpty'=>false,'on'=>'insert'),
+			array('update_time','default',
+				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
+				'setOnEmpty'=>false,'on'=>array('update','insert')),
+				// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			// array('id, title, content, access, user_id, ip, revision, create_time, update_time, accessed_time', 'safe', 'on'=>'search'),
+			//array('id, title, content, access, user_id, ip, revision, create_time, update_time', 'safe', 'on'=>'search'),
 			array('title, content', 'safe', 'on'=>'search'),
 		);
 	}
-
+	protected function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+			if($this->isNewRecord)
+			{
+				$this->ip=UCApp::getIpAsInt();
+				$this->user_id=Yii::app()->user->id;
+			}
+			return true;
+		}
+		else
+			return false;
+	}
 	/**
 	 * @return array relational rules.
 	 */
@@ -62,8 +87,10 @@ class Entry extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'entryRevisions' => array(self::HAS_MANY, 'EntryRevision', 'entry_id'),
 		);
 	}
+
 	/**
 	 * @return string the URL that shows the detail of the post
 	 */
@@ -89,30 +116,9 @@ class Entry extends CActiveRecord
 			'revision' => 'Revision',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
-			'accessed_time' => 'Accessed Time',
 		);
 	}
-	/**
-	 * This is invoked before the record is saved.
-	 * @return boolean whether the record should be saved.
-	 */
-	protected function beforeSave()
-	{
-		if(parent::beforeSave())
-		{
-			if($this->isNewRecord)
-			{
-				$this->revision =1;
-				$this->create_time=$this->update_time=time();
-				$this->user_id=Yii::app()->user->id;
-			}
-			else
-				$this->update_time=time();
-			return true;
-		}
-		else
-			return false;
-	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -133,9 +139,8 @@ class Entry extends CActiveRecord
 		//$criteria->compare('revision',$this->revision);
 		//$criteria->compare('create_time',$this->create_time);
 		//$criteria->compare('update_time',$this->update_time);
-		//$criteria->compare('accessed_time',$this->accessed_time);
 
-		return new CActiveDataProvider(get_class($this), array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

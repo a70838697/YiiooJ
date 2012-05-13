@@ -1,6 +1,9 @@
 /* for quicktoc... */
 div#quicktoc-platform {
-	position:relative
+	position:relative;
+	float:right;
+	width:252px;
+	height:22px;
 }
 div#quicktoc-header {
 	position:absolute;

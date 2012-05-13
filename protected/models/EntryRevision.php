@@ -1,23 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "{{entry_revision}}".
+ * This is the model class for table "{{entry_revisions}}".
  *
- * The followings are the available columns in table '{{entry_revision}}':
+ * The followings are the available columns in table '{{entry_revisions}}':
  * @property integer $id
  * @property string $title
  * @property string $content
  * @property integer $access
  * @property integer $update_time
  * @property integer $user_id
- * @property string $ip
+ * @property integer $ip
  * @property integer $revision
- * @property integer $accessed_time
+ * @property integer $entry_id
+ *
+ * The followings are the available model relations:
+ * @property Entries $entry
+ * @property Users $user
  */
 class EntryRevision extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
 	 * @return EntryRevision the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -41,12 +46,12 @@ class EntryRevision extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, content, ip, revision', 'required'),
-			array('access, update_time, ip, revision, accessed_time', 'numerical', 'integerOnly'=>true),
+			array('title, content, user_id, ip, revision, entry_id', 'required'),
+			array('access, update_time, user_id, ip, revision, entry_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('title, content', 'safe', 'on'=>'search'),
+			array('id, title, content, access, update_time, user_id, ip, revision, entry_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,6 +63,7 @@ class EntryRevision extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'entry' => array(self::BELONGS_TO, 'Entry', 'entry_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
@@ -76,7 +82,7 @@ class EntryRevision extends CActiveRecord
 			'user_id' => 'User',
 			'ip' => 'Ip',
 			'revision' => 'Revision',
-			'accessed_time' => 'Accessed Time',
+			'entry_id' => 'Entry',
 		);
 	}
 
@@ -91,17 +97,17 @@ class EntryRevision extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		//$criteria->compare('id',$this->id);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('content',$this->content,true);
-		//$criteria->compare('access',$this->access);
-		//$criteria->compare('update_time',$this->update_time);
-		//$criteria->compare('user_id',$this->user_id);
-		//$criteria->compare('ip',$this->ip,true);
-		//$criteria->compare('revision',$this->revision);
-		//$criteria->compare('accessed_time',$this->accessed_time);
+		$criteria->compare('access',$this->access);
+		$criteria->compare('update_time',$this->update_time);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('ip',$this->ip);
+		$criteria->compare('revision',$this->revision);
+		$criteria->compare('entry_id',$this->entry_id);
 
-		return new CActiveDataProvider(get_class($this), array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

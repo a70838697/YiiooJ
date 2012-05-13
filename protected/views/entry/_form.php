@@ -64,9 +64,9 @@ function insertFile(fileName,responseJSON)
 array(
         'id'=>'uploadFile',
         'config'=>array(
-               'action'=>UCHtml::url('upload/create/type/wiki'),
+               'action'=>UCHtml::theUrl(array('upload/create', 'type'=>'wiki')),
                'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
-               'sizeLimit'=>10*1024*1024,// maximum file size in bytes
+               'sizeLimit'=>20*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>10,// minimum file size in bytes
                'onComplete'=>'js:function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}}',
                //'messages'=>array(

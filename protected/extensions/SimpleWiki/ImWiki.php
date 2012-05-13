@@ -39,21 +39,22 @@ class ImWiki extends SimpleWiki
 	}
 	public function my_symlink_handler($node)
 	{
-		if($node->symlink=="Wiki")
+		switch($node->linkparts->symlink)
 		{
-			$node->path =UCHtml::url("entry/view/");
-			if( strpos($node->infix, $node->symlink)==0)$node->infix = $node->internalselector;
-		}
-		if($node->symlink=="Problem")
-		{
-			$node->path =UCHtml::url("problem/view/");
-			$problem=Problem::model()->findByPk((int)$node->internalselector);
-			if($problem!=null)$node->infix=((int)$node->internalselector).".".CHtml::encode($problem->title);
-			//if( strpos($node->infix, $node->symlink)==0)$node->infix = $node->internalselector;
-		}
-		if($node->symlink=="Attachment")
-		{
-			$node->path =UCHtml::url("upload/download/");
+			case "Wiki":
+				$node->linkparts->symlinkpath =UCHtml::theUrl(array("entry/view/"))."/";
+				//if( strpos($node->infix, $node->linkparts->symlink)==0)$node->infix = $node->linkparts->internalselector;
+				break;
+			case "Problem":
+				$node->linkparts->symlinkpath =UCHtml::theUrl(array("problem/view/"));
+				$problem=Problem::model()->findByPk((int)$node->linkparts->internalselector);
+				if($problem!=null)$node->infix=((int)$node->linkparts->internalselector).".".CHtml::encode($problem->title);
+				//if( strpos($node->infix, $node->linkparts->symlink)==0)$node->infix = $node->internalselector;
+				break;
+			case "Attachment":
+				//var_dump($node);
+				$node->linkparts->symlinkpath =UCHtml::theUrl(array("upload/download/"))."/";
+				break;
 		}
 		return $node;
 	}
