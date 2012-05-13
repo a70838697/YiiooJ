@@ -4,3 +4,6 @@
 [submodule "protected/modules/user"]
 	path = protected/modules/user
 	url = git@github.com:70838697/yii-user.git
+[submodule "protected/modules/rights"]
+	path = protected/modules/rights
+	url = git@github.com:70838697/yii-rights.git
