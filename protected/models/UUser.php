@@ -32,7 +32,7 @@ class UUser extends User
 	 */
 	public function tableName()
 	{
-		return '{{Users}}';
+		return '{{users}}';
 	}
 
 	/**
