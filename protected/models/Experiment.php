@@ -53,7 +53,7 @@ class Experiment extends CActiveRecord
 		return array(
 			array('course_id, title, sequence,due_time, description, begin, end,aim, exercise_id', 'required'),
 			array('course_id, experiment_type_id, status, exercise_id', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>80),
+			array('title', 'length', 'max'=>160),
 			array('aim', 'length', 'max'=>512),
 			array('memo', 'length', 'max'=>256),
 			array('sequence', 'length', 'max'=>20),
