@@ -121,6 +121,9 @@ return array(
 		),
         'authManager'=>array(
             'class'=>'CDbAuthManager',
+       		'itemTable' => 'authitem',//table for auth
+       		'itemChildTable' => 'authitemchild',
+       		'assignmentTable' => 'authassignment',        		
             'connectionID'=>'db',
 			'defaultRoles'=>array('Authenticated', 'Guest', 'Student', 'Teacher', 'Admin'),
         ),		
