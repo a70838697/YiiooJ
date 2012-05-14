@@ -56,7 +56,7 @@ class EDownloadHelper{
 		$data_section 	=  false;
 		$buffsize 		=  2048; // you can set by multiple of 1024
 		
-		if(!file_exists($filepath) && is_file($filepath))
+		if(!(file_exists($filepath) && is_file($filepath)))
 			throw new CException(Yii::t('EDownloadHelper','Filepath does not exists on specified location or is not a regular file'));
 		
 		$mimeType = CFileHelper::getMimeType( $filepath );

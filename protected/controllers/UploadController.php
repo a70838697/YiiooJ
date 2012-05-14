@@ -27,7 +27,7 @@ class UploadController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','download'),
+				'actions'=>array('index','view','download','change'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -43,6 +43,44 @@ class UploadController extends Controller
 			),
 		);
 	}
+	public function actionChange()
+	{
+		set_time_limit(0);
+		
+		$records = Upload::model()->findAll();
+		foreach ($records as $record) {
+			$filepath=$record->location;
+			if(!(file_exists($filepath) && is_file($filepath))) 
+			{
+				$record->delete();
+				echo $record->id . ' does not exist!';
+				continue;
+			}
+					
+			// do the processing here
+			$pathinfo = pathinfo($filepath);
+			$filename = md5(uniqid());
+			if(!isset($pathinfo['extension']))
+				{
+					echo($record->id.'<br/>');
+					continue;
+				}
+			$ext = $pathinfo['extension'];
+			/// don't overwrite previous files that were uploaded
+			while (file_exists( $pathinfo['dirname'].'/' . $filename . '.' . $ext)) {
+				$filename .= rand(10, 99);
+			}
+			
+			$record->location= $pathinfo['dirname'].'/' . $filename . '.' . $ext;
+			if($record->save())
+			{
+				@rename($filepath, $pathinfo['dirname'].'/' . $filename . '.' . $ext);
+			}
+			//echo $record->location."=".	$filename;
+			//echo '<br/>';
+		}
+		Yii::app()->end();
+	}	
 
 	public function actionDownload($id)
 	{
