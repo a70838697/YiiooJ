@@ -27,7 +27,7 @@ class UploadController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','download','change'),
+				'actions'=>array('index','view','download'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -43,44 +43,7 @@ class UploadController extends Controller
 			),
 		);
 	}
-	public function actionChange()
-	{
-		set_time_limit(0);
-		
-		$records = Upload::model()->findAll();
-		foreach ($records as $record) {
-			$filepath=$record->location;
-			if(!(file_exists($filepath) && is_file($filepath))) 
-			{
-				$record->delete();
-				echo $record->id . ' does not exist!';
-				continue;
-			}
-					
-			// do the processing here
-			$pathinfo = pathinfo($filepath);
-			$filename = md5(uniqid());
-			if(!isset($pathinfo['extension']))
-				{
-					echo($record->id.'<br/>');
-					continue;
-				}
-			$ext = $pathinfo['extension'];
-			/// don't overwrite previous files that were uploaded
-			while (file_exists( $pathinfo['dirname'].'/' . $filename . '.' . $ext)) {
-				$filename .= rand(10, 99);
-			}
-			
-			$record->location= $pathinfo['dirname'].'/' . $filename . '.' . $ext;
-			if($record->save())
-			{
-				@rename($filepath, $pathinfo['dirname'].'/' . $filename . '.' . $ext);
-			}
-			//echo $record->location."=".	$filename;
-			//echo '<br/>';
-		}
-		Yii::app()->end();
-	}	
+
 
 	public function actionDownload($id)
 	{
@@ -121,7 +84,7 @@ class UploadController extends Controller
         {
         	if($type=="wiki")
         	{
-        		$folder.="wiki/1/";
+        		$folder.="wiki/".rand(10, 99)."/";
         		$filefieldname="qqfile";
         	}
         	if($type=="report"){
@@ -129,7 +92,7 @@ class UploadController extends Controller
         		$filefieldname="filedata";
         	}
             if($type=="problem"){
-				$folder.="problem/";
+				$folder.="problem/".rand(10, 20)."/";
         		$filefieldname="filedata";
         	}        	
 			if (!is_dir($folder) ){
@@ -139,6 +102,12 @@ class UploadController extends Controller
         $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit,$filefieldname);
         $result = $uploader->handleUpload($folder);
+        if($result['success'] && !(file_exists($folder . $result['filename']) && is_file($folder . $result['filename'])) )
+        {
+	        $result['success']=false;
+	        $result['error']='Failed to save the file!';
+        }
+        
         if(isset($result['success'])&& $result['success'])
         {
 	        $model=new Upload;
