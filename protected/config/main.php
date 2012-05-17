@@ -76,6 +76,68 @@ return array(
 			'exclude'=>'rbam',
 			'development'=>true,		
 		),
+			'comments'=>array(
+					//you may override default config for all connecting models
+					'defaultModelConfig' => array(
+							//only registered users can post comments
+							'registeredOnly' => false,
+							'useCaptcha' => false,
+							//allow comment tree
+							'allowSubcommenting' => true,
+							//display comments after moderation
+							'premoderate' => false,
+							//action for postig comment
+							'postCommentAction' => 'comments/comment/postComment',
+							//super user condition(display comment list in admin view and automoderate comments)
+							'isSuperuser'=>'Yii::app()->user->checkAccess("moderate")',
+							//order direction for comments
+							'orderComments'=>'DESC',
+					),
+					//the models for commenting
+					'commentableModels'=>array(
+							//model with individual settings
+							'Problem'=>array(
+									'registeredOnly'=>true,
+									'useCaptcha'=>false,
+									'allowSubcommenting'=>true,
+									//config for create link to view model page(page with comments)
+									'pageUrl'=>array(
+											'route'=>'problem/view',
+											'data'=>array('id'=>'id'),
+									),
+							),
+							//model with individual settings
+							'Experiment'=>array(
+									'registeredOnly'=>true,
+									'useCaptcha'=>false,
+									'allowSubcommenting'=>true,
+									//config for create link to view model page(page with comments)
+									'pageUrl'=>array(
+											'route'=>'Experiment/view',
+											'data'=>array('id'=>'id'),
+									),
+							),
+							//model with individual settings
+							'ExperimentReport'=>array(
+									'registeredOnly'=>true,
+									'useCaptcha'=>false,
+									'allowSubcommenting'=>true,
+									//config for create link to view model page(page with comments)
+									'pageUrl'=>array(
+											'route'=>'ExperimentReport/view',
+											'data'=>array('id'=>'id'),
+									),
+							),							
+							//model with default settings
+							'ImpressionSet',
+					),
+					//config for user models, which is used in application
+					'userConfig'=>array(
+							'class'=>'UUser',
+							'nameProperty'=>'username',
+							'emailProperty'=>'email',
+					),
+			),			
 	),
 
 	// application components

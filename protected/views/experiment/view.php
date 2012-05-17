@@ -136,3 +136,10 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 endif;
 ?>
+
+<?php
+
+$this->widget('comments.widgets.ECommentsListWidget', array(
+    'model' => $model,
+));
+?>
