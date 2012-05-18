@@ -70,7 +70,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
         'title'=>'Give a score',
         'autoOpen'=>false,
 		'minWidth'=>800,
-		'height'=>500,
+		'height'=>360,
 		'modal'=>true,
     ),
 ));
@@ -98,7 +98,13 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 		<?php echo $form->textField ($model,'score'); ?>
 		<?php echo $form->error($model,'score'); ?>
 	</div>
-
+	<div class="row">
+		<?php echo $form->labelEx($model,'comment'); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'comment','rows'=>6,
+			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+		<?php echo $form->error($model,'comment'); ?>
+	</div>
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

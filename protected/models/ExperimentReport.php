@@ -9,6 +9,8 @@
  * @property integer $user_id
  * @property string $report
  * @property string $conclusion
+ * @property int $score
+ * @property string $comment
  * @property integer $created
  * @property integer $updated
  */
@@ -41,6 +43,7 @@ class ExperimentReport extends CActiveRecord
 		return array(
 			array('experiment_id, report, conclusion', 'required'),
 			array('experiment_id, score', 'numerical', 'integerOnly'=>true),
+			array('comment', 'length', 'max'=>500),
 			array('updated','default',
 	              'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
 	              'setOnEmpty'=>false,'on'=>'update'),	        
