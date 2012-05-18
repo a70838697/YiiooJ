@@ -29,18 +29,18 @@ class UUserIdentity extends UserIdentity
 	}
 	public static function isCommonUser()
 	{
-		return Yii::app()->user->group==self::GROUP_USER;
+		return  (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_USER);
 	}
 	public static function isStudent()
 	{
-		return Yii::app()->user->group==self::GROUP_STUDENT;
+		return (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_STUDENT);
 	}
 	public static function isTeacher()
 	{
-		return Yii::app()->user->group==self::GROUP_TEACHER;
+		return (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_TEACHER);
 	}
 	public static function isAdmin()
 	{
-		return Yii::app()->user->group==self::GROUP_ADMINISTRATOR;
+		return (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_ADMINISTRATOR);
 	}
 }
