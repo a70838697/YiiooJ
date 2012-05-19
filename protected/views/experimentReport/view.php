@@ -19,6 +19,12 @@ $this->menu=array(
 <h1>View ExperimentReport #<?php echo $model->id; ?></h1>
 <?php
 $canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+$canedit=$canscore
+	||(UUserIdentity::isStudent() && (
+			($model->status==ExperimentReport::STATUS_ALLOW_EDIT ) 
+			|| ( (!$model->experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL)
+		)
+	);
 if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id))
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
@@ -26,17 +32,34 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'label'=>'Edit',
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>array('update', 'id'=>$model->id),
+            'visible'=>$canedit,
+        	'url'=>array('update', 'id'=>$model->id),
         ),
         array(
             'label'=>'Score',
             'icon-position'=>'left',
-            'visible'=>$canscore,
+            'visible'=>$canscore && ( ($model->status==ExperimentReport::STATUS_SUBMITIED )|| ( ($model->status==ExperimentReport::STATUS_NORMAL) && ($model->experiment->isTimeOut()) )),
 	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('view', 'id'=>$model->id),
         ),
         array(
+            'label'=>'Submit',
+            'icon-position'=>'left',
+            'visible'=>($canscore|| (Yii::app()->user->id==$model->user_id)) && ($model->status !=ExperimentReport::STATUS_SUBMITIED) ,
+	        'linkOptions'=>array('onclick'=>'return submitr();',),
+            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+            'url'=>array('view', 'id'=>$model->id,'submited'=>'1'),
+        ),
+        array(
+            'label'=>'Extend deadline',
+            'icon-position'=>'left',
+            'visible'=>($canscore) && ($model->status ==ExperimentReport::STATUS_SUBMITIED) ,
+	        'linkOptions'=>array('onclick'=>'return extend();',),
+            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+            'url'=>array('view', 'id'=>$model->id,'extended'=>'1'),
+        ),
+    	array(
             'label'=>'Print',
             'icon-position'=>'left',
 	        'linkOptions'=>array('target'=>'_blank;',),
@@ -63,6 +86,14 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 <?php 
 if($canscore){
 echo CHtml::script('
+function extend()
+{
+	return confirm("Are you really want to let her/him resubmit?");
+}		
+function submitr()
+{
+	return confirm("Are you really want to submit the report?\r\n You will not be allowed to modify it then.");
+}		
 function showDialogue()
 {
 	$("#scoredialog").dialog("open");

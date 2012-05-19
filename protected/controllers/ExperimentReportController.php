@@ -53,12 +53,38 @@ class ExperimentReportController extends Controller
 	{
 		$model=$this->loadModel($id);
 		
-		if(isset($_POST['ExperimentReport']))
+		$canEdit=UUserIdentity::isAdmin()
+		||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
+		//There is no authority check here.
+		if(Yii::app()->request->getQuery('submited',null)!==null)
 		{
-			$model->attributes=$_POST['ExperimentReport'];
-			$model->save();
+			if($canSubmited )
+			{
+				$model->status=ExperimentReport::STATUS_SUBMITIED;
+				$model->save();
+				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
-		
+		else 
+		{
+			if(Yii::app()->request->getQuery('extended',null)!==null)
+			{
+				if($canSubmited )
+				{
+					$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					$model->save();
+					$this->redirect(array('view','id'=>$model->id));
+				}
+			}
+				
+			if($canEdit && isset($_POST['ExperimentReport']))
+			{
+				$model->attributes=$_POST['ExperimentReport'];
+				$model->save();
+				$this->redirect(array('view','id'=>$model->id));
+			}
+		}
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -107,7 +133,8 @@ class ExperimentReportController extends Controller
 		if(!UUserIdentity::isStudent())
 		{
 			throw new CHttpException(404,'The requested page does not exist.');
-		}		
+		}
+		
 		$experiment=Experiment::model()->findByPk((int)$id);
 		if($experiment===null)
 			throw new CHttpException(404,'The requested page does not exist.');		
@@ -124,6 +151,15 @@ class ExperimentReportController extends Controller
 			$model=new ExperimentReport;
 			$model->user_id=Yii::app()->user->id;
 			$model->experiment_id=(int)$id;
+		}
+		else
+		{
+			$canedit=($model->status==ExperimentReport::STATUS_ALLOW_EDIT )
+			|| ( (!$experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL) ;
+			if(!$canedit)
+			{
+				throw new CHttpException(404,'You can not perform this operation.');
+			}
 		}
 		
 		if($model->user_id!=Yii::app()->user->id)
@@ -143,6 +179,11 @@ class ExperimentReportController extends Controller
 					'model'=>$model));
 				die;
 			}else{
+				if(Yii::app()->request->getQuery('submited',null)!==null)
+				{
+					$model->status=ExperimentReport::STATUS_SUBMITIED;
+				}
+				
 				if($model->save())
 					$this->redirect(array('view','id'=>$model->id));
 			}
@@ -176,7 +217,16 @@ class ExperimentReportController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if($model->experiment->isTimeOut() && UUserIdentity::isStudent())
+		$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		$canedit=$canscore
+		||(UUserIdentity::isStudent() && (
+				($model->status==ExperimentReport::STATUS_ALLOW_EDIT )
+				|| ( (!$model->experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL)
+		)
+		);
+				
+		//if($model->experiment->isTimeOut() && UUserIdentity::isStudent())
+		if(!$canedit)
 		{
 			throw new CHttpException(403,'Your operation is beyond the deadline ' .$model->experiment->begin."~".$model->experiment->end.'.');
 		}
@@ -189,6 +239,10 @@ class ExperimentReportController extends Controller
 					'model'=>$model));
 				die;
 			}else{
+				if(Yii::app()->request->getQuery('submited',null)!==null)
+				{
+					$model->status=ExperimentReport::STATUS_SUBMITIED;
+				}				
 				if($model->save())
 					$this->redirect(array('view','id'=>$model->id));
 			}			

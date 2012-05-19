@@ -10,12 +10,16 @@
  * @property string $report
  * @property string $conclusion
  * @property int $score
+ * @property int $status
  * @property string $comment
  * @property integer $created
  * @property integer $updated
  */
 class ExperimentReport extends CActiveRecord
 {
+	const STATUS_NORMAL=0;
+	const STATUS_ALLOW_EDIT=1;
+	const STATUS_SUBMITIED=2;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return ExperimentReport the static model class
@@ -42,7 +46,7 @@ class ExperimentReport extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('experiment_id, report, conclusion', 'required'),
-			array('experiment_id, score', 'numerical', 'integerOnly'=>true),
+			array('experiment_id, score,status', 'numerical', 'integerOnly'=>true),
 			array('comment', 'length', 'max'=>500),
 			array('updated','default',
 	              'value'=>new CDbExpression('UNIX_TIMESTAMP()'),

@@ -16,6 +16,19 @@ $this->menu=array(
 ?>
 <h1>View Experiment <?php echo CHtml::encode($model->title); ?></h1>
 <?php
+$cansubmit=false;
+$report=null;
+if(UUserIdentity::isStudent())
+{
+	$report=ExperimentReport::model()->find(array(
+			'condition'=>'experiment_id=:experimentID and user_id='.Yii::app()->user->id,
+			'params'=>array(':experimentID'=>$model->id),
+	));
+	$cansubmit= ((!$model->isTimeOut()) && $report==null)
+	||	 ($report->status==ExperimentReport::STATUS_ALLOW_EDIT )
+	|| ( (!$model->isTimeOut()) &&  $report->status==ExperimentReport::STATUS_NORMAL) ;
+	
+}
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
         array(
@@ -37,13 +50,20 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon-position'=>'left',
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>array('reports', 'id'=>$model->id),
-        ),         
+        ),
         array(
-            'label'=>'Submit a report',
+            'label'=>'Write a report',
             'icon-position'=>'left',
-	        'visible'=>UUserIdentity::isStudent(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+	        'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>array('/experimentReport/write', 'id'=>$model->id),
-        ),         
+        ), 
+    	array(
+    		'label'=>'View my report',
+    		'icon-position'=>'left',
+    		'visible'=>($report!=null),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+    		'url'=>array('/experimentReport/view', 'id'=>($report==null)?1:$report->id),
+    	),
+    		
       
     ),
     'htmlOptions' => array('style' => 'clear: both;'),
