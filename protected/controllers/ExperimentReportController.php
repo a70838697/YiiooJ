@@ -70,8 +70,8 @@ class ExperimentReportController extends Controller
 	public function actionReport($id)
 	{
 		$this->renderPartial('report',array(
-			'model'=>$this->loadModel($id),
-		));
+				'model'=>$this->loadModel($id)));
+		die;		
 	}
 	/**
 	 * Creates a new model.

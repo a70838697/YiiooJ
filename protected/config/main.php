@@ -121,7 +121,7 @@ return array(
 							'ExperimentReport'=>array(
 									'registeredOnly'=>true,
 									'useCaptcha'=>false,
-									'allowSubcommenting'=>true,
+									'allowSubcommenting'=>false,
 									//config for create link to view model page(page with comments)
 									'pageUrl'=>array(
 											'route'=>'ExperimentReport/view',
