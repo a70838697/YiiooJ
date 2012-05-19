@@ -36,7 +36,14 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('view', 'id'=>$model->id),
         ),
-     ),
+        array(
+            'label'=>'Print',
+            'icon-position'=>'left',
+	        'linkOptions'=>array('target'=>'_blank;',),
+            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+            'url'=>array('report', 'id'=>$model->id),
+        ),
+    ),
     'htmlOptions' => array('style' => 'clear: both;'),
 ));
 ?>
@@ -52,7 +59,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 		'updated',
 	),
 ));*/ ?>
-<?php $this->renderPartial('_report',array('model'=>$model));?>
+<?php $this->renderPartial('viewReport',array('model'=>$model));?>
 <?php 
 if($canscore){
 echo CHtml::script('
