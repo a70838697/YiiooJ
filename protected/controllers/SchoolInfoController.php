@@ -1,6 +1,6 @@
 <?php
 
-class JnuerController extends Controller
+class SchoolInfoController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -61,14 +61,14 @@ class JnuerController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Jnuer;
+		$model=new SchoolInfo;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Jnuer']))
+		if(isset($_POST['SchoolInfo']))
 		{
-			$model->attributes=$_POST['Jnuer'];
+			$model->attributes=$_POST['SchoolInfo'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->user_id));
 		}
@@ -88,10 +88,10 @@ class JnuerController extends Controller
 		if(!UUserIdentity::isAdmin())$id=Yii::app()->user->id;
 		if(UUserIdentity::isAdmin()||UUserIdentity::isCommonUser())
 		{
-			$model=Jnuer::model()->findByPk((int)$id);
+			$model=SchoolInfo::model()->findByPk((int)$id);
 			if($model==null)
 			{
-				$model= new Jnuer;
+				$model= new SchoolInfo;
 				$model->user_id=(int)$id;
 			}
 			if($model==null||$model->user==null)
@@ -102,24 +102,24 @@ class JnuerController extends Controller
 			// $this->performAjaxValidation($model);
 	
 			$bsaved=true;
-			if(isset($_POST['Jnuer']))
+			if(isset($_POST['SchoolInfo']))
 			{
 				if($bsaved&&isset($_POST['UProfile'])){
 					if(!UUserIdentity::isAdmin())unset($_POST['UProfile']['group']);
-                           if (strlen($_POST['Jnuer']['identitynumber'])==10){ $_POST['UProfile']['group']=UUserIdentity::GROUP_STUDENT;
+                           if (strlen($_POST['SchoolInfo']['identitynumber'])==10){ $_POST['UProfile']['group']=UUserIdentity::GROUP_STUDENT;
 $model->status=1;
-$_POST['Jnuer']['status']=1;
+$_POST['SchoolInfo']['status']=1;
 }
-                           if (strlen($_POST['Jnuer']['identitynumber'])==7){
+                           if (strlen($_POST['SchoolInfo']['identitynumber'])==7){
 $_POST['UProfile']['group']=UUserIdentity::GROUP_TEACHER;
 $model->status=1;
-$_POST['Jnuer']['status']=1;
+$_POST['SchoolInfo']['status']=1;
 }
 					$model->profile->attributes=$_POST['UProfile'];
 					//if($model->profile->birthday==null)$model->profile->birthday= new DateTime('0000-00-00');
 					$bsaved=$model->profile->save();
 				}
-				$model->attributes=$_POST['Jnuer'];
+				$model->attributes=$_POST['SchoolInfo'];
 				if($bsaved)
 				{
 					if($model->save()){
@@ -184,10 +184,10 @@ $_POST['Jnuer']['status']=1;
 	 */
 	public function actionAdmin()
 	{
-		$model=new Jnuer('search');
+		$model=new SchoolInfo('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Jnuer']))
-			$model->attributes=$_GET['Jnuer'];
+		if(isset($_GET['SchoolInfo']))
+			$model->attributes=$_GET['SchoolInfo'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -201,7 +201,7 @@ $_POST['Jnuer']['status']=1;
 	 */
 	public function loadModel($id)
 	{
-		$model=Jnuer::model()->findByPk((int)$id);
+		$model=SchoolInfo::model()->findByPk((int)$id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -213,7 +213,7 @@ $_POST['Jnuer']['status']=1;
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='jnuer-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='schoolInfo-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

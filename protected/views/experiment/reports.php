@@ -26,7 +26,7 @@ echo UCHtml::cssFile('pager.css');
 		array(
 			'name'=>'Student number',
 			'type'=>'raw',
-			'value'=>'CHtml::encode($data->user->jnuer->identitynumber)',
+			'value'=>'CHtml::encode($data->user->schoolInfo->identitynumber)',
 		),
 		array(
 			'header'=>'Login name',

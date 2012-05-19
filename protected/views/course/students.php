@@ -68,7 +68,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/gridview/jquery.yiigridview.js');?>
 
 <?php 
-
+/*
 $cs=Yii::app()->getClientScript();
 $cs->registerCoreScript('bbq');
 $cs->registerCoreScript('yii');
@@ -80,9 +80,54 @@ jQuery('#groupUser-grid').yiiGridView({'ajaxUpdate':['1','groupUser-grid'],'ajax
 ".
 '});
 ');
+*/
 ?>
 
+<h1>Students</h1>
 <?php
+
+echo UCHtml::cssFile('pager.css');
+	$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'groupUser-grid',
+	'dataProvider'=>$dataProvider,
+	'ajaxUpdate'=>false,
+	'pager'=>array('class'=>'CLinkPager','maxButtonCount'=>4,),
+	'template'=>'{summary}{pager}{items}{pager}',
+	'columns'=>array(
+			/*
+		array(
+			'header' =>'User',
+			'name'=>'username',
+			'type'=>'raw',
+			'value'=>'CHtml::link(CHtml::encode($data["username"]),array("user/user/view","id"=>$data["user_id"]))',
+		),
+		*/
+		array(
+			'header' =>'Student number',
+			'name'=>'identitynumber',
+			'type'=>'raw',
+			'value'=>'CHtml::encode($data["identitynumber"])',
+		),
+		array(
+			'header' =>'Name',
+			'name'=>'name',
+			'type'=>'raw',
+			'value'=>'CHtml::encode($data["lastname"].$data["firstname"])',
+		),
+		array(
+			'header' =>'Status',
+			'name'=>'status',
+			'type'=>'raw',
+			'value'=>'GroupUser::$USER_STATUS_MESSAGES[$data["status"]]',
+		),
+		array(
+			'name'=>'Action',
+			'type'=>'raw',
+			'value'=>'\'<input type="button" class="capply" tag="\'.$data["id"] .\'" value="Reject">\' .($data["status"]==GroupUser::USER_STATUS_APPLIED?\'<input class="apply" tag="\'.$data["id"] .\'" value="Accept"  type="button">\':"") ',
+		),		
+	),
+));
+
 echo CHtml::script('
 $(".apply").live("click", 
 function ()
@@ -117,7 +162,7 @@ function showDialogue()
 {
 		$("#selectstudent").load("'.CHtml::normalizeUrl(array('group/selectStudent/'.$model->student_group_id)) .'",{},function(){'.
 			"
-			jQuery('#group-grid').yiiGridView({'ajaxUpdate':['1','group-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':2,'pageVar':'Jnuer_page'});
+			jQuery('#group-grid').yiiGridView({'ajaxUpdate':['1','group-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':2,'pageVar':'SchoolInfo_page'});
 			".
 		'});
 	$("#submitiondialog").dialog("open");

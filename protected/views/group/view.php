@@ -5,6 +5,7 @@ if($model->type_id==Group::GROUP_TYPE_TEAM)echo'Members';
 <?php
 
 echo UCHtml::cssFile('pager.css');
+
 	$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'groupUser-grid',
 	'dataProvider'=>$dataProvider,
@@ -13,22 +14,26 @@ echo UCHtml::cssFile('pager.css');
 	'template'=>'{summary}{pager}{items}{pager}',
 	'columns'=>array(
 		array(
-			'name'=>'User',
+			'header'=>'User',
+			'name'=>'user.username',
 			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user->id))',
+			'value'=>'CHtml::link(CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user_id))',
 		),
 		array(
-			'name'=>'Name',
+			'header'=>'Name',
+			'name'=>'userinfo',
 			'type'=>'raw',
-			'value'=>'CHtml::encode($data->user->info->lastname.$data->user->info->firstname)',
+			'value'=>'CHtml::encode($data->userinfo->lastname.$data->userinfo->firstname)',
 		),
 		array(
-			'name'=>'Student number',
+			'header'=>'Student number',
+			'name'=>'schoolInfo.identitynumber',
 			'type'=>'raw',
-			'value'=>'CHtml::encode($data->user->jnuer?$data->user->jnuer->identitynumber:"")',
+			'value'=>'CHtml::encode($data->schoolInfo?$data->schoolInfo->identitynumber:"")',
 		),
 		array(
-			'name'=>'Status',
+			'header'=>'Status',
+			'name'=>'status',
 			'type'=>'raw',
 			'value'=>'GroupUser::$USER_STATUS_MESSAGES[$data->status]',
 		),

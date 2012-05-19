@@ -148,8 +148,52 @@ class CourseController extends Controller
 		}
 		$this->checkAccess(array('model'=>$model));		
 		
+		$command = Yii::app()->db->createCommand()
+		->select('count(1)')
+		->from('{{group_users}} a')
+		->join('{{users}} b', 'a.user_id=b.id')
+		->join('{{profiles}} c', 'a.user_id=c.user_id')
+		->join('{{school_infos}} d', 'a.user_id=d.user_id')
+		->where('a.group_id= :group_id', array(':group_id'=>$id));
+		$count=$command->queryScalar();
+		
+		$command->reset();
+		
+		$command->select('a.id,a.status, b.id as user_id,b.username,b.email,c.lastname,c.firstname,d.identitynumber')
+		->from('{{group_users}} a')
+		->join('{{users}} b', 'a.user_id=b.id')
+		->join('{{profiles}} c', 'a.user_id=c.user_id')
+		->join('{{school_infos}} d', 'a.user_id=d.user_id')
+		->where('a.group_id= :group_id');
+		
+		$sql=$command->getText();
+		$sort = new CSort();
+		$sort->attributes = array(
+				'username'=>array(
+						'asc'=>'username',
+						'desc'=>'username desc',
+				),
+				'name'=>array(
+						'asc'=>'lastname,firstname',
+						'desc'=>'lastname desc,firstname desc',
+				),
+				'identitynumber',
+				'status',
+		);
+		
+		
+		$dataProvider=new CSqlDataProvider($sql, array(
+				'params'=> array(':group_id'=>$id),
+				'totalItemCount'=>$count,
+				'sort'=>$sort,
+				'pagination'=>array(
+						'pageSize'=>30,
+				),
+		));
+		
 		$this->render('students',array(
 			'model'=>$model,
+			'dataProvider'=>$dataProvider,
 		));
 	}	
 	/**

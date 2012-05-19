@@ -77,7 +77,7 @@ class UUser extends User
 			'submitedProbCount' => array(self::STAT, 'Submition', 'user_id','select'=>'count(DISTINCT(t.problem_id))'),
 			'acceptedProbCount' => array(self::STAT, 'Submition', 'user_id','select'=>'count(DISTINCT(t.problem_id))', 'condition'=>'t.status='.ULookup::JUDGE_RESULT_ACCEPTED),
 			'info' => array(self::HAS_ONE, 'UProfile', 'user_id','select'=>'firstname,lastname'),
-			'jnuer' => array(self::HAS_ONE, 'Jnuer', 'user_id','select'=>'identitynumber,unit_id'),
+			'schoolInfo' => array(self::HAS_ONE, 'SchoolInfo', 'user_id','select'=>'identitynumber,unit_id'),
 		);
 	}
 

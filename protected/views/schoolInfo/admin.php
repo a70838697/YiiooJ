@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Jnuers'=>array('index'),
+	'SchoolInfos'=>array('index'),
 	'Manage',
 );
 
@@ -11,7 +11,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('jnuer-grid', {
+	$.fn.yiiGridView.update('schoolInfo-grid', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -19,7 +19,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Jnuers</h1>
+<h1>Manage SchoolInfos</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -34,7 +34,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'jnuer-grid',
+	'id'=>'schoolInfo-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
@@ -51,7 +51,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'first_year',
 		array(
 			'name'=>'status',
-			'value'=>'Jnuer::$USER_STATUS_MESSAGES[$data->status]'
+			'value'=>'SchoolInfo::$USER_STATUS_MESSAGES[$data->status]'
 		),
 		array(
 			'header'=>'group',

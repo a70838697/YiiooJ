@@ -41,7 +41,7 @@
 <?php if(UUserIdentity::isAdmin()):?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->dropDownList($model,'status',Jnuer::$USER_STATUS_MESSAGES); ?>
+		<?php echo $form->dropDownList($model,'status',SchoolInfo::$USER_STATUS_MESSAGES); ?>
 		<?php echo $form->error($model,'status'); ?>
 	</div>
 	<div class="row">

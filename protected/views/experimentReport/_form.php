@@ -29,7 +29,7 @@
 	<td style="font-size: 14pt; width:80px; font-family: 楷体_GB2312;">学生姓名</td>
 	<td style="width:320px;border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;"><?php echo $model->user->info->lastname.$model->user->info->firstname ?> </td>
 	<td style="font-size: 14pt; width:40px; font-family: 楷体_GB2312;">学号</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;"><?php echo $model->user->jnuer==null?"&nbsp;":$model->user->jnuer->identitynumber;?></td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;"><?php echo $model->user->schoolInfo==null?"&nbsp;":$model->user->schoolInfo->identitynumber;?></td>
 </tr>
 </table>
 <table style="height:21pt;margin:0px""  width="100%">
@@ -38,9 +38,9 @@
 	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;">
 	<?php 
 	$xueyuan="&nbsp;";
-	if($model->user->jnuer!=null)
+	if($model->user->schoolInfo!=null)
 	{
-		$node=$model->user->jnuer->unit;
+		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_SCHOOLE)$node=$node->getParent();
 		if($node!=null)$xueyuan=$node->title;
 	}
@@ -51,9 +51,9 @@
 	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;">
 	<?php 
 	$xi="&nbsp;";
-	if($model->user->jnuer!=null)
+	if($model->user->schoolInfo!=null)
 	{
-		$node=$model->user->jnuer->unit;
+		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_DEPARTMENT)$node=$node->getParent();
 		if($node!=null)$xi=$node->title;
 	}
@@ -65,9 +65,9 @@
 	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;">
 	<?php 
 	$xi="&nbsp;";
-	if($model->user->jnuer!=null)
+	if($model->user->schoolInfo!=null)
 	{
-		$node=$model->user->jnuer->unit;
+		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_MAJOR)$node=$node->getParent();
 		if($node!=null)$xi=$node->title;
 	}

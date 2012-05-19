@@ -53,7 +53,7 @@ class GroupController extends Controller
 		    $criteria->compare('t.identitynumber',$identitynumber,true);
 	    }
 	    
-		$dataProvider=new EActiveDataProvider('Jnuer',
+		$dataProvider=new EActiveDataProvider('schoolInfo',
 			array(
 				'criteria'=>$criteria,
 				'pagination'=>array(
@@ -75,15 +75,28 @@ class GroupController extends Controller
 	 */
 	public function actionView($id)
 	{
+		
 		$model=$this->loadModel($id);
 		$criteria=new CDbCriteria(array(
 	    ));
+		$criteria->with=array('user','userinfo','schoolInfo');
 	    $criteria->compare('t.group_id',$id);
 	    
 		$dataProvider=new EActiveDataProvider('GroupUser',
 			array(
 				'criteria'=>$criteria,
 				'scopes'=>array('common'),
+				'sort'=>array(
+					'attributes'=>array(
+						'userinfo'=>array(
+							'asc'=>'userinfo.lastname,userinfo.firstname',
+							'desc'=>'userinfo.lastname DESC,userinfo.firstname DESC',
+						),
+						'schoolInfo.identitynumber',				
+						'user.username',				
+						'status',				
+					),
+				),					
 				'pagination'=>array(
 			        	'pageSize'=>30,
 			    ),

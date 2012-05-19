@@ -32,7 +32,7 @@
 				array('label'=>'Home', 'url'=>array('/site/index')),
 				array('url'=>array('/course/index'), 'label'=>("Course"), 'visible'=>UUserIdentity::canHaveCourses()),
 				array('url'=>array('/problem/index'), 'label'=>("ACM Train")),
-				array('url'=>array('/jnuer/admin'), 'label'=>("JNUer"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
+				array('url'=>array('/schoolInfo/admin'), 'label'=>("Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 				array('url'=>array('/rbam'), 'label'=>("RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
 				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),

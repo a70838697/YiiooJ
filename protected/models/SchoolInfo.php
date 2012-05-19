@@ -1,28 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "{{jnuers}}".
+ * This is the model class for table "{{school_infos}}".
  *
- * The followings are the available columns in table '{{jnuers}}':
+ * The followings are the available columns in table '{{school_infos}}':
  * @property integer $user_id
  * @property integer $first_year
  * @property integer $status
  * @property integer $unit_id
  * @property string $identitynumber
  */
-class Jnuer extends CActiveRecord
+class SchoolInfo extends CActiveRecord
 {
-	const JNUER_STATUS_APPLIED=0;
-	const JNUER_STATUS_ACCEPTED=1;
-	const JNUER_STATUS_REJECTED=2;
+	const SCHOOL_INFO_STATUS_APPLIED=0;
+	const SCHOOL_INFO_STATUS_ACCEPTED=1;
+	const SCHOOL_INFO_STATUS_REJECTED=2;
 	public static $USER_STATUS_MESSAGES=array(
-		self::JNUER_STATUS_APPLIED=>'Applied',
-		self::JNUER_STATUS_ACCEPTED=>'Accepted',
-		self::JNUER_STATUS_REJECTED=>'Rejected',
+		self::SCHOOL_INFO_STATUS_APPLIED=>'Applied',
+		self::SCHOOL_INFO_STATUS_ACCEPTED=>'Accepted',
+		self::SCHOOL_INFO_STATUS_REJECTED=>'Rejected',
 	);	
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Jnuer the static model class
+	 * @return SchoolInfo the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -34,7 +34,7 @@ class Jnuer extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{jnuers}}';
+		return '{{school_infos}}';
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Jnuer extends CActiveRecord
 	{
 		return array(
 			'user_id' => 'User',
-			'first_year' => 'The First Year in JNU',
+			'first_year' => 'The year you came to this university',
 			'status' => 'Status',
 			'unit_id' => 'Major/Unit',
 			'identitynumber' => 'Student / Teacher number',
