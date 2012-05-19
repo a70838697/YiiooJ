@@ -80,8 +80,7 @@ class CourseController extends Controller
 		$groupUser->group_id = $model->student_group_id;
 		$groupUser->user_id=$student_id;
 		$groupUser->status = $status;
-		if(!$groupUser->save())
-			return false;
+		return $groupUser->save()?$groupUser:false;
 	}
 	/**
 	 * Apply for the course.
@@ -95,7 +94,8 @@ class CourseController extends Controller
 		if($groupUser===null)
 		{
 			if(Yii::app()->request->getQuery('op',null)=='apply'){
-				if(!$this->addStudentMember($model,Yii::app()->user->id,GroupUser::USER_STATUS_APPLIED))
+				$groupUser=$this->addStudentMember($model,Yii::app()->user->id,GroupUser::USER_STATUS_APPLIED);
+				if(!$groupUser)
 					throw new CHttpException(404,'The requested operation can not be done.');
 			}
 		}else {
@@ -108,7 +108,7 @@ class CourseController extends Controller
 		{
 			$result=array(
 				'ok'=>true,//you can check time, if timeout, no result
-				'status'=>$groupUser->status ,
+				'status'=>$groupUser?false:($groupUser->status) ,
 			);
 			echo json_encode($result);
 			die;
