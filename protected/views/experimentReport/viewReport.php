@@ -27,102 +27,102 @@
 
 $experimentInfomation='
 <div style="width:750px">
-<p style="text-align: center;" align="center"><b><span style="font-size: 22pt; font-family: æ¥·ä½“_GB2312;">æš¨å—å¤§å­¦æœ¬ç§‘å®éªŒæŠ¥å‘Šä¸“ç”¨çº¸</span></b></p>
+<p style="text-align: center;" align="center"><b><span style="font-size: 22pt; font-family: ¿¬Ìå_GB2312;">ôßÄÏ´óÑ§±¾¿ÆÊµÑé±¨¸æ×¨ÓÃÖ½</span></b></p>
 <table  style="height:21pt;margin:0px" width="100%" >
 <tr>
-	<td style="font-size: 14pt; width:80px; font-family: æ¥·ä½“_GB2312;">è¯¾ç¨‹åç§°</td>
-	<td style="border-bottom: solid 2px black; text-align:center; width:500px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">ã€Š'. $model->experiment->course->title.'ã€‹</td>
-	<td style="width:80px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">æˆç»©è¯„å®š</td>
+	<td style="font-size: 14pt; width:80px; font-family: ¿¬Ìå_GB2312;">¿Î³ÌÃû³Æ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; width:500px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">¡¶'. $model->experiment->course->title.'¡·</td>
+	<td style="width:80px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">³É¼¨ÆÀ¶¨</td>
 	<td style="font-size: 14pt;border-bottom: solid 2px black;">'. ($model->score==0?'&nbsp;':$model->score) .'</td></tr>
 </table>
 <table  style="height:21pt;margin:0px" width="100%" >
 <tr>
-	<td style="font-size: 14pt; width:120px; font-family: æ¥·ä½“_GB2312;">å®éªŒé¡¹ç›®åç§°</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'. $model->experiment->title.'</td>
-	<td style="width:80px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">æŒ‡å¯¼æ•™å¸ˆ</td>
-	<td style="width:120px;font-size: 14pt;font-family: æ¥·ä½“_GB2312;border-bottom: solid 2px black;text-align: center;">'.$model->experiment->course->user->info->lastname.$model->experiment->course->user->info->firstname.'</td></tr>
+	<td style="font-size: 14pt; width:120px; font-family: ¿¬Ìå_GB2312;">ÊµÑéÏîÄ¿Ãû³Æ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'. $model->experiment->title.'</td>
+	<td style="width:80px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">Ö¸µ¼½ÌÊ¦</td>
+	<td style="width:120px;font-size: 14pt;font-family: ¿¬Ìå_GB2312;border-bottom: solid 2px black;text-align: center;">'.$model->experiment->course->user->info->lastname.$model->experiment->course->user->info->firstname.'</td></tr>
 </table>
 <table  style="height:21pt;margin:0px" width="100%" >
 <tr>
-	<td style="font-size: 14pt; width:120px; font-family: æ¥·ä½“_GB2312;">å®éªŒé¡¹ç›®ç¼–å·</td>
-	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'. $model->experiment->sequence.'</td>
-	<td style="font-size: 14pt; width:120px; font-family: æ¥·ä½“_GB2312;">å®éªŒé¡¹ç›®ç±»å‹</td>
-	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'. UCourseLookup::$EXPERIMENT_TYPE_MESSAGES[$model->experiment->experiment_type_id].'</td>
-	<td style="width:80px;font-size: 14pt; font-family: æ¥·ä½“_GB2312;">å®éªŒåœ°ç‚¹</td>
-	<td style="font-size: 14pt;font-family: æ¥·ä½“_GB2312;border-bottom: solid 2px black;text-align: center;">'. $model->experiment->course->location.'</td>
+	<td style="font-size: 14pt; width:120px; font-family: ¿¬Ìå_GB2312;">ÊµÑéÏîÄ¿±àºÅ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'. $model->experiment->sequence.'</td>
+	<td style="font-size: 14pt; width:120px; font-family: ¿¬Ìå_GB2312;">ÊµÑéÏîÄ¿ÀàĞÍ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'. UCourseLookup::$EXPERIMENT_TYPE_MESSAGES[$model->experiment->experiment_type_id].'</td>
+	<td style="width:80px;font-size: 14pt; font-family: ¿¬Ìå_GB2312;">ÊµÑéµØµã</td>
+	<td style="font-size: 14pt;font-family: ¿¬Ìå_GB2312;border-bottom: solid 2px black;text-align: center;">'. $model->experiment->course->location.'</td>
 </tr>
 </table>
 <table style="height:21pt;margin:0px"  width="100%">
 <tr >
-	<td style="font-size: 14pt; width:80px; font-family: æ¥·ä½“_GB2312;">å­¦ç”Ÿå§“å</td>
-	<td style="width:320px;border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'.$model->user->info->lastname.$model->user->info->firstname.'</td>
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">å­¦å·</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'. ($model->user->schoolInfo==null?"&nbsp;":$model->user->schoolInfo->identitynumber).'</td>
+	<td style="font-size: 14pt; width:80px; font-family: ¿¬Ìå_GB2312;">Ñ§ÉúĞÕÃû</td>
+	<td style="width:320px;border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'.$model->user->info->lastname.$model->user->info->firstname.'</td>
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">Ñ§ºÅ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'. ($model->user->schoolInfo==null?"&nbsp;":$model->user->schoolInfo->identitynumber).'</td>
 </tr>
 </table>
 <table style="height:21pt;margin:0px"  width="100%">
 <tr >
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">å­¦é™¢</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">Ñ§Ôº</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">
 	'.$xueyuan.'
 	</td>
-	<td style="font-size: 14pt; width:20px; font-family: æ¥·ä½“_GB2312;">ç³»</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">
+	<td style="font-size: 14pt; width:20px; font-family: ¿¬Ìå_GB2312;">Ïµ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">
 	'.$xi.'
 	
 	</td>
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">ä¸“ä¸š</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">×¨Òµ</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">
 	'. $zhuanye .'
 	</td>
 </tr>
 </table>
 <table style="height:21pt;margin:0px"  width="100%">
 <tr >
-	<td style="font-size: 14pt; width:80px; font-family: æ¥·ä½“_GB2312;">å®éªŒæ—¶é—´</td>
-	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">'. date_format(date_create($model->experiment->due_time),'Yå¹´mæœˆdæ—¥  H:i').'</td>
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">æ¸©åº¦</td>
-	<td style="border-bottom: solid 2px black;width:40px; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">&nbsp;</td>
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">â„ƒ</td>
-	<td style="font-size: 14pt; width:40px; font-family: æ¥·ä½“_GB2312;">æ¹¿åº¦</td>
-	<td style="width:60px;border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: æ¥·ä½“_GB2312;">&nbsp;</td>
+	<td style="font-size: 14pt; width:80px; font-family: ¿¬Ìå_GB2312;">ÊµÑéÊ±¼ä</td>
+	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">'. date_format(date_create($model->experiment->due_time),'YÄêmÔÂdÈÕ  H:i').'</td>
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">ÎÂ¶È</td>
+	<td style="border-bottom: solid 2px black;width:40px; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">&nbsp;</td>
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">¡æ</td>
+	<td style="font-size: 14pt; width:40px; font-family: ¿¬Ìå_GB2312;">Êª¶È</td>
+	<td style="width:60px;border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: ¿¬Ìå_GB2312;">&nbsp;</td>
 </tr>
 </table>
 <table style="height:31pt;margin:0px"  width="100%">
 <tr >
-	<td style="font-size: 14pt;  font-family: å®‹ä½“;"><b>ä¸€ã€å®éªŒç›®çš„</b></td>
+	<td style="font-size: 14pt;  font-family: ËÎÌå;"><b>Ò»¡¢ÊµÑéÄ¿µÄ</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;"><div>'.$model->experiment->aim.'</div></td>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;"><div>'.$model->experiment->aim.'</div></td>
 </tr>
 </table>
 <table width="100%">
 <tr >
-	<td style="font-size: 14pt;  font-family: å®‹ä½“;"><b>äºŒã€å®éªŒç¯å¢ƒ</b></td>
+	<td style="font-size: 14pt;  font-family: ËÎÌå;"><b>¶ş¡¢ÊµÑé»·¾³</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;"><div>'. $model->experiment->course->environment.'</div></td>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;"><div>'. $model->experiment->course->environment.'</div></td>
 </tr>
 </table>
 </div>';
 $experiment='<div>
 <table width="100%">
 <tr >
-	<td style="font-size: 14pt;  font-family: å®‹ä½“;"><b>ä¸‰ã€å®éªŒå†…å®¹</b></td>
+	<td style="font-size: 14pt;  font-family: ËÎÌå;"><b>Èı¡¢ÊµÑéÄÚÈİ</b></td>
 </tr>';
 
 if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exercise_problems as $exerciseProblem){ 
 	$experiment.='
 <tr >
-	<td style="font-size: 13pt;  font-family: å®‹ä½“;"><b>'. $exerciseProblem->sequence.CHtml::encode($exerciseProblem->title).'</b></td>
+	<td style="font-size: 13pt;  font-family: ËÎÌå;"><b>'. $exerciseProblem->sequence.CHtml::encode($exerciseProblem->title).'</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;">'. $exerciseProblem->problem->description.'</td>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;">'. $exerciseProblem->problem->description.'</td>
 </tr>';
 }
 $experiment.='
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;">'.$model->experiment->description.'</td>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;">'.$model->experiment->description.'</td>
 </tr>
 </table>
 </div>';
@@ -131,23 +131,23 @@ $experiment.='
 <div style="width:750px">
 <table   width="100%">
 <tr >
-	<td style="font-size: 14pt;  font-family: å®‹ä½“;"><b>å››ã€å®éªŒåˆ†æ</b></td><td><b>å¾—åˆ†ï¼š</b>'. ($model->score==0?'æœªè¯„':$model->score).'</td>
+	<td style="font-size: 14pt;  font-family: ËÎÌå;"><b>ËÄ¡¢ÊµÑé·ÖÎö</b></td><td><b>µÃ·Ö£º</b>'. ($model->score==0?'Î´ÆÀ':$model->score).'</td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;" colspan=2>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;" colspan=2>
 		'. $model->report.'
 	</td>
 </tr>
 </table>
 <table style="height:31pt;margin:0px"  width="100%">
 <tr >
-	<td style="font-size: 14pt;  font-family: å®‹ä½“;"><b>äº”ã€å®éªŒå°ç»“</b></td>
+	<td style="font-size: 14pt;  font-family: ËÎÌå;"><b>Îå¡¢ÊµÑéĞ¡½á</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;">ï¼ˆä¸»è¦è¡¨è¿°é€šè¿‡å®éªŒæ˜¯å¦è¾¾åˆ°å·©å›ºçŸ¥è¯†ã€å­¦åˆ°åœ¨è¯¾å ‚ä¸Šæ— æ³•å¾—åˆ°çš„çŸ¥è¯†è¡¥å……çš„ç›®çš„ï¼Œå¹¶ä¸”åœ¨å“ªäº›æ–¹é¢æœ‰å¾…é‡ç‚¹æé«˜çš„ï¼Œè‡ªå·±å¯¹å®éªŒçš„ä½“ä¼šç­‰ï¼‰</td>
+	<td style="font-size: 12pt;  font-family: ËÎÌå;">£¨Ö÷Òª±íÊöÍ¨¹ıÊµÑéÊÇ·ñ´ïµ½¹®¹ÌÖªÊ¶¡¢Ñ§µ½ÔÚ¿ÎÌÃÉÏÎŞ·¨µÃµ½µÄÖªÊ¶²¹³äµÄÄ¿µÄ£¬²¢ÇÒÔÚÄÄĞ©·½ÃæÓĞ´ıÖØµãÌá¸ßµÄ£¬×Ô¼º¶ÔÊµÑéµÄÌå»áµÈ£©</td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: å®‹ä½“;">
+	<td style="font-size: 12pt;  font-family: ËÎÌå;">
 		'.$model->conclusion.' 
 	</td>
 </tr>
@@ -164,19 +164,19 @@ $this->endClip();
 $experiment_remarks='<div>
 <table width="100%">
 <tr >
-	<td><b>å¾—åˆ†ï¼š</b>'. ($model->score==0?'æœªè¯„':$model->score).'</td>
+	<td><b>µÃ·Ö£º</b>'. ($model->score==0?'Î´ÆÀ':$model->score).'</td>
 </tr>
 ';
 $experiment_remarks.='
 <tr >
-	<td><b>æ•™å¸ˆè¯„è¯­ï¼š</b></td>
+	<td><b>½ÌÊ¦ÆÀÓï£º</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt; color:red; font-family: å®‹ä½“;">'. ( ($model->comment && strlen($model->comment)>0)?$model->comment:'No remarks!'). '</td>
+	<td style="font-size: 12pt; color:red; font-family: ËÎÌå;">'. ( ($model->comment && strlen($model->comment)>0)?$model->comment:'No remarks!'). '</td>
 </tr>';
 $experiment_remarks.='
 <tr >
-	<td style="font-size: 8pt;  font-family: å®‹ä½“;">
+	<td style="font-size: 8pt;  font-family: ËÎÌå;">
 	<hr/>
 		 '.$this->clips['commentClip'].'
 	</td>
