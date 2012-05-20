@@ -37,11 +37,11 @@ class CourseController extends Controller
 			),
 					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','students','experiments'),
+				'actions'=>array('create','update','students','experiments','reports'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','experiments','students'),
+				'actions'=>array('admin','delete','create','update','experiments','students','reports'),
 				'roles'=>array('Admin'),			
 			),
 			array('deny',  // deny all users
@@ -115,6 +115,60 @@ class CourseController extends Controller
 		}		
 		
 		$this->redirect(array('course/index/mine'));
+	}
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionReports($id)
+	{
+		$model=$this->loadModel($id);
+		
+		$criteria=new CDbCriteria(array(
+		));
+		$criteria->select='username';
+		$criteria->with=array('info','schoolInfo','group');
+		$criteria->params=array(':group_id'=>$model->student_group_id);
+		
+		$dataProvider=new EActiveDataProvider('CourseUser',
+				array(
+						'criteria'=>$criteria,
+						'sort'=>array(
+								'attributes'=>array(
+										'name'=>array(
+												'asc'=>'info.lastname,info.firstname',
+												'desc'=>'info.lastname DESC,info.firstname DESC',
+										),
+										'schoolInfo.identitynumber',
+										'username',
+										'experimentReport.score',
+								),
+						),
+						'pagination'=>array(
+								'pageSize'=>30,
+						),
+				)
+		);
+		
+		/*
+		$dataProvider=new EActiveDataProvider('GroupUser',
+			array(
+				'scopes'=>array('common'),
+				'criteria' => array(
+					'select'=>'t.user_id,{{experiment_reports}}.id as data,{{experiment_reports}}.score as score',
+					'join' => 'LEFT JOIN {{experiment_reports}} ON t.user_id = {{experiment_reports}}.user_id and {{experiment_reports}}.experiment_id='.(int)$id,
+					'condition'=>'t.group_id='.$model->course->student_group_id.' and t.status='.GroupUser::USER_STATUS_ACCEPTED,
+				),
+				'pagination'=>array(
+					'pageSize'=>30,
+				)
+			)
+		);
+		*/
+		$this->render('reports',array(
+			'model'=>$model,
+			'dataProvider'=>$dataProvider,
+		));
 	}	
 	/**
 	 * Displays a particular model.
@@ -154,7 +208,7 @@ class CourseController extends Controller
 		->join('{{users}} b', 'a.user_id=b.id')
 		->join('{{profiles}} c', 'a.user_id=c.user_id')
 		->join('{{school_infos}} d', 'a.user_id=d.user_id')
-		->where('a.group_id= :group_id', array(':group_id'=>$id));
+		->where('a.group_id= :group_id', array(':group_id'=>$model->student_group_id));
 		$count=$command->queryScalar();
 		
 		$command->reset();
@@ -183,7 +237,7 @@ class CourseController extends Controller
 		
 		
 		$dataProvider=new CSqlDataProvider($sql, array(
-				'params'=> array(':group_id'=>$id),
+				'params'=> array(':group_id'=>$model->student_group_id),
 				'totalItemCount'=>$count,
 				'sort'=>$sort,
 				'pagination'=>array(

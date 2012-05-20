@@ -42,8 +42,15 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/course/students/'.$model->id),
-        ),            
-        array(
+        ),
+    	array(
+    		'label'=>'View Reports',
+    		'icon-position'=>'left',
+    		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+    		'icon'=>'document',
+    		'url'=>array('/course/reports/'.$model->id),
+    	),
+    	array(
             'label'=>'View this course',
             'icon-position'=>'left',
             'icon'=>'document',

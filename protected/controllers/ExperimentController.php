@@ -224,7 +224,35 @@ class ExperimentController extends Controller
 	 */
 	public function actionReports($id)
 	{
-		$model=$this->loadModel($id);		
+		$model=$this->loadModel($id);
+		
+		$criteria=new CDbCriteria(array(
+		));
+		$criteria->select='username';
+		$criteria->with=array('experimentReport','info','schoolInfo','group');
+		$criteria->params=array(':experiment_id'=>$id,':group_id'=>$model->course->student_group_id);
+		
+		$dataProvider=new EActiveDataProvider('CourseUser',
+				array(
+						'criteria'=>$criteria,
+						'sort'=>array(
+								'attributes'=>array(
+										'name'=>array(
+												'asc'=>'info.lastname,info.firstname',
+												'desc'=>'info.lastname DESC,info.firstname DESC',
+										),
+										'schoolInfo.identitynumber',
+										'username',
+										'experimentReport.score',
+								),
+						),
+						'pagination'=>array(
+								'pageSize'=>30,
+						),
+				)
+		);
+		
+		/*
 		$dataProvider=new EActiveDataProvider('GroupUser',
 			array(
 				'scopes'=>array('common'),
@@ -238,6 +266,7 @@ class ExperimentController extends Controller
 				)
 			)
 		);
+		*/
 		$this->render('reports',array(
 			'model'=>$model,
 			'dataProvider'=>$dataProvider,

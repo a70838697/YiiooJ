@@ -15,8 +15,6 @@ class GroupUser extends CActiveRecord
 {
 	const USER_STATUS_APPLIED=1;
 	const USER_STATUS_ACCEPTED=2;
-	public $data;
-	public $score;
 	public static $USER_STATUS_MESSAGES=array(
 		self::USER_STATUS_APPLIED=>'Applied',
 		self::USER_STATUS_ACCEPTED=>'Accepted',
