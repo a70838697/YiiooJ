@@ -1,5 +1,12 @@
 <?php
 
+//skip id
+for($loop=0;$loop<=30;$loop++)
+{
+	$w= new CWidget();
+	$w->getId();
+}
+
 $cs=Yii::app()->clientScript;
 echo UCHtml::cssFile('screen.css')."\r\n";
 echo UCHtml::cssFile('main.css')."\r\n";
@@ -19,8 +26,6 @@ $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('ext.JuiBut
 echo CHtml::cssFile($assets .'/JuiButtonSet.css.php')."\r\n";
 echo CHtml::scriptFile($assets .'/JuiButtonSet.js')."\r\n";
 
-$assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
-//echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
 /*
 */
 $canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
@@ -103,7 +108,7 @@ $(document).ready(function() {
 	$("#score-form").submit(function()
 	{
 		data={ "ExperimentReport[score]": $("#ExperimentReport_score").val(), "ExperimentReport[comment]": $("#ExperimentReport_comment").val() };
-		$.post("'.CHtml::normalizeUrl('') .'", data,function(data) {
+		$.post("'.CHtml::normalizeUrl(array('/experimentReport/viewAjax','id'=>$model->id)) .'", data,function(data) {
 			$("#scoredialog").dialog("close");
 			$("#reportcontent").html(data);
 			jQuery("#tabReport").tabs("select", 1);
@@ -155,7 +160,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 
  ?>
 
-	<?php echo $form->errorSummary($model).$model->score; ?>
+	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'score'); ?>
@@ -215,7 +220,7 @@ jQuery(function($) {
 jQuery('#comment1').commentsList({'dialogTitle':'Add comment','deleteConfirmString':'Delete this comment?','approveConfirmString':'Approve this comment?','postButton':'Add comment','cancelButton':'Cancel'});
 jQuery('#tabReport').tabs({'collapsible':true});
 jQuery('#scoredialog').dialog({'dialogClass':'rbam-dialog','title':'Give a score','autoOpen':false,'minWidth':800,'height':360,'modal':true});
-//$("#ExperimentReport_comment").xheditor({'html5Upload':false,'tools':'full','upLinkUrl':'/YiiooJ1/upload/create/type/report/course/1','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/YiiooJ1/upload/create/type/report/course/1','upImgExt':'jpg,jpeg,gif,png','id':'ExperimentReport_comment','name':'ExperimentReport[comment]'});
+$("#ExperimentReport_comment").xheditor({'html5Upload':false,'tools':'full','upLinkUrl':'/YiiooJ1/upload/create/type/report/course/1','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/YiiooJ1/upload/create/type/report/course/1','upImgExt':'jpg,jpeg,gif,png','id':'ExperimentReport_comment','name':'ExperimentReport[comment]'});
 });
 /*]]>*/
 </script>

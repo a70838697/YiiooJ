@@ -5,6 +5,10 @@ $this->breadcrumbs=array(
 	'Reports'
 );
 
+$assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
+echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
+
+
 /*
 $this->menu=array(
 	array('label'=>'List Course', 'url'=>array('index')),
@@ -134,6 +138,11 @@ function showReport(id)
 }
 function reloadReport(url,dialog_status)
 {
+	if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();
+	if(jQuery("#comment1"))jQuery("#comment1").remove();
+	if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
+	if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
+		
 	$("#reportcontent").load(url,function(){
 		if(dialog_status=="open")
 			$("#viewreport").dialog("open");
