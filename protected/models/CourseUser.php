@@ -32,7 +32,7 @@ class CourseUser extends UUser
     {
     	$this->getReports($course_id);
     	// more than one phone exists for the user
-    	if(sizeof($this->reports) > 1)
+    	if(sizeof($this->reports) > 0)
     	{
     		foreach($this->reports as $report)
     		{
