@@ -1,5 +1,5 @@
 assets/*
-upload/wiki/1/*
+upload/*
 !assets/.gitignore
 protected/runtime/*
 !protected/runtime/.gitignore
