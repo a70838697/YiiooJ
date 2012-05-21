@@ -1,9 +1,8 @@
 assets/*
+upload/wiki/1/*
 !assets/.gitignore
 protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
-upload/*
-images/problem/*
-
-
+protected/modules/user/*
+protected/modules/user
