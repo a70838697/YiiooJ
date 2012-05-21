@@ -20,6 +20,8 @@ class ExperimentReport extends CActiveRecord
 	const STATUS_NORMAL=0;
 	const STATUS_ALLOW_EDIT=1;
 	const STATUS_SUBMITIED=2;
+	const STATUS_ALLOW_LATE_EDIT=4;
+	const STATUS_LATE_SUBMITTED=8;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return ExperimentReport the static model class
@@ -35,6 +37,42 @@ class ExperimentReport extends CActiveRecord
 	public function tableName()
 	{
 		return '{{experiment_reports}}';
+	}
+	
+	public function canScore()
+	{
+		if($this->isNewRecord)return false;
+		if(UUserIdentity::isAdmin())return true;
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		return true;
+	}	
+	public function canExtend()
+	{
+		if($this->isNewRecord)return false;
+		if($this->status==self::STATUS_NORMAL && !($this->experiment->isTimeOut()) ) return false;
+		if($this->status==self::STATUS_ALLOW_EDIT || $this->status==self::STATUS_ALLOW_LATE_EDIT ) return false;
+		if(UUserIdentity::isAdmin())return true;
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		return true;
+	}
+	public function canEdit()
+	{
+		if($this->isNewRecord)return false;
+		if(UUserIdentity::isAdmin())return true;
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if($this->user_id==Yii::app()->user->id){
+			if($this->status==self::STATUS_NORMAL && !($this->experiment->isTimeOut()) ) return true;
+			if($this->status==self::STATUS_ALLOW_EDIT || $this->status==self::STATUS_ALLOW_LATE_EDIT) return true;
+		}
+		return false;
+	}
+	public function canSubmit(){
+		if($this->status==self::STATUS_SUBMITIED || $this->status==self::STATUS_LATE_SUBMITTED)
+			return false;
+		if(UUserIdentity::isAdmin())return true;
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if($this->user_id==Yii::app()->user->id) return true;
+		return false;
 	}
 
 	/**

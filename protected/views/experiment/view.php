@@ -24,9 +24,10 @@ if(UUserIdentity::isStudent())
 			'condition'=>'experiment_id=:experimentID and user_id='.Yii::app()->user->id,
 			'params'=>array(':experimentID'=>$model->id),
 	));
-	$cansubmit= ((!$model->isTimeOut()) && $report==null)
-	||	 ($report->status==ExperimentReport::STATUS_ALLOW_EDIT )
-	|| ( (!$model->isTimeOut()) &&  $report->status==ExperimentReport::STATUS_NORMAL) ;
+	if( $report==null)$cansubmit=!$model->isTimeOut();
+	else {
+		$cansubmit=($report->status==ExperimentReport::STATUS_ALLOW_EDIT ) ||($report->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT);
+	}
 	
 }
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
@@ -52,7 +53,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('reports', 'id'=>$model->id),
         ),
         array(
-            'label'=>'Write a report',
+            'label'=>($report==null)?"Update the report":'Write a report',
             'icon-position'=>'left',
 	        'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>array('/experimentReport/write', 'id'=>$model->id),

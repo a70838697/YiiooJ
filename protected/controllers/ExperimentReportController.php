@@ -52,15 +52,15 @@ class ExperimentReportController extends ZController
 	{
 		$model=$this->loadModel($id);
 	
-		$canEdit=UUserIdentity::isAdmin()
-		||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
-		$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
 		//There is no authority check here.
 		if(Yii::app()->request->getQuery('submited',null)!==null)
 		{
-			if($canSubmited )
+			if($model->canSubmit() )
 			{
-				$model->status=ExperimentReport::STATUS_SUBMITIED;
+				if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
+					$model->status=ExperimentReport::STATUS_LATE_SUBMITTED;
+				else
+					$model->status=ExperimentReport::STATUS_SUBMITIED;
 				$model->save();
 			}
 		}
@@ -68,16 +68,24 @@ class ExperimentReportController extends ZController
 		{
 			if(Yii::app()->request->getQuery('extended',null)!==null)
 			{
-				if($canSubmited )
+				if($model->canExtend() )
 				{
-					$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					if($model->status==ExperimentReport::STATUS_NORMAL || $model->status==ExperimentReport::STATUS_SUBMITIED)
+					{
+						$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					}
+					else if($model->status==ExperimentReport::STATUS_LATE_SUBMITTED) 
+					{
+						$model->status=ExperimentReport::STATUS_ALLOW_LATE_EDIT;
+					}
 					$model->save();
 				}
 			}
-			if($canEdit && isset($_POST['ExperimentReport']))
+			if($model->canScore() && isset($_POST['ExperimentReport']))
 			{
 				//echo $_POST['ExperimentReport']['score'].'xxxxxx';
-				$model->attributes=$_POST['ExperimentReport'];
+				$model->score=$_POST['ExperimentReport']['score'];
+				$model->comment=$_POST['ExperimentReport']['comment'];
 				$model->save();
 			}
 		}
@@ -96,15 +104,18 @@ class ExperimentReportController extends ZController
 	{
 		$model=$this->loadModel($id);
 		
-		$canEdit=UUserIdentity::isAdmin()
-		||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
-		$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
+		//$canEdit=UUserIdentity::isAdmin()
+		//||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		//$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
 		//There is no authority check here.
 		if(Yii::app()->request->getQuery('submited',null)!==null)
 		{
-			if($canSubmited )
+			if($model->canSubmit() )
 			{
-				$model->status=ExperimentReport::STATUS_SUBMITIED;
+				if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
+					$model->status=ExperimentReport::STATUS_LATE_SUBMITTED;
+				else
+					$model->status=ExperimentReport::STATUS_SUBMITIED;
 				$model->save();
 			}
 			$this->redirect(array('view','id'=>$model->id));
@@ -113,17 +124,25 @@ class ExperimentReportController extends ZController
 		{
 			if(Yii::app()->request->getQuery('extended',null)!==null)
 			{
-				if($canSubmited )
+				if($model->canExtend() )
 				{
-					$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					if($model->status==ExperimentReport::STATUS_NORMAL || $model->status==ExperimentReport::STATUS_SUBMITIED)
+					{
+						$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					}
+					else if($model->status==ExperimentReport::STATUS_LATE_SUBMITTED) 
+					{
+						$model->status=ExperimentReport::STATUS_ALLOW_LATE_EDIT;
+					}
 					$model->save();
+					$this->redirect(array('view','id'=>$model->id));
 				}
-				$this->redirect(array('view','id'=>$model->id));
 			}
-				
-			if($canEdit && isset($_POST['ExperimentReport']))
+			if($model->canScore() && isset($_POST['ExperimentReport']))
 			{
-				$model->attributes=$_POST['ExperimentReport'];
+				//echo $_POST['ExperimentReport']['score'].'xxxxxx';
+				$model->score=$_POST['ExperimentReport']['score'];
+				$model->comment=$_POST['ExperimentReport']['comment'];
 				$model->save();
 				$this->redirect(array('view','id'=>$model->id));
 			}
@@ -225,7 +244,10 @@ class ExperimentReportController extends ZController
 			}else{
 				if(Yii::app()->request->getQuery('submited',null)!==null)
 				{
-					$model->status=ExperimentReport::STATUS_SUBMITIED;
+					if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
+						$model->status=ExperimentReport::STATUS_LATE_SUBMITTED;
+					else
+						$model->status=ExperimentReport::STATUS_SUBMITIED;				
 				}
 				
 				if($model->save())
@@ -261,16 +283,16 @@ class ExperimentReportController extends ZController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
-		$canedit=$canscore
-		||(UUserIdentity::isStudent() && (
-				($model->status==ExperimentReport::STATUS_ALLOW_EDIT )
-				|| ( (!$model->experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL)
-		)
-		);
+		//$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		//$canedit=$canscore
+		//||(UUserIdentity::isStudent() && (
+		//		($model->status==ExperimentReport::STATUS_ALLOW_EDIT )
+		//		|| ( (!$model->experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL)
+		//)
+		//);
 				
 		//if($model->experiment->isTimeOut() && UUserIdentity::isStudent())
-		if(!$canedit)
+		if(!$model->canEdit())
 		{
 			throw new CHttpException(403,'Your operation is beyond the deadline ' .$model->experiment->begin."~".$model->experiment->end.'.');
 		}
@@ -285,7 +307,10 @@ class ExperimentReportController extends ZController
 			}else{
 				if(Yii::app()->request->getQuery('submited',null)!==null)
 				{
-					$model->status=ExperimentReport::STATUS_SUBMITIED;
+					if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
+						$model->status=ExperimentReport::STATUS_LATE_SUBMITTED;
+					else
+						$model->status=ExperimentReport::STATUS_SUBMITIED;				
 				}				
 				if($model->save())
 					$this->redirect(array('view','id'=>$model->id));

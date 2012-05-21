@@ -29,14 +29,24 @@ if(UUserIdentity::isStudent())
 		<?php echo $experiment->begin."~".$experiment->end; ?>
 	</div>
 </td>
+<td>
 <?php 
 if(UUserIdentity::isStudent())
 {
-	echo "<td>".( ($experiment->myreport && $experiment->myreport->score>0)?$experiment->myreport->score:"")."</td>";
+	if(! ($experiment->myreport) )
+	{
+		if(!$experiment->isTimeOut())echo  CHtml::link( "Write",array("experimentReport/write","id"=>$experiment->id) );
+	}
+	else 
+	{
+		$report=$experiment->myreport;
+		echo CHtml::link( ($report->score>0)?$report->score:"View",array("experimentReport/view","id"=>$report->id) );
+	}
+	//echo "<td>".( ($experiment->myreport && $experiment->myreport->score>0)?$experiment->myreport->score:"")."</td>";
 }
 ?>
-
 <!-- experiment -->
+</td>
 </tr>
 <?php
 endforeach; ?>
