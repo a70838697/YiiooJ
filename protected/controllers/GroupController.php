@@ -53,7 +53,7 @@ class GroupController extends Controller
 		    $criteria->compare('t.identitynumber',$identitynumber,true);
 	    }
 	    
-		$dataProvider=new EActiveDataProvider('schoolInfo',
+		$dataProvider=new EActiveDataProvider('SchoolInfo',
 			array(
 				'criteria'=>$criteria,
 				'pagination'=>array(
