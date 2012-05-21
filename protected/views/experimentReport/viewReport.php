@@ -157,6 +157,7 @@ $experiment.='
 <?php
 $this->beginClip('commentClip');
 $this->widget('comments.widgets.ECommentsListWidget', array(
+		'id'=>'comment1',
 		'model' => $model,
 ));
 $this->endClip();
@@ -185,6 +186,7 @@ $experiment_remarks.='
 </div>';
 
 $this->widget('zii.widgets.jui.CJuiTabs', array(
+	'id'=>'tabReport',
     'tabs'=>array("Report of ".$model->user->info->lastname.$model->user->info->firstname=>$writeReport,
     		"Remarks"=>$experiment_remarks,
     		"Experiment Information"=>$experimentInfomation.$experiment,

@@ -1,6 +1,6 @@
 <?php
 
-class ExperimentReportController extends Controller
+class ExperimentReportController extends ZController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class ExperimentReportController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','report'),
+				'actions'=>array('index','view','report','viewAjax'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,6 +44,49 @@ class ExperimentReportController extends Controller
 			),
 		);
 	}
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionViewAjax($id)
+	{
+		$model=$this->loadModel($id);
+	
+		$canEdit=UUserIdentity::isAdmin()
+		||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
+		//There is no authority check here.
+		if(Yii::app()->request->getQuery('submited',null)!==null)
+		{
+			if($canSubmited )
+			{
+				$model->status=ExperimentReport::STATUS_SUBMITIED;
+				$model->save();
+			}
+		}
+		else
+		{
+			if(Yii::app()->request->getQuery('extended',null)!==null)
+			{
+				if($canSubmited )
+				{
+					$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
+					$model->save();
+				}
+			}
+			if($canEdit && isset($_POST['ExperimentReport']))
+			{
+				//echo $_POST['ExperimentReport']['score'].'xxxxxx';
+				$model->attributes=$_POST['ExperimentReport'];
+				$model->save();
+			}
+		}
+		$this->renderPartial('viewAjax',array(
+			'model'=>$model,
+		),false,false);
+		Yii::app()->end();
+	
+	}	
 
 	/**
 	 * Displays a particular model.
@@ -63,8 +106,8 @@ class ExperimentReportController extends Controller
 			{
 				$model->status=ExperimentReport::STATUS_SUBMITIED;
 				$model->save();
-				$this->redirect(array('view','id'=>$model->id));
 			}
+			$this->redirect(array('view','id'=>$model->id));
 		}
 		else 
 		{
@@ -74,8 +117,8 @@ class ExperimentReportController extends Controller
 				{
 					$model->status=ExperimentReport::STATUS_ALLOW_EDIT;
 					$model->save();
-					$this->redirect(array('view','id'=>$model->id));
 				}
+				$this->redirect(array('view','id'=>$model->id));
 			}
 				
 			if($canEdit && isset($_POST['ExperimentReport']))
@@ -88,6 +131,7 @@ class ExperimentReportController extends Controller
 		$this->render('view',array(
 			'model'=>$model,
 		));
+		
 	}
 	/**
 	 * Displays a particular model.

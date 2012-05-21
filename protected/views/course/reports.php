@@ -5,6 +5,7 @@ $this->breadcrumbs=array(
 	'Reports'
 );
 
+/*
 $this->menu=array(
 	array('label'=>'List Course', 'url'=>array('index')),
 	array('label'=>'Create Course', 'url'=>array('create')),
@@ -12,11 +13,13 @@ $this->menu=array(
 	array('label'=>'Delete Course', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage Course', 'url'=>array('admin')),
 );
+*/
 ?>
 <h1>Experiment Reports for <?php echo CHtml::encode($model->title); ?></h1>
 
 <?php
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
+	'id'=>'xyz1',
     'items' => array(
         array(
             'label'=>'View experiments',
@@ -113,58 +116,44 @@ if(count($model->experiments)>0)
 	
 }
 
+echo UCHtml::cssFile('pager.css');
 $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'groupUser-grid',
 		'dataProvider'=>$dataProvider,
-		'ajaxUpdate'=>false,
+		'ajaxUpdate'=>true,
 		'pager'=>array('class'=>'CLinkPager','maxButtonCount'=>4,),
 		'template'=>'{summary}{pager}{items}{pager}',
 		'columns'=>$columns,
 ));
 
-echo UCHtml::cssFile('pager.css');
-/*
-	$this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'groupUser-grid',
-	'dataProvider'=>$dataProvider,
-	'ajaxUpdate'=>false,
-	'pager'=>array('class'=>'CLinkPager','maxButtonCount'=>4,),
-	'template'=>'{summary}{pager}{items}{pager}',
-	'columns'=>array(
-		array(
-			'name'=>'Name',
-			'type'=>'raw',
-			'value'=>'CHtml::encode($data->user->info->lastname.$data->user->info->firstname)',
-		),
-		array(
-			'name'=>'Student number',
-			'type'=>'raw',
-			'value'=>'CHtml::encode($data->user->schoolInfo->identitynumber)',
-		),
-		array(
-			'header'=>'Login name',
-			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user_id),  array("target"=>"_blank"))',
-		),	
-		array(
-			'header'=>'Score',
-			'type'=>'raw',
-			'value'=>'$data->score!=0?$data->score:""',
-		),
-		array(
-            'class'=>'CButtonColumn',
-            'template' => '{view} ',
-       		'viewButtonUrl'=>'array("/experimentReport/view/".$data->data)',
-       		'buttons' => array(
-       			'view'=>array(
-       				'visible'=>'($data->data!=0)',
-       				'options'=>array('target'=>'_blank'),
-       			)
-       		)
-       
-		)
-	),
+echo CHtml::script('
+function showReport(id)
+{
+	reloadReport("'.UCHtml::theUrl(array("experimentReport/viewAjax/")).'"+"/"+id,"open");
+	return false;	
+}
+function reloadReport(url,dialog_status)
+{
+	$("#reportcontent").load(url,function(){
+		if(dialog_status=="open")
+			$("#viewreport").dialog("open");
+	});
+	return false;
+}
+');
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'viewreport',
+    'options'=>array(
+		'dialogClass'=>'rbam-dialog',
+        'title'=>'View Report',
+        'autoOpen'=>false,
+		'minWidth'=>800,
+		'height'=>800,
+		'modal'=>true,
+    ),
 ));
-*/
+echo '<div id="reportcontent"></div>';
+$this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 
