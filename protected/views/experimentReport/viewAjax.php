@@ -110,7 +110,12 @@ $(document).ready(function() {
 		data={ "ExperimentReport[score]": $("#ExperimentReport_score").val(), "ExperimentReport[comment]": $("#ExperimentReport_comment").val() };
 		$.post("'.CHtml::normalizeUrl(array('/experimentReport/viewAjax','id'=>$model->id)) .'", data,function(data) {
 			$("#scoredialog").dialog("close");
+			if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();		
+			if(jQuery("#comment1"))jQuery("#comment1").remove();
+			if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
+			if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
 			$("#reportcontent").html(data);
+		
 			jQuery("#tabReport").tabs("select", 1);
 			$.fn.yiiGridView.update(\'groupUser-grid\');
 		});
