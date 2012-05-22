@@ -42,9 +42,13 @@ class ExperimentReport extends CActiveRecord
 	public function canScore()
 	{
 		if($this->isNewRecord)return false;
+		if($this->status==self::STATUS_NORMAL && !($this->experiment->isTimeOut()))return false;
+		if($this->status!=self::STATUS_SUBMITIED && $this->status!=self::STATUS_LATE_SUBMITTED
+			&& !($this->status==self::STATUS_NORMAL && $this->experiment->isTimeOut()))
+			return false;
 		if(UUserIdentity::isAdmin())return true;
 		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
-		return true;
+		return false;
 	}	
 	public function canExtend()
 	{

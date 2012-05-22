@@ -40,7 +40,7 @@ if(UUserIdentity::isStudent())
 	else 
 	{
 		$report=$experiment->myreport;
-		echo CHtml::link( ($report->score>0)?$report->score:"View",array("experimentReport/view","id"=>$report->id) );
+		echo CHtml::link( ($report->score>0)?$report->score:($report->canEdit()?"Update":"View"),array("experimentReport/view","id"=>$report->id) );
 	}
 	//echo "<td>".( ($experiment->myreport && $experiment->myreport->score>0)?$experiment->myreport->score:"")."</td>";
 }

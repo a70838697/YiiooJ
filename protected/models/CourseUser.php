@@ -37,7 +37,7 @@ class CourseUser extends UUser
     		foreach($this->reports as $report)
     		{
     			if($report->experiment_id==$experiment_id){
-					return CHtml::link( ($report->score>0)?$report->score:"V",array("experimentReport/view","id"=>$report->id),  array("target"=>"_blank","onclick"=>'return showReport('.$report->id.');'));
+					return CHtml::link( ($report->score>0)?$report->score: ($report->canScore()?"S":"V"),array("experimentReport/view","id"=>$report->id),  array("target"=>"_blank","onclick"=>'return showReport('.$report->id.');'));
 				}
     		}
     	}
