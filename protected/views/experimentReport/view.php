@@ -84,15 +84,18 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 ));*/ ?>
 <?php $this->renderPartial('viewReport',array('model'=>$model));?>
 <?php 
+	echo CHtml::script('
+			function submitr()
+			{
+			return confirm("Are you really want to submit the report?\r\n You will not be allowed to modify it then.");
+}
+			');
+
 if($canscore){
 echo CHtml::script('
 function extend()
 {
 	return confirm("Are you really want to let her/him resubmit?");
-}		
-function submitr()
-{
-	return confirm("Are you really want to submit the report?\r\n You will not be allowed to modify it then.");
 }		
 function showDialogue()
 {
