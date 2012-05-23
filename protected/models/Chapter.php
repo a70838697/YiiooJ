@@ -73,7 +73,7 @@ class Chapter extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    'products'=>array(self::HAS_MANY, 'Product', 'category_id'),
+                    //'products'=>array(self::HAS_MANY, 'Product', 'category_id'),
 		);
 	}
 
@@ -131,7 +131,7 @@ class Chapter extends CActiveRecord
 }
 
   public static  function printULTree(){
-     $categories=Content::model()->findAll(array('condition'=>'root=1 and id!=1','order'=>'lft'));
+     $categories=Chapter::model()->findAll(array('condition'=>'root=1 and id!=1','order'=>'lft'));
      $level=0;
 
 foreach($categories as $n=>$category)
@@ -169,7 +169,7 @@ for($i=$level;$i;$i--)
 }
 
 public static  function printULTree_noAnchors(){
-    $categories=Content::model()->findAll(array('order'=>'lft'));
+    $categories=Chapter::model()->findAll(array('order'=>'lft'));
     $level=0;
 
 foreach($categories as $n=>$category)

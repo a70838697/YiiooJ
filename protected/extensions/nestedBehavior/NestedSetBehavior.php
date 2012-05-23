@@ -102,7 +102,7 @@ class NestedSetBehavior extends CActiveRecordBehavior
 	{
 		$owner=$this->getOwner();
 		$db=$owner->getDbConnection();
-		$owner->getDbCriteria()->addCondition($db->quoteColumnName($owner->getTableAlias()).'.'.$db->quoteColumnName($this->leftAttribute).'=1');
+		$owner->getDbCriteria()->addCondition($db->quoteColumnName($owner->getTableAlias()).'.level=2');
 
 		return $owner;
 	}

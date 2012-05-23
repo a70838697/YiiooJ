@@ -96,8 +96,10 @@ final class ENestedSetBehavior extends CActiveRecordBehavior
         {
                 $owner=$this->getOwner();
                 $db=$owner->getDbConnection();
-                $owner->getDbCriteria()->addCondition($db->quoteColumnName($owner->getTableAlias()).'.'.$db->quoteColumnName($this->leftAttribute).'=1');
-
+                $owner->getDbCriteria()->addCondition($db->quoteColumnName($owner->getTableAlias()).'.'.$db->quoteColumnName($this->rootAttribute).'=1');
+                $owner->getDbCriteria()->mergeWith(array(
+                        'order'=>$owner->getTableAlias().'.'.$db->quoteColumnName($this->leftAttribute),
+                ));
                 return $owner;
         }
 
