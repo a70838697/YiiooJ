@@ -115,7 +115,7 @@ $form=$this->beginWidget('CActiveForm', array(
   
 
  <div class="row" >
-  <?php echo $form->labelEx($model,'name'); ?>    <?php  echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:""),'style'=>'width:75%;'));  ?>       <span  id="success-Organization_name"  class="hid input-notification-success  success png_bg"></span>
+  <?php echo $form->labelEx($model,'name'); ?>    <?php  echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:$model->name),'style'=>'width:75%;'));  ?>       <span  id="success-Organization_name"  class="hid input-notification-success  success png_bg"></span>
     <div><small></small> </div>
      <?php   echo $form->error($model,'name');  ?>    </div>
 

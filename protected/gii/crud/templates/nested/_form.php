@@ -129,7 +129,7 @@ $form=$this->beginWidget('CActiveForm', array(
 
  <div class="row" >
   <?php echo '<?php '; ?>echo $form->labelEx($model,'name');<?php echo ' ?>'; ?>
-    <?php echo '<?php '; ?> echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:""),'style'=>'width:75%;')); <?php echo ' ?>'; ?>
+    <?php echo '<?php '; ?> echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:$model->name),'style'=>'width:75%;')); <?php echo ' ?>'; ?>
        <span  id="success-<?php echo $this->modelClass; ?>_name"  class="hid input-notification-success  success png_bg"></span>
     <div><small><?php //echo Yii::t('admin', 'Category Name'); ?></small> </div>
      <?php echo '<?php '; ?>  echo $form->error($model,'name'); <?php echo ' ?>'; ?>
