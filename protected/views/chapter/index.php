@@ -7,23 +7,28 @@
  @since 1.0
  @license The MIT License-->
 
- 目前大部分内容待添加<br/>
+目前大部分内容待添加
+<br />
 <?php
+$course_url= ($model?("/".$model->id):"");
 if((UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin())
 {
-?>
+	?>
 
 <ul>
-<!--     <li>If tree is empty,start by creating one or more root nodes.</li> -->
-    <li>鼠标右键点击树有各种操作，树的节点可以拖到其他节点下面.</li>
+	<!--     <li>If tree is empty,start by creating one or more root nodes.</li> -->
+	<li>鼠标右键点击树有各种操作，树的节点可以拖到其他节点下面.</li>
 </ul>
-<div >
-<div style="float:left">
-  <input id="reload"  type="button" style="display:block; clear: both;" value="Refresh"class="client-val-form button">
-</div>
-<div style="float:left">
-  <input id="add_root" type="button" style="display:block; clear: both;" value="Create Root" class="client-val-form button">
-</div>
+<div>
+	<div style="float: left">
+		<input id="reload" type="button" style="display: block; clear: both;"
+			value="Refresh" class="client-val-form button">
+	</div>
+	<div style="float: left">
+		<input id="add_root" type="button"
+			style="display: block; clear: both;" value="Create Root"
+			class="client-val-form button">
+	</div>
 </div>
 <?php
 }
@@ -31,32 +36,31 @@ if((UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin())
 
 <!--The tree will be rendered in this div-->
 
-<table   >
-<tr>
-<td width="20%"><div><table><tr><td>
-<div id="<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>"  >
-
-</div>
-</td>
-</tr>
+<table>
+	<tr>
+		<td width="20%"><div>
+				<table>
+					<tr>
+						<td>
+							<div id="<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</td>
+		<td>
+			<div id="showchapter"></div>
+		</td>
+	</tr>
 </table>
-</div>
-</td>
-<td>
-<div id="showchapter">
-
-</div>
-</td>
-</tr>
-</table>
-<script  type="text/javascript">
+<script type="text/javascript">
 $(function () {
 $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 		.jstree({
                            "html_data" : {
 	            "ajax" : {
                                  "type":"POST",
- 	                          "url" : "<?php echo $baseUrl;?>/chapter/fetchTree",
+ 	                          "url" : "<?php echo $baseUrl;?>/chapter/fetchTree<?php echo $course_url ?>",
 	                         "data" : function (n) {
 	                          return {
                                                   id : n.attr ? n.attr("id") : 0,
@@ -78,7 +82,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                                                 id=obj.attr("id").replace("node_","");
                      $.ajax({
                                  type: "POST",
-                                 url: "<?php echo $baseUrl;?>/chapter/returnForm",
+                                 url: "<?php echo $baseUrl;?>/chapter/returnForm<?php echo $course_url ?>",
                                 data:{
                                           'update_id':  id,
                                            "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
@@ -302,7 +306,11 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                    copied_node= (typeof $(data.rslt.oc).attr('id') !='undefined')? $(data.rslt.oc).attr('id').replace("node_",""):'UNDEFINED';
                    new_parent_root=data.rslt.cr!=-1?$(data.rslt.cr).attr('id').replace("node_",""):'root';
                    replaced_node= (typeof $(data.rslt.or).attr('id') !='undefined')? $(data.rslt.or).attr('id').replace("node_",""):'UNDEFINED';
-
+					if(new_parent_root=='root'){
+						alert("The tree allows one root!");
+						$.jstree.rollback(data.rlbk);						
+						return false;
+					}
 
 //                      console.log(data.rslt);
 //                      console.log(pos,'POS');

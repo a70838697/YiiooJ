@@ -17,7 +17,7 @@ ajax validation -in this case you'll have to write the validation code in the co
  @since 1.0
  @license The MIT License-->
 <div id="<?php echo $this->class2id($this->modelClass); ?>_form_con"   class="client-val-form">
-<?php echo '<?php '; ?>if ($_POST['create_root']=='true' && $model->isNewRecord) :<?php echo ' ?>'; ?>
+<?php echo '<?php '; ?>if ((isset($_POST['create_root'])?$_POST['create_root']:false)=='true' && $model->isNewRecord) :<?php echo ' ?>'; ?>
               <h3 id="create_header">Create New Root <?php echo $this->modelClass; ?> </h3>
 <?php echo '<?php '; ?>elseif ($model->isNewRecord) :<?php echo ' ?>'; ?>
      <h3 id="create_header">Create New <?php echo $this->modelClass; ?> </h3>
@@ -40,11 +40,11 @@ ajax validation -in this case you'll have to write the validation code in the co
 <?php echo '<?php  '; ?>
  $formId='<?php echo $this->class2id($this->modelClass); ?>-form';
  $ajaxUrl=($model->isNewRecord)?
-              ( ($_POST['create_root']!='true')?CController::createUrl('<?php echo $this->class2id($this->modelClass); ?>/create'):CController::createUrl('<?php echo $this->class2id($this->modelClass); ?>/createRoot')):
+              ( ((isset($_POST['create_root'])?$_POST['create_root']:false)!='true')?CController::createUrl('<?php echo $this->class2id($this->modelClass); ?>/create'):CController::createUrl('<?php echo $this->class2id($this->modelClass); ?>/createRoot')):
                CController::createUrl('<?php echo $this->class2id($this->modelClass); ?>/update');
 $val_error_msg='Error.<?php echo $this->modelClass; ?> was not saved.';
 $val_success_message=($model->isNewRecord)?
-( ($_POST['create_root']!='true')?'<?php echo $this->modelClass; ?> was created successfuly.':'Root <?php echo $this->modelClass; ?> was created successfuly.'):
+( ((isset($_POST['create_root'])?$_POST['create_root']:false)!='true')?'<?php echo $this->modelClass; ?> was created successfuly.':'Root <?php echo $this->modelClass; ?> was created successfuly.'):
                                                   '<?php echo $this->modelClass; ?> was updated successfuly.';
 
 
@@ -62,7 +62,7 @@ $success='function(data){
                                                             }
                        );
         $("#<?php echo $this->class2id($this->modelClass); ?>-form").slideToggle(1500);'.
-        $updatesuccess.
+        (isset($updatesuccess)?$updatesuccess:"").
     '}
          else {
                    $("#error-<?php echo $this->class2id($this->modelClass); ?>")
@@ -129,7 +129,7 @@ $form=$this->beginWidget('CActiveForm', array(
 
  <div class="row" >
   <?php echo '<?php '; ?>echo $form->labelEx($model,'name');<?php echo ' ?>'; ?>
-    <?php echo '<?php '; ?> echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>$_POST['name'],'style'=>'width:75%;')); <?php echo ' ?>'; ?>
+    <?php echo '<?php '; ?> echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:""),'style'=>'width:75%;')); <?php echo ' ?>'; ?>
        <span  id="success-<?php echo $this->modelClass; ?>_name"  class="hid input-notification-success  success png_bg"></span>
     <div><small><?php //echo Yii::t('admin', 'Category Name'); ?></small> </div>
      <?php echo '<?php '; ?>  echo $form->error($model,'name'); <?php echo ' ?>'; ?>
@@ -154,10 +154,10 @@ foreach($this->tableSchema->columns as $column)
 ?>
 
 <input type="hidden" name= "YII_CSRF_TOKEN" value="<?php echo '<?php '; ?>echo Yii::app()->request->csrfToken;<?php echo ' ?>'; ?>"  />
-  <input type="hidden" name= "parent_id" value="<?php echo '<?php '; ?>echo $_POST['parent_id'];<?php echo ' ?>'; ?>"  />
+  <input type="hidden" name= "parent_id" value="<?php echo '<?php '; ?>echo (isset($_POST['parent_id'])?$_POST['parent_id']:"");<?php echo ' ?>'; ?>"  />
 
   <?php echo '<?php '; ?> if (!$model->isNewRecord):<?php echo ' ?>'; ?>
-    <input type="hidden" name= "update_id" value=" <?php echo '<?php '; ?>echo $_POST['update_id'];<?php echo ' ?>'; ?>"  />
+    <input type="hidden" name= "update_id" value=" <?php echo '<?php '; ?>echo (isset($_POST['update_id'])?$_POST['update_id']:"");<?php echo ' ?>'; ?>"  />
      <?php echo '<?php '; ?>endif;<?php echo ' ?>'; ?>
       
     

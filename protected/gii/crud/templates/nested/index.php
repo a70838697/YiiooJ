@@ -178,7 +178,7 @@ $("#<?php echo '<?php echo '; ?><?php echo $this->modelClass; ?>::ADMIN_TREE_CON
 //                                   id=obj.attr("id").replace("node_","")
 //                             $.ajax({
 //                                    type:"POST",
-//			            url:"<?php //echo '<?php echo '; ?>$baseUrl;<?php// echo '?>'; ?>/product/returnProductForm",
+//			            url:"<?php //echo '<?php echo '; ?>$baseUrl;<?php // echo '?>'; ?>/product/returnProductForm",
 //			           data:  {
 //				         "id" :id,
 //                                         "YII_CSRF_TOKEN":"<?php //echo '<?php echo '; ?>Yii::app()->request->csrfToken;<?php //echo '?>'; ?>"
@@ -226,10 +226,10 @@ $("#<?php echo '<?php echo '; ?><?php echo $this->modelClass; ?>::ADMIN_TREE_CON
 //			                           "YII_CSRF_TOKEN":"<?php //echo '<?php echo '; ?>Yii::app()->request->csrfToken;<?php //echo '?>'; ?>"
 //                                              },
 //			                beforeSend : function(){
-//                                               $("#<?php //echo '<?php echo '; ?><?php// echo $this->modelClass; ?>::ADMIN_TREE_CONTAINER_ID<?php //echo ';?>'; ?>").addClass("ajax-sending");
+//                                               $("#<?php //echo '<?php echo '; ?><?php // echo $this->modelClass; ?>::ADMIN_TREE_CONTAINER_ID<?php //echo ';?>'; ?>").addClass("ajax-sending");
 //                                                               },
 //                                        complete : function(){
-//                                              $("#<?php //echo '<?php echo '; ?><?php // echo $this->modelClass; ?>::ADMIN_TREE_CONTAINER_ID<?php// echo ';?>'; ?>").removeClass("ajax-sending");
+//                                              $("#<?php //echo '<?php echo '; ?><?php // echo $this->modelClass; ?>::ADMIN_TREE_CONTAINER_ID<?php // echo ';?>'; ?>").removeClass("ajax-sending");
 //                                                             },
 //                                       success: function(data){
 //                                        $.fancybox(data,

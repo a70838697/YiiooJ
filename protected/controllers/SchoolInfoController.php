@@ -133,14 +133,14 @@ $_POST['SchoolInfo']['status']=1;
 			$treeArray=array();
 			if($nodeRoot!=null)
 			{
-				$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->title);
+				$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
 				$tree=$nodeRoot->descendants()->findAll();
 				if(!empty($tree))
 				{
 					foreach ($tree as $node)
 					{
 						//var_dump($node);
-						$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->title);
+						$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
 					}
 				}
 			}

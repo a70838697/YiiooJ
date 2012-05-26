@@ -1,23 +1,32 @@
 <?php
 
 /**
- * This is the model class for table "Organizations".
+ * This is the Nested Set  model class for table "{{organizations}}".
  *
- * The followings are the available columns in table 'Organizations':
+ * The followings are the available columns in table '{{organizations}}':
  * @property string $id
  * @property string $root
  * @property string $lft
  * @property string $rgt
  * @property integer $level
+ * @property string $name
+ * @property integer $type_id
  */
 class Organization extends CActiveRecord
 {
+
+         /**
+	 * Id of the div in which the tree will berendered.
+	 */
+    const ADMIN_TREE_CONTAINER_ID='organization_admin_tree';
+
+
 	const ORGANIZATION_TYPE_UNIVERSITY=1;
 	const ORGANIZATION_TYPE_SCHOOLE=2;
 	const ORGANIZATION_TYPE_DEPARTMENT=3;
 	const ORGANIZATION_TYPE_MAJOR=4;
 	const ORGANIZATION_TYPE_CLASS=5;
-	public static $USER_STATUS_MESSAGES=array(
+	public static $ORGANIZATION_TYPE_MESSAGES=array(
 		self::ORGANIZATION_TYPE_UNIVERSITY=>'University',
 		self::ORGANIZATION_TYPE_SCHOOLE=>'School',
 		self::ORGANIZATION_TYPE_DEPARTMENT=>'Department',
@@ -33,6 +42,14 @@ class Organization extends CActiveRecord
 		return parent::model($className);
 	}
 
+        /**
+	 * @return string the class name
+	 */
+          public static function className()
+	{
+		return __CLASS__;
+	}
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -46,15 +63,17 @@ class Organization extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
+		// NOTE1: you should only define rules for those attributes that
 		// will receive user inputs.
+                // NOTE2: Remove ALL rules associated with the nested Behavior:
+                //rgt,lft,root,level,id.
 		return array(
-			array('title', 'required'),
-			array('title', 'length', 'max'=>100),
-			
+			array('name, type_id', 'required'),
+			array('type_id', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, root, lft, rgt, level', 'safe', 'on'=>'search'),
+			array('name, type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,24 +99,11 @@ class Organization extends CActiveRecord
 			'lft' => 'Lft',
 			'rgt' => 'Rgt',
 			'level' => 'Level',
+			'name' => 'Name',
+			'type_id' => 'Type',
 		);
 	}
-    public function behaviors(){
-        return array(
-            'tree' => array(
-                'class' => 'ext.yiiext.behaviors.model.trees.ENestedSetBehavior',
-                // store multiple trees in one table
-                'hasManyRoots' => true,
-                // where to store each tree id. Not used when $hasManyRoots is false
-                'rootAttribute' => 'root',
-                // required fields
-                'leftAttribute' => 'lft',
-                'rightAttribute' => 'rgt',
-                'levelAttribute' => 'level',
-            ),
-        );
-    }
-	
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -114,9 +120,97 @@ class Organization extends CActiveRecord
 		$criteria->compare('lft',$this->lft,true);
 		$criteria->compare('rgt',$this->rgt,true);
 		$criteria->compare('level',$this->level);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('type_id',$this->type_id);
 
-		return new CActiveDataProvider(get_class($this), array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+        public function behaviors()
+{
+    return array(
+        'NestedSetBehavior'=>array(
+            'class'=>'ext.nestedBehavior.NestedSetBehavior',
+            'leftAttribute'=>'lft',
+            'rightAttribute'=>'rgt',
+            'levelAttribute'=>'level',
+            'hasManyRoots'=>true
+            )
+    );
+}
+
+  public static  function printULTree(){
+     $categories=Organization::model()->findAll(array('order'=>'root,lft'));
+     $level=0;
+
+foreach($categories as $n=>$category)
+{
+
+    if($category->level==$level)
+        echo CHtml::closeTag('li')."\n";
+    else if($category->level>$level)
+        echo CHtml::openTag('ul')."\n";
+    else
+    {
+        echo CHtml::closeTag('li')."\n";
+
+        for($i=$level-$category->level;$i;$i--)
+        {
+            echo CHtml::closeTag('ul')."\n";
+            echo CHtml::closeTag('li')."\n";
+        }
+    }
+
+    echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
+      echo CHtml::openTag('a',array('href'=>'#'));
+    echo CHtml::encode($category->name);
+      echo CHtml::closeTag('a');
+
+    $level=$category->level;
+}
+
+for($i=$level;$i;$i--)
+{
+    echo CHtml::closeTag('li')."\n";
+    echo CHtml::closeTag('ul')."\n";
+}
+
+}
+
+public static  function printULTree_noAnchors(){
+    $categories=Organization::model()->findAll(array('order'=>'lft'));
+    $level=0;
+
+foreach($categories as $n=>$category)
+{
+    if($category->level == $level)
+        echo CHtml::closeTag('li')."\n";
+    else if ($category->level > $level)
+        echo CHtml::openTag('ul')."\n";
+    else         //if $category->level<$level
+    {
+        echo CHtml::closeTag('li')."\n";
+
+        for ($i = $level - $category->level; $i; $i--) {
+                    echo CHtml::closeTag('ul') . "\n";
+                    echo CHtml::closeTag('li') . "\n";
+                }
+    }
+
+    echo CHtml::openTag('li');
+    echo CHtml::encode($category->name);
+    $level=$category->level;
+}
+
+for ($i = $level; $i; $i--) {
+            echo CHtml::closeTag('li') . "\n";
+            echo CHtml::closeTag('ul') . "\n";
+        }
+
+}
+
+
+
 }

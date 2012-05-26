@@ -24,7 +24,7 @@ $this->menu=array(
 		'identitynumber',
 		'first_year',
 		array('label'=>'Unit',
-			'value'=>$model->unit->title,
+			'value'=>$model->unit->name,
 		),
 		array('label'=>'Status',
 			'value'=>SchoolInfo::$USER_STATUS_MESSAGES[$model->status]

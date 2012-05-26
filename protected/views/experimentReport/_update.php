@@ -4,21 +4,21 @@
 	{
 		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_SCHOOLE)$node=$node->getParent();
-		if($node!=null)$xueyuan=$node->title;
+		if($node!=null)$xueyuan=$node->name;
 	}
 	$xi="&nbsp;";
 	if($model->user->schoolInfo!=null)
 	{
 		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_DEPARTMENT)$node=$node->getParent();
-		if($node!=null)$xi=$node->title;
+		if($node!=null)$xi=$node->name;
 	}
 	$zhuanye="&nbsp;";
 	if($model->user->schoolInfo!=null)
 	{
 		$node=$model->user->schoolInfo->unit;
 		while($node!=null && $node->type_id!=Organization::ORGANIZATION_TYPE_MAJOR)$node=$node->getParent();
-		if($node!=null)$zhuanye=$node->title;
+		if($node!=null)$zhuanye=$node->name;
 	}
 	
 	?>
