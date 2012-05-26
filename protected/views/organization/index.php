@@ -7,15 +7,8 @@
  @since 1.0
  @license The MIT License-->
 
-<h1> Organization</h1><br>
-<h2>Administration</h2><br>
-<ul>
-     <li>If tree is empty,start by creating one or more root nodes.</li>
-    <li>Right Click on a node to see available operations.</li>
-    <li>Move nodes with Drag And Drop.You can move a non-root node to root position and vice versa.</li>
-     <li>Root nodes cannot be reordered.Their order is fixed  by id.</li>
-</ul>
-<div style="margin-bottom: 70px;" >
+<h1> Organization Administration</h1><br>
+<div style="margin-bottom: 40px;" >
 <div style="float:left">
   <input id="reload"  type="button" style="display:block; clear: both;" value="Refresh"class="client-val-form button">
 </div>
