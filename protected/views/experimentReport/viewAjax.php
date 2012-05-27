@@ -117,7 +117,7 @@ $(document).ready(function() {
 			$("#reportcontent").html(data);
 		
 			jQuery("#tabReport").tabs("select", 1);
-			$.fn.yiiGridView.update(\'groupUser-grid\');
+			reloadGrid();
 		});
 		return false;
 	});

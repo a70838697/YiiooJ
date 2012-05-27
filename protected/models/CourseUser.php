@@ -28,7 +28,7 @@ class CourseUser extends UUser
     	if($this->reports==null)$this->reports=$this->experimentReports(array("params"=>array(":course_id" =>$course_id)));
     	return $this->reports;
     }
-    public function getCourseExperimentColumn($course_id,$experiment_id)
+    public function getCourseExperimentColumn($course_id,$experiment_id,$isTimeOut)
     {
     	$this->getReports($course_id);
     	// more than one phone exists for the user
@@ -40,6 +40,11 @@ class CourseUser extends UUser
 					return CHtml::link( ($report->score>0)?$report->score: ($report->canScore()?"S":"V"),array("experimentReport/view","id"=>$report->id),  array("target"=>"_blank","onclick"=>'return showReport('.$report->id.');'));
 				}
     		}
+    	}
+    	if($isTimeOut)
+    	{
+    		return CHtml::ajaxLink("R",array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array('success' => 'js:function(data){ reloadGrid(); }'), array('confirm'=>'Do you allow her/him to resubmit a report?'));
+    		
     	}
     	return '';
     }

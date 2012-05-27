@@ -5,6 +5,10 @@ if(UUserIdentity::isStudent())
 {
 	echo "<th>Score</th>";
 }
+if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())
+{
+	echo "<th>Operation</th>";
+}
 ?>
 </tr>
 <?php
@@ -43,6 +47,12 @@ if(UUserIdentity::isStudent())
 		echo CHtml::link( ($report->score>0)?$report->score:($report->canEdit()?"Update":"View"),array("experimentReport/view","id"=>$report->id) );
 	}
 	//echo "<td>".( ($experiment->myreport && $experiment->myreport->score>0)?$experiment->myreport->score:"")."</td>";
+}
+?>
+<?php 
+if(UUserIdentity::isAdmin()||($experiment->course->user_id==Yii::app()->user->id))
+{
+	echo CHtml::link( "Delete",array("course/deleteExperiment","id"=>$experiment->id) ,array('confirm' => 'Are you sure?'));
 }
 ?>
 <!-- experiment -->

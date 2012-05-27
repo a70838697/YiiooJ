@@ -38,11 +38,11 @@ class CourseController extends Controller
 			),
 					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','students','experiments','reports'),
+				'actions'=>array('create','update','students','experiments','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','experiments','students','reports'),
+				'actions'=>array('admin','delete','create','update','experiments','students','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Admin'),
 			),
 			array('deny',  // deny all users
@@ -289,6 +289,22 @@ class CourseController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	/**
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'index' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionDeleteExperiment($id)
+	{
+		$experiment=Experiment::model()->findByPk((int)$id);
+		if(UUserIdentity::isAdmin()||($experiment->course->user_id==Yii::app()->user->id))
+		{
+			$experiment->delete();
+		}
+		$this->redirect(array('experiments','id'=>$experiment->course->id));
+	}
+	
 
 	/**
 	 * Deletes a particular model.
@@ -387,6 +403,42 @@ class CourseController extends Controller
 			}
 		}
 		return $experiment;
+	}
+	
+	/**
+	 * Creates a new experiment.
+	 * This method attempts to create a new experiment based on the user input.
+	 * If the experiment is successfully created, the browser will be redirected
+	 * to show the created experiment.
+	 * @param Course the course that the new experiment belongs to
+	 * @return Experiment the experiment instance
+	 */
+	public function actionResubmitReport()
+	{
+		$user_id=(int)Yii::app()->request->getQuery('user_id',0);
+		$experiment_id=(int)Yii::app()->request->getQuery('experiment_id',0);
+
+		$experiment=Experiment::model()->findByPk((int)$experiment_id);
+		if(UUserIdentity::isAdmin()||($experiment->course->user_id==Yii::app()->user->id))
+		{
+
+			$model=new ExperimentReport;
+
+			$model->user_id=$user_id;
+			$model->experiment_id=$experiment_id;
+			$model->status=ExperimentReport::STATUS_ALLOW_LATE_EDIT;
+			$model->report="&nbsp;";
+			$model->conclusion="&nbsp;";
+			$model->score=0;
+			if($model->save()){
+				echo json_encode (array('success'=>true));
+				exit;
+			}
+			var_dump($model);
+		}
+
+		echo json_encode (array('success'=>false));
+		exit;
 	}	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

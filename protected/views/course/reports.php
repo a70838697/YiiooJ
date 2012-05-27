@@ -102,11 +102,12 @@ $columns=array(
 foreach($model->experiments as $experiment) 
 {
 
+	$isTimeOut=($experiment->isTimeOut())?'true':'false';
 	$columns[]=	array(
 						'header'=>$experiment->sequence,
 						'name'=>'score',
 						'type'=>'raw',
-						'value'=>'$data->getCourseExperimentColumn('.$model->id.','.$experiment->id.')',
+						'value'=>'$data->getCourseExperimentColumn('.$model->id.','.$experiment->id.','.$isTimeOut.')',
 				);
 	
 }
@@ -131,6 +132,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ));
 
 echo CHtml::script('
+function reloadGrid()
+{
+		$.fn.yiiGridView.update(\'groupUser-grid\');
+}
 function showReport(id)
 {
 	reloadReport("'.UCHtml::theUrl(array("experimentReport/viewAjax/")).'"+"/"+id,"open");
