@@ -11,7 +11,7 @@
 		'lft',
 		'rgt',
 		'level',
-		'title',
+		'name',
 		'type_id',
 	),
 )); ?>

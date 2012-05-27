@@ -8,6 +8,7 @@ class CourseController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=null;
+	public $model=null;
 
 	/**
 	 * @return array action filters
@@ -42,7 +43,7 @@ class CourseController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','create','update','experiments','students','reports'),
-				'roles'=>array('Admin'),			
+				'roles'=>array('Admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -59,7 +60,7 @@ class CourseController extends Controller
 		$model=$this->loadModel($id,'myMemberShip');
 		$this->checkAccess(array('model'=>$model));		
 		
-
+		$this->model=$model;
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -89,6 +90,7 @@ class CourseController extends Controller
 	public function actionApply($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
+		$this->model=$model;
 		$this->checkAccess(array('model'=>$model));				
 		$groupUser=$model->myMemberShip;
 		if($groupUser===null)
@@ -123,6 +125,7 @@ class CourseController extends Controller
 	public function actionReports($id)
 	{
 		$model=$this->loadModel($id);
+		$this->model=$model;
 		
 		$criteria=new CDbCriteria(array(
 		));
@@ -162,6 +165,7 @@ class CourseController extends Controller
 	public function actionExperiments($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
+		$this->model=$model;
 		$this->checkAccess(array('model'=>$model));				
 		
 		$experiment=UUserIdentity::isTeacher()?$this->newExperiment($model):null;
@@ -178,6 +182,7 @@ class CourseController extends Controller
 	public function actionStudents($id)
 	{
 		$model=$this->loadModel($id);
+		$this->model=$model;
 		if(isset($_POST['students_ids']))
 		{
 			foreach(preg_split("/,/",$_POST['students_ids']) as $student_id)
@@ -267,6 +272,7 @@ class CourseController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		$this->model=$model;
 		$this->checkAccess(array('model'=>$model));		
 		
 		// Uncomment the following line if AJAX validation is needed

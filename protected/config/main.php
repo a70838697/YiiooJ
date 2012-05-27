@@ -7,7 +7,9 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'OOJJ: Open Online Judge of JNU',
+//	'language'=>'zh_cn',
+//	'sourceLanguage'=>'en_us',		
+	'name'=>"Open Online Judge of Jinan University",
 
 	// preloading 'log' component
 	'preload'=>array('log'),

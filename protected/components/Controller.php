@@ -5,6 +5,21 @@
  */
 class Controller extends CController
 {
+	public function init()
+	{
+		if(isset($_REQUEST['lang'])&&$_REQUEST['lang']!="")
+		{
+			Yii::app()->language=$_REQUEST['lang'];
+			setcookie('lang',$_REQUEST['lang']);
+		}else if(isset($_COOKIE['lang'])&&$_COOKIE['lang']!="")
+		{
+			Yii::app()->language=$_COOKIE['lang'];
+		}else{
+			$lang=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+			//var_dump($lang);
+			Yii::app()->language=strtolower(str_replace('-','_',$lang[0]));
+		}
+	}	
 	/**
 	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
 	 * meaning using a single column layout. See 'protected/views/layouts/column1.php'.

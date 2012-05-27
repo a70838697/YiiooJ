@@ -1,10 +1,10 @@
-<?php
-$this->pageTitle=Yii::t('main',Yii::app()->name)  . ' - About';
+﻿<?php
+$this->pageTitle= Yii::t('main',Yii::app()->name) . ' - 关于';
 $this->breadcrumbs=array(
-	Yii::t('main','About') ,
+	'关于',
 );
 ?>
-<h1><?php echo Yii::t('main','About')?></h1>
+<h1>关于</h1>
 2012.5.13~2012.5.14 OOJJ was moved onto a Linux machine.<br/>
 2012.5.17 comment function was added to experiments.<br/>
 2012.5.19 rename Jnuer to SchoolInfo, and the student view can be sorted.<br/>

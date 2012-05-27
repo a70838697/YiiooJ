@@ -7,6 +7,7 @@ class ChapterController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
+	public $model=null;
 
 	public function   init() {
 		$this->registerAssets();
@@ -95,6 +96,7 @@ class ChapterController extends Controller
 	{
 	
 		$model=$this->loadModel($id);
+		$this->model=$model;
 		//create an array open_nodes with the ids of the nodes that we want to be initially open
 		//when the tree is loaded.Modify this to suit your needs.Here,we open all nodes on load.
 		$categories= Chapter::model()->findAll(array('condition'=>'root=:root_id','order'=>'lft','params'=>array(':root_id'=>$id)));

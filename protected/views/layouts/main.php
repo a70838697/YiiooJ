@@ -23,23 +23,37 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+		<div id="logo"><?php echo CHtml::encode(Yii::t("main",Yii::app()->name)); ?></div>
 	</div><!-- header -->
 
 	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
+		<?php 
+		
+		$a=array('label'=>'Home', 'url'=>array('/site/index'),'visible'=>false);
+		$model=isset($this->model)?$this->model:null;
+		if( (Yii::app()->controller->id=="course" && isset($model->book)))
+		{
+			$a=array('url'=>array('/chapter/view','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
+		}
+		if( (Yii::app()->controller->id=="chapter" && isset($model->course)))
+		{
+			$a=array('url'=>array('/course/view','id'=>isset($model->course)?$model->course->id:"1"), 'label'=>Yii::t('main',"Experiments"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->course));
+		}
+		
+		$this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('url'=>array('/course/index'), 'label'=>("Course"), 'visible'=>UUserIdentity::canHaveCourses()),
-				array('url'=>array('/problem/index'), 'label'=>("ACM Train")),
-				array('url'=>array('/schoolInfo/admin'), 'label'=>("Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
-				array('url'=>array('/rbam'), 'label'=>("RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
+				array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index')),
+				array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All Courses"), 'visible'=>UUserIdentity::canHaveCourses()),
+				$a,
+				array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM Train")),
+				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
+				array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
 				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->profileUrl, 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getModule('user')->t("Logout").' ('.Yii::app()->user->name.')', 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
+				array('label'=>Yii::t('main','About'), 'url'=>array('/site/page', 'view'=>'about')),
+				array('label'=>Yii::t('main','Contact'), 'url'=>array('/site/contact')),
 							),
 		)); ?>
 	</div><!-- mainmenu -->
@@ -52,8 +66,8 @@
 
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> by Shuangping Chen.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+		<?php echo Yii::t('main','All Rights Reserved');?>.<br/>
+		<?php //echo Yii::powered(); ?>
 	</div><!-- footer -->
 
 </div><!-- page -->

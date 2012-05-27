@@ -15,10 +15,10 @@
 class Organization extends CActiveRecord
 {
 
-         /**
+	/**
 	 * Id of the div in which the tree will berendered.
 	 */
-    const ADMIN_TREE_CONTAINER_ID='organization_admin_tree';
+	const ADMIN_TREE_CONTAINER_ID='organization_admin_tree';
 
 
 	const ORGANIZATION_TYPE_UNIVERSITY=1;
@@ -27,12 +27,12 @@ class Organization extends CActiveRecord
 	const ORGANIZATION_TYPE_MAJOR=4;
 	const ORGANIZATION_TYPE_CLASS=5;
 	public static $ORGANIZATION_TYPE_MESSAGES=array(
-		self::ORGANIZATION_TYPE_UNIVERSITY=>'University',
-		self::ORGANIZATION_TYPE_SCHOOLE=>'School',
-		self::ORGANIZATION_TYPE_DEPARTMENT=>'Department',
-		self::ORGANIZATION_TYPE_MAJOR=>'Major',
-		self::ORGANIZATION_TYPE_CLASS=>'Class',
-		);	
+			self::ORGANIZATION_TYPE_UNIVERSITY=>'University',
+			self::ORGANIZATION_TYPE_SCHOOLE=>'School',
+			self::ORGANIZATION_TYPE_DEPARTMENT=>'Department',
+			self::ORGANIZATION_TYPE_MAJOR=>'Major',
+			self::ORGANIZATION_TYPE_CLASS=>'Class',
+	);
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Organization the static model class
@@ -42,10 +42,10 @@ class Organization extends CActiveRecord
 		return parent::model($className);
 	}
 
-        /**
+	/**
 	 * @return string the class name
 	 */
-          public static function className()
+	public static function className()
 	{
 		return __CLASS__;
 	}
@@ -65,15 +65,15 @@ class Organization extends CActiveRecord
 	{
 		// NOTE1: you should only define rules for those attributes that
 		// will receive user inputs.
-                // NOTE2: Remove ALL rules associated with the nested Behavior:
-                //rgt,lft,root,level,id.
+		// NOTE2: Remove ALL rules associated with the nested Behavior:
+		//rgt,lft,root,level,id.
 		return array(
-			array('name, type_id', 'required'),
-			array('type_id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>255),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('name, type_id', 'safe', 'on'=>'search'),
+				array('name, type_id', 'required'),
+				array('type_id', 'numerical', 'integerOnly'=>true),
+				array('name', 'length', 'max'=>255),
+				// The following rule is used by search().
+				// Please remove those attributes that should not be searched.
+				array('name, type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,13 +94,13 @@ class Organization extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'root' => 'Root',
-			'lft' => 'Lft',
-			'rgt' => 'Rgt',
-			'level' => 'Level',
-			'name' => 'Name',
-			'type_id' => 'Type',
+				'id' => 'ID',
+				'root' => 'Root',
+				'lft' => 'Lft',
+				'rgt' => 'Rgt',
+				'level' => 'Level',
+				'name' => 'Name',
+				'type_id' => 'Type',
 		);
 	}
 
@@ -124,92 +124,92 @@ class Organization extends CActiveRecord
 		$criteria->compare('type_id',$this->type_id);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+				'criteria'=>$criteria,
 		));
 	}
 
-        public function behaviors()
-{
-    return array(
-        'NestedSetBehavior'=>array(
-            'class'=>'ext.nestedBehavior.NestedSetBehavior',
-            'leftAttribute'=>'lft',
-            'rightAttribute'=>'rgt',
-            'levelAttribute'=>'level',
-            'hasManyRoots'=>true
-            )
-    );
-}
+	public function behaviors()
+	{
+		return array(
+				'NestedSetBehavior'=>array(
+						'class'=>'ext.nestedBehavior.NestedSetBehavior',
+						'leftAttribute'=>'lft',
+						'rightAttribute'=>'rgt',
+						'levelAttribute'=>'level',
+						'hasManyRoots'=>true
+				)
+		);
+	}
 
-  public static  function printULTree(){
-     $categories=Organization::model()->findAll(array('order'=>'root,lft'));
-     $level=0;
+	public static  function printULTree(){
+		$categories=Organization::model()->findAll(array('order'=>'root,lft'));
+		$level=0;
 
-foreach($categories as $n=>$category)
-{
+		foreach($categories as $n=>$category)
+		{
 
-    if($category->level==$level)
-        echo CHtml::closeTag('li')."\n";
-    else if($category->level>$level)
-        echo CHtml::openTag('ul')."\n";
-    else
-    {
-        echo CHtml::closeTag('li')."\n";
+			if($category->level==$level)
+				echo CHtml::closeTag('li')."\n";
+			else if($category->level>$level)
+				echo CHtml::openTag('ul')."\n";
+			else
+			{
+				echo CHtml::closeTag('li')."\n";
 
-        for($i=$level-$category->level;$i;$i--)
-        {
-            echo CHtml::closeTag('ul')."\n";
-            echo CHtml::closeTag('li')."\n";
-        }
-    }
+				for($i=$level-$category->level;$i;$i--)
+				{
+					echo CHtml::closeTag('ul')."\n";
+					echo CHtml::closeTag('li')."\n";
+				}
+			}
 
-    echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
-      echo CHtml::openTag('a',array('href'=>'#'));
-    echo CHtml::encode($category->name);
-      echo CHtml::closeTag('a');
+			echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
+			echo CHtml::openTag('a',array('href'=>'#'));
+			echo CHtml::encode($category->name);
+			echo CHtml::closeTag('a');
 
-    $level=$category->level;
-}
+			$level=$category->level;
+		}
 
-for($i=$level;$i;$i--)
-{
-    echo CHtml::closeTag('li')."\n";
-    echo CHtml::closeTag('ul')."\n";
-}
+		for($i=$level;$i;$i--)
+		{
+			echo CHtml::closeTag('li')."\n";
+			echo CHtml::closeTag('ul')."\n";
+		}
 
-}
+	}
 
-public static  function printULTree_noAnchors(){
-    $categories=Organization::model()->findAll(array('order'=>'lft'));
-    $level=0;
+	public static  function printULTree_noAnchors(){
+		$categories=Organization::model()->findAll(array('order'=>'lft'));
+		$level=0;
 
-foreach($categories as $n=>$category)
-{
-    if($category->level == $level)
-        echo CHtml::closeTag('li')."\n";
-    else if ($category->level > $level)
-        echo CHtml::openTag('ul')."\n";
-    else         //if $category->level<$level
-    {
-        echo CHtml::closeTag('li')."\n";
+		foreach($categories as $n=>$category)
+		{
+			if($category->level == $level)
+				echo CHtml::closeTag('li')."\n";
+			else if ($category->level > $level)
+				echo CHtml::openTag('ul')."\n";
+			else         //if $category->level<$level
+			{
+				echo CHtml::closeTag('li')."\n";
 
-        for ($i = $level - $category->level; $i; $i--) {
-                    echo CHtml::closeTag('ul') . "\n";
-                    echo CHtml::closeTag('li') . "\n";
-                }
-    }
+				for ($i = $level - $category->level; $i; $i--) {
+					echo CHtml::closeTag('ul') . "\n";
+					echo CHtml::closeTag('li') . "\n";
+				}
+			}
 
-    echo CHtml::openTag('li');
-    echo CHtml::encode($category->name);
-    $level=$category->level;
-}
+			echo CHtml::openTag('li');
+			echo CHtml::encode($category->name);
+			$level=$category->level;
+		}
 
-for ($i = $level; $i; $i--) {
-            echo CHtml::closeTag('li') . "\n";
-            echo CHtml::closeTag('ul') . "\n";
-        }
+		for ($i = $level; $i; $i--) {
+			echo CHtml::closeTag('li') . "\n";
+			echo CHtml::closeTag('ul') . "\n";
+		}
 
-}
+	}
 
 
 

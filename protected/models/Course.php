@@ -84,6 +84,7 @@ class Course extends CActiveRecord
 		return array(
        		'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
        		'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
+       		'book' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
 			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.student_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
 			'studentGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'studentGroup.type_id='. (Group::GROUP_TYPE_COURSE)),
 			//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.student_group_id'),
