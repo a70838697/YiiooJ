@@ -14,7 +14,7 @@ class Controller extends CController
 		}else if(isset($_COOKIE['lang'])&&$_COOKIE['lang']!="")
 		{
 			Yii::app()->language=$_COOKIE['lang'];
-		}else{
+		}else if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])&& $_SERVER['HTTP_ACCEPT_LANGUAGE']!=""){
 			$lang=explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 			//var_dump($lang);
 			Yii::app()->language=strtolower(str_replace('-','_',$lang[0]));
