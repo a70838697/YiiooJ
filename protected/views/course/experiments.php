@@ -102,7 +102,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'submitiondialog',
     'options'=>array(
 		'dialogClass'=>'rbam-dialog',
-        'title'=>'Create an experiment',
+        'title'=>Yii::t('course','Create an experiment'),
         'autoOpen'=>$experiment->hasErrors(),
 		'minWidth'=>800,
 		'height'=>700,

@@ -242,6 +242,7 @@ class ExperimentReportController extends ZController
 					'model'=>$model));
 				die;
 			}else{
+				$model->updated = new CDbExpression('UNIX_TIMESTAMP()');
 				if(Yii::app()->request->getQuery('submited',null)!==null)
 				{
 					if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
@@ -305,6 +306,8 @@ class ExperimentReportController extends ZController
 					'model'=>$model));
 				die;
 			}else{
+				$model->updated = new CDbExpression('UNIX_TIMESTAMP()');
+				
 				if(Yii::app()->request->getQuery('submited',null)!==null)
 				{
 					if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)

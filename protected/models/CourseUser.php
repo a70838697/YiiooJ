@@ -81,8 +81,8 @@ class CourseUser extends UUser
 		return array_merge( parent::relations(),
 			array(
 				'group'=>array(self::HAS_ONE, 'GroupUser','user_id','select'=>'id','condition' => 'group.group_id=:group_id and group.status ='.GroupUser::USER_STATUS_ACCEPTED),
-				'experimentReport'=>array(self::HAS_ONE, 'ExperimentReport','user_id','select'=>'id,status,score','on' => 'experiment_id=:experiment_id','joinType'=>'LEFT JOIN'),
-				'experimentReports'=>array(self::HAS_MANY, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score','on'=>'EXISTS(select * from {{experiments}} bd where bd.id= experimentReports.experiment_id and bd.course_id=:course_id) '),
+				'experimentReport'=>array(self::HAS_ONE, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score,updated','on' => 'experiment_id=:experiment_id','joinType'=>'LEFT JOIN'),
+				'experimentReports'=>array(self::HAS_MANY, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score,updated','on'=>'EXISTS(select * from {{experiments}} bd where bd.id= experimentReports.experiment_id and bd.course_id=:course_id) '),
 			)
 		);
 	}

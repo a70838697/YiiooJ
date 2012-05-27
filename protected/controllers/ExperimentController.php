@@ -244,6 +244,7 @@ class ExperimentController extends Controller
 										'schoolInfo.identitynumber',
 										'username',
 										'experimentReport.score',
+										'experimentReport.updated'
 								),
 						),
 						'pagination'=>array(

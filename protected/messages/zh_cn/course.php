@@ -5,6 +5,7 @@ return array (
   'Name'=>'姓名',
   
   'Add students'=>'添加学生',
+  'Create an experiment'=>'新建实验',
   
   'Add an experiment'=>'添加实验',
 
@@ -16,14 +17,20 @@ return array (
   "Average/Times"=>'平均得分/次',
   'Do you allow her/him to resubmit a report?'=>'您允许学生补交实验报告吗？',
 
+  'Updated time' => '更新时间',
+  'Operation' => '操作',
   'Score' => '评分',
   'S'=>'评',
   'V'=>'看',
   'R'=>'补',
+  'Update'=>'更新',
+  'View'=>'查看',
   'Write'=>'写',
   'Edit'=>'编辑',
   'Extend deadline'=>'打回重交',
   'Print'=>'打印',
+  
+  'Are you sure to delete the experiment?'=>'您真的要删除这个实验吗？',
   
 
   'Submit'=>'完成提交',
