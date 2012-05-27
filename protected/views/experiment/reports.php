@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 ?>
 <h1>Experiment Reports for <?php echo CHtml::encode($model->title); ?></h1>
 <?php
-$timeout=$model->isTimeOut();
+$timeout=$model->afterDeadline();
 $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'groupUser-grid',
 		'dataProvider'=>$dataProvider,

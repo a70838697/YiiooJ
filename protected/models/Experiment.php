@@ -35,6 +35,12 @@ class Experiment extends CActiveRecord
 		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
 		return ($nowt>$end_date || $nowt<$begin_date);		
 	}
+	public function afterDeadline()
+	{
+		$nowt=CDateTimeParser::parse(date("Y-m-d"),"yyyy-MM-dd");
+		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
+		return ($nowt>$end_date);
+	}	
 	/**
 	 * @return string the associated database table name
 	 */

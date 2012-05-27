@@ -102,7 +102,7 @@ $columns=array(
 foreach($model->experiments as $experiment) 
 {
 
-	$isTimeOut=($experiment->isTimeOut())?'true':'false';
+	$isTimeOut=($experiment->afterDeadline())?'true':'false';
 	$columns[]=	array(
 						'header'=>$experiment->sequence,
 						'name'=>'score',
