@@ -29,7 +29,7 @@ $this->menu=array(
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
         array(
-            'label'=>'Add a student',
+            'label'=>Yii::t('course','Add students'),
             'icon-position'=>'left',
             'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
             'url'=>'#',
@@ -37,26 +37,26 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         	'linkOptions'=>array('onclick'=>'return showDialogue();',)
         ),
         array(
-            'label'=>'View Experiments',
+            'label'=>Yii::t('course','View experiments'),
             'icon-position'=>'left',
             'icon'=>'document',
         	'url'=>array('/course/experiments/'.$model->id.''),
         ),
    		array(
-			'label'=>'View Reports',
+			'label'=>Yii::t('course','View reports'),
 			'icon-position'=>'left',
     		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
     		'icon'=>'document',
     		'url'=>array('/course/reports/'.$model->id),
     	),
         array(
-            'label'=>'View this course',
+            'label'=>Yii::t('course','Course information'),
             'icon-position'=>'left',
             'icon'=>'document',
         	'url'=>array('/course/view/'.$model->id.''),
         ),
         array(
-            'label'=>'Update this course',
+            'label'=>Yii::t('course','Update course'),
             'icon-position'=>'left',
 	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),

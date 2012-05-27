@@ -28,29 +28,29 @@ $this->menu=array(
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
         array(
-            'label'=>'View experiments',
-            'icon-position'=>'left',
+            'label'=>Yii::t('course','View experiments'),
+        	'icon-position'=>'left',
         	'visible'=>!Yii::app()->user->isGuest,
             'icon'=>'document',
         	'url'=>array('/course/experiments/'.$model->id),
         ),
         array(
-            'label'=>'View students',
-            'icon-position'=>'left',
+            'label'=>Yii::t('course','View students'),
+        	'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/course/students/'.$model->id),
         ),
     	array(
-            'label'=>'View Reports',
+            'label'=>Yii::t('course','View reports'),
             'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/course/reports/'.$model->id),
         ),
     	array(
-            'label'=>'Update this course',
-            'icon-position'=>'left',
+            'label'=>Yii::t('course','Update course'),
+    		'icon-position'=>'left',
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),
         ), 

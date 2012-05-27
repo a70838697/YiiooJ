@@ -40,7 +40,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	'id'=>'xyb1',
     'items' => array(
         array(
-            'label'=>'Edit',
+            'label'=>Yii::t('course','Edit'),
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
 	        'linkOptions'=>array('target'=>'_blank;',),
@@ -48,7 +48,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         	'url'=>array('update', 'id'=>$model->id),
         ),
         array(
-            'label'=>'Score',
+            'label'=>Yii::t('course','Score'),
             'icon-position'=>'left',
             'visible'=>$canscore && ( ($model->status==ExperimentReport::STATUS_SUBMITIED )|| ( ($model->status==ExperimentReport::STATUS_NORMAL) && ($model->experiment->isTimeOut()) )),
 	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
@@ -56,7 +56,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('viewAjax', 'id'=>$model->id),
         ),
         array(
-            'label'=>'Submit',
+            'label'=>Yii::t('course','Submit'),
             'icon-position'=>'left',
             'visible'=>($canscore|| (Yii::app()->user->id==$model->user_id)) && ($model->status !=ExperimentReport::STATUS_SUBMITIED) ,
 	        'linkOptions'=>array('onclick'=>'return submitr(this.href);',),
@@ -64,7 +64,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('viewAjax', 'id'=>$model->id,'submited'=>'1'),
         ),
         array(
-            'label'=>'Extend deadline',
+            'label'=>Yii::t('course','Extend deadline'),
             'icon-position'=>'left',
             'visible'=>($canscore) && ($model->status ==ExperimentReport::STATUS_SUBMITIED) ,
 	        'linkOptions'=>array('onclick'=>'return extend(this.href);',),
@@ -72,7 +72,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('viewAjax', 'id'=>$model->id,'extended'=>'1'),
         ),
     	array(
-            'label'=>'Print',
+            'label'=>Yii::t('course','Print'),
             'icon-position'=>'left',
 	        'linkOptions'=>array('target'=>'_blank;',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"

@@ -18,13 +18,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'template'=>'{summary}{pager}{items}{pager}',
 		'columns'=>array(
 				array(
-						'header'=>'Student number',
+						'header'=>Yii::t('course','Student number'),
 						'name'=>'schoolInfo.identitynumber',
 						'type'=>'raw',
 						'value'=>'CHtml::encode($data->schoolInfo->identitynumber)',
 				),
 				array(
-						'header'=>'Name',
+						'header'=>Yii::t('course','Name'),
 						'name'=>'name',
 						'type'=>'raw',
 						'value'=>'CHtml::encode($data->info->lastname.$data->info->firstname)',
@@ -38,7 +38,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				*/
 				array(
-						'header'=>'Score',
+						'header'=>Yii::t('course','Score'),
 						'name'=>'experimentReport.score',
 						'type'=>'raw',
 						'value'=>'$data->experimentReport!=null && $data->experimentReport->score>0?$data->experimentReport->score:""',

@@ -37,13 +37,13 @@ class CourseUser extends UUser
     		foreach($this->reports as $report)
     		{
     			if($report->experiment_id==$experiment_id){
-					return CHtml::link( ($report->score>0)?$report->score: ($report->canScore()?"S":"V"),array("experimentReport/view","id"=>$report->id),  array("target"=>"_blank","onclick"=>'return showReport('.$report->id.');'));
+					return CHtml::link( ($report->score>0)?$report->score: ($report->canScore()?Yii::t('course',"S"):Yii::t('course',"V")),array("experimentReport/view","id"=>$report->id),  array("target"=>"_blank","onclick"=>'return showReport('.$report->id.');'));
 				}
     		}
     	}
     	if($isTimeOut)
     	{
-    		return CHtml::ajaxLink("R",array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array('success' => 'js:function(data){ reloadGrid(); }'), array('confirm'=>'Do you allow her/him to resubmit a report?'));
+    		return CHtml::ajaxLink(Yii::t('course',"R"),array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array('success' => 'js:function(data){ reloadGrid(); }'), array('confirm'=>Yii::t('course','Do you allow her/him to resubmit a report?')));
     		
     	}
     	return '';

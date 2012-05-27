@@ -26,27 +26,27 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	'id'=>'xyz1',
     'items' => array(
         array(
-            'label'=>'View experiments',
+            'label'=>Yii::t('course','View experiments'),
             'icon-position'=>'left',
         	'visible'=>!Yii::app()->user->isGuest,
             'icon'=>'document',
         	'url'=>array('/course/experiments/'.$model->id),
         ),
         array(
-            'label'=>'View students',
+            'label'=>Yii::t('course','View students'),
             'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/course/students/'.$model->id),
         ),
     	array(
-            'label'=>'View this course',
+            'label'=>Yii::t('course','Course information'),
             'icon-position'=>'left',
             'icon'=>'document',
         	'url'=>array('/course/view/'.$model->id.''),
         ),
         array(
-            'label'=>'Update this course',
+            'label'=>Yii::t('course','Update course'),
             'icon-position'=>'left',
 	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),
@@ -58,13 +58,13 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 <?php
 $columns=array(
 				array(
-						'header'=>'Student number',
+						'header'=>Yii::t('course','Student number'),
 						'name'=>'schoolInfo.identitynumber',
 						'type'=>'raw',
 						'value'=>'CHtml::encode($data->schoolInfo->identitynumber)',
 				),
 				array(
-						'header'=>'Name',
+						'header'=>Yii::t('course','Name'),
 						'name'=>'name',
 						'type'=>'raw',
 						'value'=>'CHtml::encode($data->info->lastname.$data->info->firstname)',
@@ -114,7 +114,7 @@ foreach($model->experiments as $experiment)
 if(count($model->experiments)>0)
 {
 	$columns[]=	array(
-			'header'=>"Average/Times",
+			'header'=>Yii::t('course',"Average/Times"),
 			'type'=>'raw',
 			'value'=>'$data->getAverageScore('.$model->id.')',
 	);
