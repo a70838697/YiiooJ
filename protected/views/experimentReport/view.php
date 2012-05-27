@@ -18,13 +18,8 @@ $this->menu=array(
 
 <h1>View ExperimentReport #<?php echo $model->id; ?></h1>
 <?php
-$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
-$canedit=$canscore
-	||(UUserIdentity::isStudent() && (
-			($model->status==ExperimentReport::STATUS_ALLOW_EDIT ) 
-			|| ( (!$model->experiment->isTimeOut()) &&  $model->status==ExperimentReport::STATUS_NORMAL)
-		)
-	);
+$canscore=$model->canScore();
+$canedit=$model->canEdit();
 if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id))
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
