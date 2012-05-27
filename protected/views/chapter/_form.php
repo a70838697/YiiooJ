@@ -131,7 +131,7 @@ $form=$this->beginWidget('CActiveForm', array(
 array(
         'id'=>'uploadFile',
         'config'=>array(
-               'action'=>UCHtml::url('upload/create/type/chapter'),
+               'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
                'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
                'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>10,// minimum file size in bytes

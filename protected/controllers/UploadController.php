@@ -88,10 +88,14 @@ class UploadController extends Controller
         		$filefieldname="qqfile";
         	}
         	if($type=="report"){
-				$folder.="report/".Yii::app()->request->getQuery('course','')."/";
+				$folder.="report/".(int)Yii::app()->request->getQuery('course',0)."/";
         		$filefieldname="filedata";
         	}
-            if($type=="problem"){
+            if($type=="chapter"){
+				$folder.="chapter/".(int)Yii::app()->request->getQuery('book','0')."/";
+        		$filefieldname="qqfile";
+        	}
+        	if($type=="problem"){
 				$folder.="problem/".rand(10, 20)."/";
         		$filefieldname="filedata";
         	}        	
@@ -102,7 +106,7 @@ class UploadController extends Controller
         $sizeLimit = 20 * 1024 * 1024;// maximum file size in bytes
         $uploader = new qqFileUploader($allowedExtensions, $sizeLimit,$filefieldname);
         $result = $uploader->handleUpload($folder);
-        if($result['success'] && !(file_exists($folder . $result['filename']) && is_file($folder . $result['filename'])) )
+        if(isset($result['success']) && $result['success'] && !(file_exists($folder . $result['filename']) && is_file($folder . $result['filename'])) )
         {
 	        $result['success']=false;
 	        $result['error']='Failed to save the file!';

@@ -182,7 +182,7 @@ class ChapterController extends Controller
 		*/
 	}
 
-	public function actionReturnForm(){
+	public function actionReturnForm($id){
 
 
 		//don't reload these scripts or they will mess up the page
@@ -201,7 +201,11 @@ class ChapterController extends Controller
 
 
 		//Figure out if we are updating a Model or creating a new one.
-		if(isset($_POST['update_id']))$model= $this->loadModel($_POST['update_id']);else $model=new Chapter;
+		if(isset($_POST['update_id']))$model= $this->loadModel($_POST['update_id']);
+		else {
+			$model=new Chapter;
+			$model->root=$id;
+		}
 
 
 		$this->renderPartial('_form', array('model'=>$model,
