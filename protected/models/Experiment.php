@@ -39,7 +39,7 @@ class Experiment extends CActiveRecord
 	{
 		$nowt=CDateTimeParser::parse(date("Y-m-d"),"yyyy-MM-dd");
 		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
-		return ($nowt>$end_date);
+		return ($nowt>$end_date)?1:0;
 	}	
 	/**
 	 * @return string the associated database table name
