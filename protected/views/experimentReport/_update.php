@@ -147,7 +147,11 @@ $experiment.='
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;">
 		'. $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'report','rows'=>20,
-			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true)
+			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",
+					'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",
+					'upFlashUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upFlashExt'=>"swf",
+					'upMediaUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upMediaExt'=>"avi,mpeg,avi,mpg,mp3,wav,mov",
+			)),true)
 		.$form->error($model,'report')
 		.'
 	</td>
@@ -163,7 +167,11 @@ $experiment.='
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;">
 		'.$this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'conclusion','rows'=>6,
-			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true)
+			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",
+					'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",
+					'upFlashUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upFlashExt'=>"swf",
+					'upMediaUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upMediaExt'=>"avi,mpeg,avi,mpg,mp3,wav,mov",
+			)),true)
 		. $form->error($model,'conclusion') 
 		.'
 	</td>

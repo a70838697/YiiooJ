@@ -83,7 +83,7 @@ class XHeditor extends CWidget
 	 * Comma separated list of attributes that can be 
 	 * passed to $this->config as array keys
 	 */
-	private $_configurableAttributes = 'html5Upload,upLinkUrl,upLinkExt,upImgExt,upImgUrl,id,name,tools,skin,showBlocktag,internalScript,internalStyle,width,height,loadCSS,fullscreen,beforeSetSource,beforeGetSource,focus,blur,forcePtag';
+	private $_configurableAttributes = 'html5Upload,upLinkUrl,upLinkExt,upImgExt,upImgUrl,upMediaUrl,upMediaExt,upFlashUrl,upFlashExt,id,name,tools,skin,showBlocktag,internalScript,internalStyle,width,height,loadCSS,fullscreen,beforeSetSource,beforeGetSource,focus,blur,forcePtag';
 	
 	/*
 	 * Comma separated list of attributes that can be
