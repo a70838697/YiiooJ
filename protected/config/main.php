@@ -184,6 +184,15 @@ return array(
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),
+		'db2'=>array(
+			'class'=> 'CDbConnection' ,
+			'connectionString' => 'mysql:host=localhost;dbname=csp_yiiooj_data',
+			'emulatePrepare' => true,
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+			'tablePrefix' => 'tbl_',
+		),			
         'authManager'=>array(
             'class'=>'CDbAuthManager',
        		'itemTable' => 'authitem',//table for auth

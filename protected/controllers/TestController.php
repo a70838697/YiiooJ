@@ -185,7 +185,8 @@ class TestController extends Controller
 			Yii::app()->end;
 		}
 		
-	
+		$test=Test::model()->findByPk((int)1);
+		
 		$testDataProvider=new EActiveDataProvider('Test',
 			array(
 			    'criteria'=>array(

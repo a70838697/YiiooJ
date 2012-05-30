@@ -1,5 +1,5 @@
 <?php
-class TestFiles extends CActiveRecord
+class TestFiles extends MyActiveRecord
 {
     public $input_file;
     public $output_file;
@@ -18,7 +18,8 @@ class TestFiles extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{tests}}';
+		preg_match("/dbname=([^;]+)/i", $this->dbConnection->connectionString, $matches);
+		return $matches[1].'.{{tests}}';
 	}
     public function rules()
     {

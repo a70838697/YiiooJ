@@ -15,7 +15,7 @@
  * @property string $created
  * @property string $modified
  */
-class Test extends CActiveRecord
+class Test extends MyActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -31,13 +31,14 @@ class Test extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{tests}}';
+		preg_match("/dbname=([^;]+)/i", $this->dbConnection->connectionString, $matches);
+		return $matches[1].'.{{tests}}';
 	}
 	
 	public function afterSave()
 	{
 		parent::afterSave();
-		$connection=Yii::app()->db;
+		$connection=Yii::app()->db2;
 		$command=$connection->createCommand("update {{submitions}} set status=0 where problem_id=".$this->problem_id);
 		$command->execute();
 		return true;
