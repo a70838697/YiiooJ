@@ -43,7 +43,7 @@ class CourseUser extends UUser
     	}
     	if($isTimeOut)
     	{
-    		return CHtml::ajaxLink(Yii::t('course',"R"),array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array('success' => 'js:function(data){ reloadGrid(); }'), array('confirm'=>Yii::t('course','Do you allow her/him to resubmit a report?')));
+    		return CHtml::link(Yii::t('course',"R"),array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array("onclick"=>'return resubmitReport($(this).attr("href"));'));
     		
     	}
     	return '';

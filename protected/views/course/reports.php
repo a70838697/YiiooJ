@@ -154,6 +154,12 @@ function reloadReport(url,dialog_status)
 	});
 	return false;
 }
+function resubmitReport(link){
+		if(confirm("'.Yii::t('course','Do you allow her/him to resubmit a report?').'") ) {
+			jQuery.ajax({"success":function(data){ reloadGrid(); },"url":link,"cache":false});
+			return false;
+		} else return false;
+}		
 ');
 
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
