@@ -10,3 +10,6 @@
 [submodule "protected/modules/comments"]
 	path = protected/modules/comments
 	url = git://github.com/70838697/Comments-module.git
+[submodule "protected/modules/message"]
+	path = protected/modules/message
+	url = git://github.com/weavora/yii-messages.git

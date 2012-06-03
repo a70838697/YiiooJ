@@ -67,7 +67,12 @@ $columns=array(
 						'header'=>Yii::t('course','Name'),
 						'name'=>'name',
 						'type'=>'raw',
-						'value'=>'CHtml::encode($data->info->lastname.$data->info->firstname)',
+						'value'=>'CHtml::link(CHtml::encode($data->info->lastname.$data->info->firstname),array("schoolInfo/view","id"=>$data->schoolInfo->user_id))',
+				),
+				array(
+						'header'=>Yii::t('course','Operation'),
+						'type'=>'raw',
+						'value'=>'CHtml::link(Yii::t("main","send a message"),array("message/compose","id"=>$data->schoolInfo->user_id))',
 				),
 		/*
 				array(
@@ -145,6 +150,7 @@ function reloadReport(url,dialog_status)
 {
 	if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();
 	if(jQuery("#comment1"))jQuery("#comment1").remove();
+	//$("#ExperimentReport_comment").xheditor(false);
 	if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
 	if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
 		

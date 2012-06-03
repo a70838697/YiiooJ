@@ -13,7 +13,7 @@ $this->menu=array(
 }
 ?>
 
-<h1>View School Information <?php echo CHtml::encode($model->profile->lastname.$model->profile->firstname); ?></h1>
+<h1>View School Information <?php echo CHtml::encode($model->profile->lastname.$model->profile->firstname);?> <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

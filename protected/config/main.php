@@ -25,6 +25,12 @@ return array(
 	),
 	'modules'=>array(
         'user',
+		'message' => array(
+			'userModel' => 'UUser',
+			'getNameMethod' => 'getFullName',
+			'getSuggestMethod' => 'getSuggest',
+			'viewPath' => '//messagesModuleCustom',				
+		),			
 		// uncomment the following to enable the Gii tool
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',

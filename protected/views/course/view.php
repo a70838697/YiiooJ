@@ -17,7 +17,7 @@ $this->menu=array(
 <table>
 	<tr>
 	<td><b><?php echo CHtml::encode($model->getAttributeLabel('user_id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/user/user/view', 'id'=>$model->userinfo->user_id)); ?></td>
+	<?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/user/user/view', 'id'=>$model->userinfo->user_id)); ?> |  <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?></td>
 	<td><center><b><?php echo CHtml::encode($model->getAttributeLabel('due_time')); ?>:</b>
 	<?php echo CHtml::encode($model->due_time); ?></center></td>
 	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('location')); ?>:</b>

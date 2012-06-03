@@ -27,6 +27,17 @@ class UUser extends User
 		return parent::model($className);
 	}
 
+	// class User
+	public function getFullName() {
+		return $this->username;
+	}
+	
+	public function getSuggest($q) {
+		$c = new CDbCriteria();
+		$c->addSearchCondition('username', $q, true, 'OR');
+		$c->addSearchCondition('email', $q, true, 'OR');
+		return $this->findAll($c);
+	}
 	/**
 	 * @return string the associated database table name
 	 */

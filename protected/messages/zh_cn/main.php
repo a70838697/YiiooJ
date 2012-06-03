@@ -12,6 +12,10 @@ return array (
   'Colledge Users' => '校园用户',
   'Content' => '课程内容',
   'Experiments' => '实验',
+
+  'Messages' => '消息',
+
+  'send a message' => '发送消息',
   
   'All Rights Reserved'=>'保留全部权利'
   

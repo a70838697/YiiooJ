@@ -27,8 +27,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'header'=>Yii::t('course','Name'),
 						'name'=>'name',
 						'type'=>'raw',
-						'value'=>'CHtml::encode($data->info->lastname.$data->info->firstname)',
+						'value'=>'CHtml::link(CHtml::encode($data->info->lastname.$data->info->firstname),array("schoolInfo/view","id"=>$data->schoolInfo->user_id))',
 				),
+				array(
+						'header'=>Yii::t('course','Operation'),
+						'type'=>'raw',
+						'value'=>'CHtml::link(Yii::t("main","send a message"),array("message/compose","id"=>$data->schoolInfo->user_id))',
+				),
+				
 				/*
 				array(
 						'header'=>'Login name',
