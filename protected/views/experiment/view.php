@@ -53,10 +53,10 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('reports', 'id'=>$model->id),
         ),
         array(
-            'label'=>($report==null)?"Update the report":'Write a report',
+            'label'=>($report==null)?'Write a report':"Update the report",
             'icon-position'=>'left',
 	        'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
-            'url'=>array('/experimentReport/write', 'id'=>$model->id),
+            'url'=>($report==null)?array('/experimentReport/write', 'id'=>$model->id):array('/experimentReport/update', 'id'=>$report->id),
         ), 
     	array(
     		'label'=>'View my report',
