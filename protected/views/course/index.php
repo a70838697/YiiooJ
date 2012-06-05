@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My course':'All courses',
+	((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?Yii::t('course','My courses'):Yii::t('course','All courses'),
 );
 
 $this->menu=array(
@@ -8,8 +8,6 @@ $this->menu=array(
 	array('label'=>'Manage Course', 'url'=>array('admin')),
 );
 ?>
-
-<h1><?php echo ((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My ':'All';?> Courses</h1>
 <?php
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
