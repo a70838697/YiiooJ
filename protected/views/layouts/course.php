@@ -2,7 +2,7 @@
 <div class="container">
 	<div id="content">
 		<?php 
-		if(property_exists($this,'contentMenu')){// && !empty($this->contentMenu)){
+		if(property_exists($this,'contentMenu') && !empty($this->contentMenu)){
 	$this->contentMenu=array(
 		'htmlOptions' => array( 'style' => 'position: relative; z-index: 1' ),
 		'items'=>array(

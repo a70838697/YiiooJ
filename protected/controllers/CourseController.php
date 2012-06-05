@@ -7,7 +7,7 @@ class CourseController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/course';
-	public $contentMenu=null;
+	public $contentMenu=1;
 	public $model=null;
 
 	/**
@@ -331,6 +331,7 @@ class CourseController extends Controller
 	 */
 	public function actionIndex()
 	{
+		unset($this->contentMenu);
 		$scopes=array('recentlist');
 		
 		if(Yii::app()->request->getQuery('mine',null)!==null)

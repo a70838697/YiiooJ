@@ -4,7 +4,7 @@ return array (
   'Open Online Judge of Jinan University'=>'暨大开源在线判题系统',
   
   'Home' => '首页',
-  'All Courses' => '全部课程',
+  'My courses' => '我的课程',
   'RBAM' => '权限管理',
   'ACM Train' => 'ACM训练',
   'About' => '关于',

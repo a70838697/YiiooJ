@@ -43,7 +43,7 @@
 		$this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index')),
-				array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All Courses"), 'visible'=>UUserIdentity::canHaveCourses()),
+				array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::canHaveCourses()),
 				$a,
 				array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM Train")),
 				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
