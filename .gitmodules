@@ -13,3 +13,6 @@
 [submodule "protected/modules/message"]
 	path = protected/modules/message
 	url = git://github.com/weavora/yii-messages.git
+[submodule "js_plugins/mathjax"]
+	path = js_plugins/mathjax
+	url = git://github.com/mathjax/MathJax.git

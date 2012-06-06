@@ -16,7 +16,8 @@ $this->menu=array(
 echo CHtml::link(
     'update', 
     array('update', 'id'=>$model->id));
- 
+
+$this->widget('application.components.widgets.MathJax',array());
 ?>
 <div>
 <?php echo $model->description; ?>
