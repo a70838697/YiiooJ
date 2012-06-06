@@ -27,7 +27,7 @@ class MultipleChoiceController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('view','list'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -35,7 +35,7 @@ class MultipleChoiceController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('index','admin','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -69,14 +69,16 @@ class MultipleChoiceController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id=null)
 	{
 		$model=new MultipleChoice;
 		$choiceOptionManager=new ChoiceOptionManager();
 
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
+		
 		if(isset($_POST['MultipleChoice']))
 		{
 			$model->attributes=$_POST['MultipleChoice'];
@@ -131,9 +133,27 @@ class MultipleChoiceController extends Controller
 			}
 		}
 		
+		$treeArray=array();
+		if($id!=null)
+		{
+			$nodeRoot=Chapter::model()->findByPk($id);
+			if($nodeRoot===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
+			$tree=$nodeRoot->descendants()->findAll();
+			if(!empty($tree))
+			{
+				foreach ($tree as $node)
+				{
+					//var_dump($node);
+					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
+				}
+			}
+		}		
 		$this->render('create',array(
 				'model'=>$model,
 				'choiceOptionManager'=>$choiceOptionManager,
+				'chapters'=>$treeArray
 		));		
 	}
 
@@ -147,11 +167,6 @@ class MultipleChoiceController extends Controller
 		$model=$this->loadModel($id);
 		$choiceOptionManager=new ChoiceOptionManager();
 		$choiceOptionManager->load($model);
-		
-		$answer_faker=preg_split('/,/',$model->answer);
-		foreach($choiceOptionManager->items as $id=>$choiceOption){
-			$choiceOption->isAnswer=(in_array($id,$answer_faker))?1:0;
-		}		
 		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -210,10 +225,33 @@ class MultipleChoiceController extends Controller
 			}
 		}
 		
-
+		
+		$treeArray=array();
+		if($model->chapter!=null)
+		{
+			$nodeRoot=$model->chapter->book;
+			if($nodeRoot===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
+			$tree=$nodeRoot->descendants()->findAll();
+			if(!empty($tree))
+			{
+				foreach ($tree as $node)
+				{
+					//var_dump($node);
+					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
+				}
+			}
+		}
+		$answer_faker=preg_split('/,/',$model->answer);
+		foreach($choiceOptionManager->items as $id=>$choiceOption){
+			$choiceOption->isAnswer=(in_array($id,$answer_faker))?1:0;
+		}
+		
 		$this->render('update',array(
 			'model'=>$model,
 			'choiceOptionManager'=>$choiceOptionManager,
+			'chapters'=>$treeArray
 		));
 	}
 
@@ -247,7 +285,31 @@ class MultipleChoiceController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
+	/**
+	 * Lists all models.
+	 */
+	public function actionList($id)
+	{
+		$nodeRoot=Chapter::model()->findByPk($id);
+		$criteria=new CDbCriteria(array(
+	    ));
+		$criteria->with=array("chapter");
+		$criteria->addBetweenCondition("chapter.lft", $nodeRoot->lft,$nodeRoot->rgt);
+		$criteria->order=("chapter.lft");
+		$dataProvider=new EActiveDataProvider('MultipleChoice',
+				array(
+						'criteria'=>$criteria,
+						'pagination'=>array(
+								'pageSize'=>30,
+						),
+				)
+		);		
+		$this->render('index',array(
+				'dataProvider'=>$dataProvider,
+				'root'=>$nodeRoot,
+		));
+	}
+	
 	/**
 	 * Manages all models.
 	 */

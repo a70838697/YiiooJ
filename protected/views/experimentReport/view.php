@@ -14,6 +14,7 @@ $this->menu=array(
 	array('label'=>'Delete ExperimentReport', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage ExperimentReport', 'url'=>array('admin')),
 );
+$this->widget('application.components.widgets.MathJax',array());
 ?>
 
 <h1>View ExperimentReport #<?php echo $model->id; ?></h1>
@@ -33,7 +34,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>'Score',
             'icon-position'=>'left',
-            'visible'=>$canscore && ( ($model->status==ExperimentReport::STATUS_SUBMITIED )|| ( ($model->status==ExperimentReport::STATUS_NORMAL) && ($model->experiment->isTimeOut()) )),
+            'visible'=>$model->canScore(),
 	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('view', 'id'=>$model->id),
@@ -41,7 +42,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>'Submit',
             'icon-position'=>'left',
-            'visible'=>($canscore|| (Yii::app()->user->id==$model->user_id)) && ($model->status !=ExperimentReport::STATUS_SUBMITIED) ,
+            'visible'=>$model->canSubmit(),
 	        'linkOptions'=>array('onclick'=>'return submitr();',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('view', 'id'=>$model->id,'submited'=>'1'),
@@ -49,7 +50,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>'Extend deadline',
             'icon-position'=>'left',
-            'visible'=>($canscore) && ($model->status ==ExperimentReport::STATUS_SUBMITIED) ,
+            'visible'=>$model->canExtend() ,
 	        'linkOptions'=>array('onclick'=>'return extend();',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('view', 'id'=>$model->id,'extended'=>'1'),

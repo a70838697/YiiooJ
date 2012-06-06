@@ -106,15 +106,15 @@ class SchoolInfoController extends Controller
 			{
 				if($bsaved&&isset($_POST['UProfile'])){
 					if(!UUserIdentity::isAdmin())unset($_POST['UProfile']['group']);
-                           if (strlen($_POST['SchoolInfo']['identitynumber'])==10){ $_POST['UProfile']['group']=UUserIdentity::GROUP_STUDENT;
-$model->status=1;
-$_POST['SchoolInfo']['status']=1;
-}
-                           if (strlen($_POST['SchoolInfo']['identitynumber'])==7){
-$_POST['UProfile']['group']=UUserIdentity::GROUP_TEACHER;
-$model->status=1;
-$_POST['SchoolInfo']['status']=1;
-}
+                    if (strlen($_POST['SchoolInfo']['identitynumber'])==10){ $_POST['UProfile']['group']=UUserIdentity::GROUP_STUDENT;
+						$model->status=1;
+						$_POST['SchoolInfo']['status']=1;
+					}
+                    if (strlen($_POST['SchoolInfo']['identitynumber'])==7){
+						$_POST['UProfile']['group']=UUserIdentity::GROUP_TEACHER;
+						$model->status=1;
+						$_POST['SchoolInfo']['status']=1;
+					}
 					$model->profile->attributes=$_POST['UProfile'];
 					//if($model->profile->birthday==null)$model->profile->birthday= new DateTime('0000-00-00');
 					$bsaved=$model->profile->save();

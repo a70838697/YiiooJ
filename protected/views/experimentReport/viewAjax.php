@@ -45,7 +45,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>Yii::t('course','Score'),
             'icon-position'=>'left',
-            'visible'=>$canscore && ( ($model->status==ExperimentReport::STATUS_SUBMITIED )|| ( ($model->status==ExperimentReport::STATUS_NORMAL) && ($model->experiment->isTimeOut()) )),
+            'visible'=>$canscore,
 	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('viewAjax', 'id'=>$model->id),
@@ -53,7 +53,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>Yii::t('course','Submit'),
             'icon-position'=>'left',
-            'visible'=>($canscore|| (Yii::app()->user->id==$model->user_id)) && ($model->status !=ExperimentReport::STATUS_SUBMITIED) ,
+            'visible'=>$model->canSubmit(),
 	        'linkOptions'=>array('onclick'=>'return submitr(this.href);',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('viewAjax', 'id'=>$model->id,'submited'=>'1'),
@@ -61,7 +61,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         array(
             'label'=>Yii::t('course','Extend deadline'),
             'icon-position'=>'left',
-            'visible'=>($canscore) && ($model->status ==ExperimentReport::STATUS_SUBMITIED) ,
+            'visible'=>$model->canExtend(),
 	        'linkOptions'=>array('onclick'=>'return extend(this.href);',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('viewAjax', 'id'=>$model->id,'extended'=>'1'),
@@ -97,6 +97,14 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 
 <?php $this->renderPartial('viewReport',array('model'=>$model));?>
 <?php 
+echo CHtml::script('
+function submitr(url)
+{
+	if(confirm("Are you really want to submit the report?\r\n You will not be allowed to modify it then."))
+		reloadReport(url);
+	return false;
+}
+				');
 if($canscore){
 echo CHtml::script('
 $(document).ready(function() {
@@ -110,6 +118,7 @@ $(document).ready(function() {
 			if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
 			if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
 			$("#reportcontent").html(data);
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
 		
 			jQuery("#tabReport").tabs("select", 1);
 			reloadGrid();
@@ -124,12 +133,7 @@ function extend(url)
 		reloadReport(url);
 	return false;
 }		
-function submitr(url)
-{
-	if(confirm("Are you really want to submit the report?\r\n You will not be allowed to modify it then."))
-		reloadReport(url);
-	return false;
-}		
+		
 function showDialogue()
 {
 	$("#scoredialog").dialog("open");

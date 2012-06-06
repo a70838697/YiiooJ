@@ -74,6 +74,8 @@ class Chapter extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 				'course' => array(self::HAS_ONE, 'Course', 'chapter_id'),
+				'chapters' => array(self::HAS_MANY, 'Chapter', 'root'),
+				'book' => array(self::BELONGS_TO, 'Chapter', 'root'),
 		);
 	}
 

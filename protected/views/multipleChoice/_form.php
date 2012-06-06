@@ -15,6 +15,13 @@
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
+	<?php if($chapters){?>
+	<div class="row">
+		<?php echo $form->labelEx($model,'chapter_id'); ?>
+		<?php echo $form->dropDownList($model,'chapter_id',$chapters,array('encode'=>false)); ?>
+		<?php echo $form->error($model,'chapter_id'); ?>
+	</div>	
+	<?php }?>
 <table>
 <tr>
 	<th><?php echo $form->checkBox($model,'more_than_one_answer', array('value'=>1, 'uncheckValue'=>0)); ?></th><th><?php  echo $form->labelEx($model,'more_than_one_answer');?><?php echo $form->error($model,'answer'); ?></th>

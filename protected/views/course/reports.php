@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
 echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
 
-
+$this->widget('application.components.widgets.MathJax',array());
 /*
 $this->menu=array(
 	array('label'=>'List Course', 'url'=>array('index')),
@@ -157,7 +157,9 @@ function reloadReport(url,dialog_status)
 	$("#reportcontent").load(url,function(){
 		if(dialog_status=="open")
 			$("#viewreport").dialog("open");
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
 	});
+		
 	return false;
 }
 function resubmitReport(link){

@@ -19,6 +19,11 @@ echo CHtml::link(
 
 $this->widget('application.components.widgets.MathJax',array());
 ?>
+<?php if($model->chapter){?>
+<div>
+Chapter:<?php echo $model->chapter->name; ?>
+</div>
+<?php }?>
 <div>
 <?php echo $model->description; ?>
 </div>

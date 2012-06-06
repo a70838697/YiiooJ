@@ -11,6 +11,7 @@
  * @property integer $update_time
  * @property string $answer
  * @property integer $more_than_one_answer
+ * @proptery integer $chapter_id
  */
 class MultipleChoice extends CActiveRecord
 {
@@ -42,6 +43,7 @@ class MultipleChoice extends CActiveRecord
 		return array(
 			array('description,answer', 'required'),
 			array('more_than_one_answer', 'numerical', 'integerOnly'=>true),
+			array('chapter_id', 'numerical', 'integerOnly'=>true),
 			array('answer', 'length', 'max'=>255),
 			array('create_time','default',
 				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
@@ -54,7 +56,7 @@ class MultipleChoice extends CActiveRecord
 				'setOnEmpty'=>false,'on'=>'insert'),				
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, description, user_id, create_time, update_time, answer', 'safe', 'on'=>'search'),
+			array('id, description, user_id, create_time, update_time, answer,chapter_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +69,7 @@ class MultipleChoice extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'choiceOptions' => array(self::HAS_MANY, 'ChoiceOption', 'multiple_choice_id'),
+			'chapter' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
 		);
 	}
 
@@ -82,6 +85,7 @@ class MultipleChoice extends CActiveRecord
 			'user_id' => 'User',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
+			'chapter_id' => 'Chapter',
 			'answer' => 'Answer',
 		);
 	}

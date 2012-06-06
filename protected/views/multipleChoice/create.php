@@ -12,4 +12,4 @@ $this->menu=array(
 
 <h1>Create MultipleChoice</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager,'chapters'=>$chapters)); ?>

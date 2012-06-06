@@ -18,4 +18,4 @@ echo CHtml::link(
 
 <h1>Update MultipleChoice <?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager,'chapters'=>$chapters)); ?>
