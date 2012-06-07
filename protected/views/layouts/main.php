@@ -32,10 +32,10 @@
 		$a=array('label'=>'Home', 'url'=>array('/site/index'),'visible'=>false);
 		$b=array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM Train"));
 		$model=isset($this->model)?$this->model:null;
-		if( (Yii::app()->controller->id=="classRoom" && isset($model->book)))
+		if( (Yii::app()->controller->id=="classRoom" && isset($model->course) && ($model->course->chapter_id >0)))
 		{
-			$a=array('url'=>array('/chapter/view','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
-			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
+			$a=array('url'=>array('/chapter/view','id'=>isset($model->course->chapter_id)?$model->course->chapter_id:"1"), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() && ($model->course->chapter_id>0));
+			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->course->chapter_id)?$model->course->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && ($model->course->chapter_id>0));
 		}
 		if( (Yii::app()->controller->id=="chapter" && isset($model->classRoom)))
 		{
