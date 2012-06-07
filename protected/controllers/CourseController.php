@@ -94,7 +94,7 @@ class CourseController extends Controller
 	{
 		$model=$this->loadModel($id);
 		$this->model=$model;
-		$this->checkAccess(array('model'=>$model));		
+		//$this->checkAccess(array('model'=>$model));		
 		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

@@ -41,7 +41,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'visibility'); ?>
-		<?php echo $form->textField($model,'visibility'); ?>
+		<?php echo $form->dropDownList($model,'visibility',UCourseLookup::getCourseStatusMessages()); ?>		
 		<?php echo $form->error($model,'visibility'); ?>
 	</div>
 
