@@ -57,7 +57,7 @@ class ExperimentReport extends CActiveRecord
 		if($this->status==self::STATUS_ALLOW_EDIT || $this->status==self::STATUS_ALLOW_LATE_EDIT ) return false;
 		if(UUserIdentity::isAdmin())return true;
 		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->classRoom->user_id);
-		return true;
+		return false;
 	}
 	public function canEdit()
 	{

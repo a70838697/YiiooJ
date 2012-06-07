@@ -50,8 +50,16 @@ class ExperimentReportController extends ZController
 	 */
 	public function actionViewAjax($id)
 	{
+
 		$model=$this->loadModel($id);
-	
+		if(!UUserIdentity::isAdmin() &&
+				!(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id)
+				&& !($model->user_id==Yii::app()->user->id)
+		)
+		{
+			throw new CHttpException(404,'The requested page does not exist.');
+		}
+		
 		//There is no authority check here.
 		if(Yii::app()->request->getQuery('submited',null)!==null)
 		{
@@ -104,6 +112,13 @@ class ExperimentReportController extends ZController
 	{
 		$model=$this->loadModel($id);
 		
+		if(!UUserIdentity::isAdmin() &&
+			!(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id)	
+			&& !($model->user_id==Yii::app()->user->id)
+		)
+		{
+			throw new CHttpException(404,'The requested page does not exist.');
+		}		
 		//$canEdit=UUserIdentity::isAdmin()
 		//||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 		//$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
