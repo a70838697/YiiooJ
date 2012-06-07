@@ -81,7 +81,7 @@ $cs->registerCoreScript('bbq');
 $cs->registerCoreScript('yii');
 echo CHtml::script('
 
-$("#students").load("'.CHtml::normalizeUrl(array('group/view/'.$model->student_group_id)) .'",{},function(){'.
+$("#students").load("'.CHtml::normalizeUrl(array('group/view/'.$model->user_group_id)) .'",{},function(){'.
 "
 jQuery('#groupUser-grid').yiiGridView({'ajaxUpdate':['1','groupUser-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'pageVar':'Problem_page'});
 ".
@@ -167,7 +167,7 @@ echo CHtml::script('
 var isfirstload=true;
 function showDialogue()
 {
-		$("#selectstudent").load("'.CHtml::normalizeUrl(array('group/selectStudent/'.$model->student_group_id)) .'",{},function(){'.
+		$("#selectstudent").load("'.CHtml::normalizeUrl(array('group/selectStudent/'.$model->user_group_id)) .'",{},function(){'.
 			"
 			jQuery('#group-grid').yiiGridView({'ajaxUpdate':['1','group-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':2,'pageVar':'SchoolInfo_page'});
 			".

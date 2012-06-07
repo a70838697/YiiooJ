@@ -30,19 +30,14 @@ class CourseController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
-				'roles'=>array('Teacher','Student','Admin'),
+				'users'=>array('*'),
 			),
-			array('allow', // allow Student
-				'actions'=>array('apply','experiments'),
-				'roles'=>array('Student'),			
-			),
-					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','students','experiments','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('create','update','experimentTemplates','deleteExperimentTemplate'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','experiments','students','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('admin','delete','create','update','experimentTemplates','deleteExperimentTemplate'),
 				'roles'=>array('Admin'),
 			),
 			array('deny',  // deny all users
@@ -58,188 +53,14 @@ class CourseController extends Controller
 	public function actionView($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
-		$this->checkAccess(array('model'=>$model));		
+		//$this->checkAccess(array('model'=>$model));		
 		
 		$this->model=$model;
 		$this->render('view',array(
 			'model'=>$model,
 		));
 	}
-	private function addStudentMember($model,$student_id,$status)
-	{
-		if($model->student_group_id==0)
-		{
-			$studentGroup= new Group;
-			$studentGroup->type_id= Group::GROUP_TYPE_COURSE;
-			$studentGroup->belong_to_id=$model->id;
-			if(!$studentGroup->save())
-				return false;
-			$model->student_group_id=$studentGroup->id;
-			if(!$model->save())return false;
-		}
-		$groupUser=new GroupUser();
-		$groupUser->group_id = $model->student_group_id;
-		$groupUser->user_id=$student_id;
-		$groupUser->status = $status;
-		return $groupUser->save()?$groupUser:false;
-	}
-	/**
-	 * Apply for the course.
-	 * @param integer $id the ID of the model to be applyed
-	 */
-	public function actionApply($id)
-	{
-		$model=$this->loadModel($id,'myMemberShip');
-		$this->model=$model;
-		$this->checkAccess(array('model'=>$model));				
-		$groupUser=$model->myMemberShip;
-		if($groupUser===null)
-		{
-			if(Yii::app()->request->getQuery('op',null)=='apply'){
-				$groupUser=$this->addStudentMember($model,Yii::app()->user->id,GroupUser::USER_STATUS_APPLIED);
-				if(!$groupUser)
-					throw new CHttpException(404,'The requested operation can not be done.');
-			}
-		}else {
-			if(Yii::app()->request->getQuery('op',null)=='cancel')
-			{
-				$groupUser->delete();
-			}
-		}
-		if(Yii::app()->request->isAjaxRequest )
-		{
-			$result=array(
-				'ok'=>true,//you can check time, if timeout, no result
-				'status'=>$groupUser?false:($groupUser->status) ,
-			);
-			echo json_encode($result);
-			die;
-		}		
-		
-		$this->redirect(array('course/index/mine'));
-	}
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionReports($id)
-	{
-		$model=$this->loadModel($id);
-		$this->model=$model;
-		
-		$criteria=new CDbCriteria(array(
-		));
-		$criteria->select='username';
-		$criteria->with=array('info','schoolInfo','group');
-		$criteria->params=array(':group_id'=>$model->student_group_id);
-		
-		$dataProvider=new EActiveDataProvider('ClassRoomUser',
-				array(
-						'criteria'=>$criteria,
-						'sort'=>array(
-								'attributes'=>array(
-										'name'=>array(
-												'asc'=>'info.lastname,info.firstname',
-												'desc'=>'info.lastname DESC,info.firstname DESC',
-										),
-										'schoolInfo.identitynumber',
-										'username',
-										'experimentReport.score',
-								),
-						),
-						'pagination'=>array(
-								'pageSize'=>30,
-						),
-				)
-		);
-		
-		$this->render('reports',array(
-			'model'=>$model,
-			'dataProvider'=>$dataProvider,
-		));
-	}	
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionExperiments($id)
-	{
-		$model=$this->loadModel($id,'myMemberShip');
-		$this->model=$model;
-		$this->checkAccess(array('model'=>$model));				
-		
-		$experiment=UUserIdentity::isTeacher()?$this->newExperiment($model):null;
 
-		$this->render('experiments',array(
-			'model'=>$model,
-			'experiment'=>$experiment,
-		));
-	}
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionStudents($id)
-	{
-		$model=$this->loadModel($id);
-		$this->model=$model;
-		if(isset($_POST['students_ids']))
-		{
-			foreach(preg_split("/,/",$_POST['students_ids']) as $student_id)
-			{
-				if((int)$student_id>0)$this->addStudentMember($model,(int)$student_id,GroupUser::USER_STATUS_ACCEPTED);
-			}
-		}
-		$this->checkAccess(array('model'=>$model));		
-		
-		$command = Yii::app()->db->createCommand()
-		->select('count(1)')
-		->from('{{group_users}} a')
-		->join('{{users}} b', 'a.user_id=b.id')
-		->join('{{profiles}} c', 'a.user_id=c.user_id')
-		->join('{{school_infos}} d', 'a.user_id=d.user_id')
-		->where('a.group_id= :group_id', array(':group_id'=>$model->student_group_id));
-		$count=$command->queryScalar();
-		
-		$command->reset();
-		
-		$command->select('a.id,a.status, b.id as user_id,b.username,b.email,c.lastname,c.firstname,d.identitynumber')
-		->from('{{group_users}} a')
-		->join('{{users}} b', 'a.user_id=b.id')
-		->join('{{profiles}} c', 'a.user_id=c.user_id')
-		->join('{{school_infos}} d', 'a.user_id=d.user_id')
-		->where('a.group_id= :group_id');
-		
-		$sql=$command->getText();
-		$sort = new CSort();
-		$sort->attributes = array(
-				'username'=>array(
-						'asc'=>'username',
-						'desc'=>'username desc',
-				),
-				'name'=>array(
-						'asc'=>'lastname,firstname',
-						'desc'=>'lastname desc,firstname desc',
-				),
-				'identitynumber',
-				'status',
-		);
-		
-		
-		$dataProvider=new CSqlDataProvider($sql, array(
-				'params'=> array(':group_id'=>$model->student_group_id),
-				'totalItemCount'=>$count,
-				'sort'=>$sort,
-				'pagination'=>array(
-						'pageSize'=>30,
-				),
-		));
-		
-		$this->render('students',array(
-			'model'=>$model,
-			'dataProvider'=>$dataProvider,
-		));
-	}	
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
@@ -308,7 +129,7 @@ class CourseController extends Controller
 
 	/**
 	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
@@ -406,41 +227,6 @@ class CourseController extends Controller
 		return $experiment;
 	}
 	
-	/**
-	 * Creates a new experiment.
-	 * This method attempts to create a new experiment based on the user input.
-	 * If the experiment is successfully created, the browser will be redirected
-	 * to show the created experiment.
-	 * @param Course the course that the new experiment belongs to
-	 * @return Experiment the experiment instance
-	 */
-	public function actionResubmitReport()
-	{
-		$user_id=(int)Yii::app()->request->getQuery('user_id',0);
-		$experiment_id=(int)Yii::app()->request->getQuery('experiment_id',0);
-
-		$experiment=Experiment::model()->findByPk((int)$experiment_id);
-		if(UUserIdentity::isAdmin()||($experiment->classRoom->user_id==Yii::app()->user->id))
-		{
-
-			$model=new ExperimentReport;
-
-			$model->user_id=$user_id;
-			$model->experiment_id=$experiment_id;
-			$model->status=ExperimentReport::STATUS_ALLOW_LATE_EDIT;
-			$model->report="&nbsp;";
-			$model->conclusion="&nbsp;";
-			$model->score=0;
-			if($model->save()){
-				echo json_encode (array('success'=>true));
-				exit;
-			}
-			var_dump($model);
-		}
-
-		echo json_encode (array('success'=>false));
-		exit;
-	}	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

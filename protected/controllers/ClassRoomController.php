@@ -67,18 +67,18 @@ class ClassRoomController extends Controller
 	}
 	private function addStudentMember($model,$student_id,$status)
 	{
-		if($model->student_group_id==0)
+		if($model->user_group_id==0)
 		{
 			$studentGroup= new Group;
 			$studentGroup->type_id= Group::GROUP_TYPE_CLASS_ROOM;
 			$studentGroup->belong_to_id=$model->id;
 			if(!$studentGroup->save())
 				return false;
-			$model->student_group_id=$studentGroup->id;
+			$model->user_group_id=$studentGroup->id;
 			if(!$model->save())return false;
 		}
 		$groupUser=new GroupUser();
-		$groupUser->group_id = $model->student_group_id;
+		$groupUser->group_id = $model->user_group_id;
 		$groupUser->user_id=$student_id;
 		$groupUser->status = $status;
 		return $groupUser->save()?$groupUser:false;
@@ -131,7 +131,7 @@ class ClassRoomController extends Controller
 		));
 		$criteria->select='username';
 		$criteria->with=array('info','schoolInfo','group');
-		$criteria->params=array(':group_id'=>$model->student_group_id);
+		$criteria->params=array(':group_id'=>$model->user_group_id);
 		
 		$dataProvider=new EActiveDataProvider('ClassRoomUser',
 				array(
@@ -198,7 +198,7 @@ class ClassRoomController extends Controller
 		->join('{{users}} b', 'a.user_id=b.id')
 		->join('{{profiles}} c', 'a.user_id=c.user_id')
 		->join('{{school_infos}} d', 'a.user_id=d.user_id')
-		->where('a.group_id= :group_id', array(':group_id'=>$model->student_group_id));
+		->where('a.group_id= :group_id', array(':group_id'=>$model->user_group_id));
 		$count=$command->queryScalar();
 		
 		$command->reset();
@@ -227,7 +227,7 @@ class ClassRoomController extends Controller
 		
 		
 		$dataProvider=new CSqlDataProvider($sql, array(
-				'params'=> array(':group_id'=>$model->student_group_id),
+				'params'=> array(':group_id'=>$model->user_group_id),
 				'totalItemCount'=>$count,
 				'sort'=>$sort,
 				'pagination'=>array(

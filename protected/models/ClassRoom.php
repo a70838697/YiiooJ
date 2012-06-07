@@ -83,11 +83,12 @@ class ClassRoom extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
        		'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
-       		'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
+       		'course' => array(self::BELONGS_TO, 'Course', 'course_id'),
+			'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
        		'book' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
-			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.student_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
+			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.user_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
 			'studentGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'studentGroup.type_id='. (Group::GROUP_TYPE_CLASS_ROOM)),
-			//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.student_group_id'),
+			//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.user_group_id'),
 			'experiments' => array(self::HAS_MANY, 'Experiment', 'class_room_id','order'=>'sequence'),
 			'experimentCount' => array(self::STAT, 'Experiment', 'class_room_id'),
 		);
@@ -126,7 +127,7 @@ class ClassRoom extends CActiveRecord
         	'mine'=>array(
                 'condition'=>UUserIdentity::isTeacher()?
         			"{$alias}.visibility!=". UClassRoomLookup::CLASS_ROOM_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id:
-        			"{$alias}.visibility!=". UClassRoomLookup::CLASS_ROOM_TYPE_DELETED ." AND EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.student_group_id and gu.user_id= ".Yii::app()->user->id .")",
+        			"{$alias}.visibility!=". UClassRoomLookup::CLASS_ROOM_TYPE_DELETED ." AND EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id .")",
         	        	),
             'public'=>array(
             	'condition'=>"{$alias}.visibility=".UClassRoomLookup::CLASS_ROOM_TYPE_PUBLIC,
