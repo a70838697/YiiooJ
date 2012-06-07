@@ -12,7 +12,7 @@
 class Group extends CActiveRecord
 {
 	const GROUP_TYPE_TEAM=1;
-	const GROUP_TYPE_COURSE=2;
+	const GROUP_TYPE_CLASS_ROOM=2;
 
 	/**
 	 * Returns the static model of the specified AR class.

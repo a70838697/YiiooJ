@@ -19,7 +19,7 @@
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>256)); ?>
 		<?php echo $form->error($model,'title'); ?>
 		</td><td><?php echo $form->labelEx($model,'experiment_type_id'); ?></td>
-		<td><?php echo $form->dropDownList($model,'experiment_type_id',UCourseLookup::$EXPERIMENT_TYPE_MESSAGES); ?>		
+		<td><?php echo $form->dropDownList($model,'experiment_type_id',UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES()); ?>		
 		<?php echo $form->error($model,'experiment_type_id'); ?></td>
 		</tr>
 		</table>
@@ -103,7 +103,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:740px;height:120px','config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/0'),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:740px;height:120px','config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 	<div class="row buttons">

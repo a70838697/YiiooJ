@@ -1,8 +1,8 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/course/index/mine/1'),
-	$model->course->title=>array('/course/view','id'=>$model->course_id),
-	'Experiments'=>array('/course/experiments','id'=>$model->course_id),
+	'My classes'=>array('/classRoom/index/mine/1'),
+	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
+	'Experiments'=>array('/classRoom/experiments','id'=>$model->class_room_id),
 	$model->title,
 );
 
@@ -70,21 +70,23 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'htmlOptions' => array('style' => 'clear: both;'),
 ));
 ?>
-<?php $this->widget('zii.widgets.CDetailView', array(
+<?php
+$gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
+ $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'sequence',
 		'title',
 		array(
-			'name'=>'course_id',
+			'name'=>'class_room',
 			'type'=>'raw',
-            'value'=>CHtml::link(CHtml::encode($model->course->title),
-                                 array('course/view','id'=>$model->course_id)),		
+            'value'=>CHtml::link(CHtml::encode($model->classRoom->title),
+                                 array('course/view','id'=>$model->class_room_id)),		
 		),
 		array(
 			'name'=>'experiment_type_id',
 			'type'=>'raw',
-            'value'=>UCourseLookup::$EXPERIMENT_TYPE_MESSAGES[$model->experiment_type_id],		
+            'value'=>$gMessages[$model->experiment_type_id],		
 		),
 		array(
 			'name'=>'due_time',

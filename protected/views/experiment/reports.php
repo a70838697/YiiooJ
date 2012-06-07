@@ -1,8 +1,8 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/course/index/mine/1'),
-	$model->course->title=>array('/course/view','id'=>$model->course_id),
-	'Experiments'=>array('/course/experiments','id'=>$model->course_id),
+	'My classes'=>array('/classRoom/index/mine/1'),
+	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
+	'Experiments'=>array('/classRoom/experiments','id'=>$model->class_room_id),
 	$model->title=>array('/experiment','id'=>$model->id),
 	'Reports'
 );
@@ -48,7 +48,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'name'=>'experimentReport.score',
 						'type'=>'raw',
 						'value'=>'($data->experimentReport!=null)? CHtml::link( ($data->experimentReport->score>0)?($data->experimentReport->score): ($data->experimentReport->canScore()?Yii::t("course","S"):Yii::t("course","V")),array("experimentReport/view","id"=>$data->experimentReport->id),  array("target"=>"_blank")) :'.
-						'(('. $timeout.'==1)?CHtml::ajaxLink(Yii::t("course","R"),array("course/resubmitReport","experiment_id"=>'.$model->id.',"user_id"=>$data->id), array("success" => "js:function(data){ window.location.reload(); }"), array("confirm"=>Yii::t("course","Do you allow her/him to resubmit a report?"))) :"")',
+						'(('. $timeout.'==1)?CHtml::ajaxLink(Yii::t("course","R"),array("classRoom/resubmitReport","experiment_id"=>'.$model->id.',"user_id"=>$data->id), array("success" => "js:function(data){ window.location.reload(); }"), array("confirm"=>Yii::t("course","Do you allow her/him to resubmit a report?"))) :"")',
 						//'value'=>'$data->experimentReport!=null && $data->experimentReport->score>0?$data->experimentReport->score:""',
 				),
 				array(

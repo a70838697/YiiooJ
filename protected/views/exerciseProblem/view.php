@@ -6,9 +6,9 @@ if(!isset($model->exercise))
 	);
 else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 	$this->breadcrumbs=array(
-		'My Courses'=>array('/course/index/mine/1'),
-		$model->exercise->experiment->course->title=>array('/course/'.$model->exercise->experiment->course->id),
-		'Experiments'=>array('/course/experiments','id'=>$model->exercise->experiment->course->id),	
+		'My classes'=>array('/classRoom/index/mine/1'),
+		$model->exercise->experiment->classRoom->title=>array('/classRoom/'.$model->exercise->experiment->classRoom->id),
+		'Experiments'=>array('/classRoom/experiments','id'=>$model->exercise->experiment->classRoom->id),	
 		$model->exercise->experiment->title=>array('/experiment/'.$model->exercise->experiment->id),
 		$model->title,
 	);

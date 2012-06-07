@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/course/index/mine/1'),
+	'My Courses'=>array('/classRoom/index/mine/1'),
 	$model->title=>array('view','id'=>$model->id),
 	'Experiments'
 );
@@ -41,23 +41,23 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
-        	'url'=>array('/course/students/'.$model->id),
+        	'url'=>array('/classRoom/students/'.$model->id),
         ),
     	array(
     		'label'=>Yii::t('course','View reports'),
     		'icon-position'=>'left',
     		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
     		'icon'=>'document',
-    		'url'=>array('/course/reports/'.$model->id),
+    		'url'=>array('/classRoom/reports/'.$model->id),
     	),
     	array(
-            'label'=>Yii::t('course','Course information'),
+            'label'=>Yii::t('course','Class information'),
             'icon-position'=>'left',
             'icon'=>'document',
-        	'url'=>array('/course/view/'.$model->id.''),
+        	'url'=>array('/classRoom/view/'.$model->id.''),
         ),
         array(
-            'label'=>Yii::t('course','Update course'),
+            'label'=>Yii::t('course','Update class'),
             'icon-position'=>'left',
 	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),
@@ -77,7 +77,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 
 	<?php if(count($model->experiments)>=1): ?>
 		<?php $this->renderPartial('_experiments',array(
-			'course'=>$model,
+			'classRoom'=>$model,
 			'experiments'=>$model->experiments,
 		)); ?>
 	<?php endif; ?>

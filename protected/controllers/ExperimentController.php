@@ -230,9 +230,9 @@ class ExperimentController extends Controller
 		));
 		$criteria->select='username';
 		$criteria->with=array('experimentReport','info','schoolInfo','group');
-		$criteria->params=array(':experiment_id'=>$id,':group_id'=>$model->course->student_group_id);
+		$criteria->params=array(':experiment_id'=>$id,':group_id'=>$model->classRoom->student_group_id);
 		
-		$dataProvider=new EActiveDataProvider('CourseUser',
+		$dataProvider=new EActiveDataProvider('ClassRoomUser',
 				array(
 						'criteria'=>$criteria,
 						'sort'=>array(
@@ -260,7 +260,7 @@ class ExperimentController extends Controller
 				'criteria' => array(
 					'select'=>'t.user_id,{{experiment_reports}}.id as data,{{experiment_reports}}.score as score',
 					'join' => 'LEFT JOIN {{experiment_reports}} ON t.user_id = {{experiment_reports}}.user_id and {{experiment_reports}}.experiment_id='.(int)$id,
-					'condition'=>'t.group_id='.$model->course->student_group_id.' and t.status='.GroupUser::USER_STATUS_ACCEPTED,
+					'condition'=>'t.group_id='.$model->classRoom->student_group_id.' and t.status='.GroupUser::USER_STATUS_ACCEPTED,
 				),
 				'pagination'=>array(
 					'pageSize'=>30,

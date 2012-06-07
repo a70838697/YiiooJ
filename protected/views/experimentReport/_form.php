@@ -3,7 +3,7 @@
 <table  style="height:21pt;margin:0px" width="100%" >
 <tr>
 	<td style="font-size: 14pt; width:80px; font-family: 楷体_GB2312;">课程名称</td>
-	<td style="border-bottom: solid 2px black; text-align:center; width:500px;font-size: 14pt; font-family: 楷体_GB2312;">《<?php echo $model->experiment->course->title?>》</td>
+	<td style="border-bottom: solid 2px black; text-align:center; width:500px;font-size: 14pt; font-family: 楷体_GB2312;">《<?php echo $model->experiment->classRoom->title?>》</td>
 	<td style="width:80px;font-size: 14pt; font-family: 楷体_GB2312;">成绩评定</td>
 	<td style="font-size: 14pt;border-bottom: solid 2px black;"><?php echo $model->score==0?'&nbsp;':$model->score?></td></tr>
 </table>
@@ -12,16 +12,16 @@
 	<td style="font-size: 14pt; width:120px; font-family: 楷体_GB2312;">实验项目名称</td>
 	<td style="border-bottom: solid 2px black; text-align:center; font-size: 14pt; font-family: 楷体_GB2312;"><?php echo $model->experiment->title?></td>
 	<td style="width:80px;font-size: 14pt; font-family: 楷体_GB2312;">指导教师</td>
-	<td style="width:120px;font-size: 14pt;font-family: 楷体_GB2312;border-bottom: solid 2px black;text-align: center;"><?php echo $model->experiment->course->user->info->lastname.$model->experiment->course->user->info->firstname?></td></tr>
+	<td style="width:120px;font-size: 14pt;font-family: 楷体_GB2312;border-bottom: solid 2px black;text-align: center;"><?php echo $model->experiment->classRoom->user->info->lastname.$model->experiment->classRoom->user->info->firstname?></td></tr>
 </table>
 <table  style="height:21pt;margin:0px"" width="100%" >
 <tr>
 	<td style="font-size: 14pt; width:120px; font-family: 楷体_GB2312;">实验项目编号</td>
 	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: 楷体_GB2312;"><?php echo $model->experiment->sequence;?></td>
 	<td style="font-size: 14pt; width:120px; font-family: 楷体_GB2312;">实验项目类型</td>
-	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: 楷体_GB2312;"><?php echo UCourseLookup::$EXPERIMENT_TYPE_MESSAGES[$model->experiment->experiment_type_id];?></td>
+	<td style="border-bottom: solid 2px black; text-align:center; width:120px;font-size: 14pt; font-family: 楷体_GB2312;"><?php $gMessages=UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES();echo $gMessages[$model->experiment->experiment_type_id];?></td>
 	<td style="width:80px;font-size: 14pt; font-family: 楷体_GB2312;">实验地点</td>
-	<td style="font-size: 14pt;font-family: 楷体_GB2312;border-bottom: solid 2px black;text-align: center;"><?php echo $model->experiment->course->location;?></td>
+	<td style="font-size: 14pt;font-family: 楷体_GB2312;border-bottom: solid 2px black;text-align: center;"><?php echo $model->experiment->classRoom->location;?></td>
 </tr>
 </table>
 <table style="height:21pt;margin:0px""  width="100%">
@@ -100,7 +100,7 @@
 	<td style="font-size: 14pt;  font-family: 宋体;"><b>二、实验环境</b></td>
 </tr>
 <tr >
-	<td style="font-size: 12pt;  font-family: 宋体;"><div><?php echo $model->experiment->course->environment;?></div></td>
+	<td style="font-size: 12pt;  font-family: 宋体;"><div><?php echo $model->experiment->classRoom->environment;?></div></td>
 </tr>
 </table>
 <table style="height:31pt;margin:0px""  width="100%">
@@ -138,7 +138,7 @@
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;">
 		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'report','rows'=>20,
-		'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+		'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'report'); ?>
 	</td>
 </tr>
@@ -153,7 +153,7 @@
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;">
 		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'conclusion','rows'=>6,
-			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'conclusion'); ?>
 	</td>
 </tr>

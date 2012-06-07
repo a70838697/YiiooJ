@@ -1,6 +1,6 @@
 <?php
 
-class CourseController extends Controller
+class ClassRoomController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -70,7 +70,7 @@ class CourseController extends Controller
 		if($model->student_group_id==0)
 		{
 			$studentGroup= new Group;
-			$studentGroup->type_id= Group::GROUP_TYPE_COURSE;
+			$studentGroup->type_id= Group::GROUP_TYPE_CLASS_ROOM;
 			$studentGroup->belong_to_id=$model->id;
 			if(!$studentGroup->save())
 				return false;
@@ -84,7 +84,7 @@ class CourseController extends Controller
 		return $groupUser->save()?$groupUser:false;
 	}
 	/**
-	 * Apply for the course.
+	 * Apply for the class room.
 	 * @param integer $id the ID of the model to be applyed
 	 */
 	public function actionApply($id)
@@ -116,7 +116,7 @@ class CourseController extends Controller
 			die;
 		}		
 		
-		$this->redirect(array('course/index/mine'));
+		$this->redirect(array('classRoom/index/mine'));
 	}
 	/**
 	 * Displays a particular model.
@@ -246,14 +246,14 @@ class CourseController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Course;
+		$model=new ClassRoom;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Course']))
+		if(isset($_POST['ClassRoom']))
 		{
-			$model->attributes=$_POST['Course'];
+			$model->attributes=$_POST['ClassRoom'];
 			$model->user_id= Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
@@ -278,9 +278,9 @@ class CourseController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Course']))
+		if(isset($_POST['ClassRoom']))
 		{
-			$model->attributes=$_POST['Course'];
+			$model->attributes=$_POST['ClassRoom'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -345,7 +345,7 @@ class CourseController extends Controller
 	    	$criteria->compare('t.status',(int)($status));
 		}
 	    
-		$dataProvider=new EActiveDataProvider('Course',
+		$dataProvider=new EActiveDataProvider('ClassRoom',
 			array(
 				'criteria'=>$criteria,
 				'scopes'=>$scopes,
@@ -364,10 +364,10 @@ class CourseController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Course('search');
+		$model=new ClassRoom('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Course']))
-			$model->attributes=$_GET['Course'];
+		if(isset($_GET['ClassRoom']))
+			$model->attributes=$_GET['ClassRoom'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -379,10 +379,10 @@ class CourseController extends Controller
 	 * This method attempts to create a new experiment based on the user input.
 	 * If the experiment is successfully created, the browser will be redirected
 	 * to show the created experiment.
-	 * @param Course the course that the new experiment belongs to
+	 * @param ClassRoom the classRoom that the new experiment belongs to
 	 * @return Experiment the experiment instance
 	 */
-	protected function newExperiment($course)
+	protected function newExperiment($classRoom)
 	{
 		$experiment=new Experiment;
 		if(isset($_POST['ajax']) && $_POST['ajax']==='experiment-form')
@@ -394,7 +394,7 @@ class CourseController extends Controller
 		{
 			$experiment->attributes=$_POST['Experiment'];
 			$experiment->user_id=Yii::app()->user->id;
-			$experiment->class_room_id=$course->id;
+			$experiment->class_room_id=$classRoom->id;
 			$experiment->exercise_id=0;
 			if($experiment->save())
 			{
@@ -411,8 +411,6 @@ class CourseController extends Controller
 	 * This method attempts to create a new experiment based on the user input.
 	 * If the experiment is successfully created, the browser will be redirected
 	 * to show the created experiment.
-	 * @param Course the course that the new experiment belongs to
-	 * @return Experiment the experiment instance
 	 */
 	public function actionResubmitReport()
 	{
@@ -449,9 +447,9 @@ class CourseController extends Controller
 	public function loadModel($id,$with=null)
 	{
 		if($with!==null)
-			$model=Course::model()->with($with)->findByPk((int)$id);
+			$model=ClassRoom::model()->with($with)->findByPk((int)$id);
 		else
-			$model=Course::model()->findByPk((int)$id);
+			$model=ClassRoom::model()->findByPk((int)$id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -463,7 +461,7 @@ class CourseController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='course-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='classRoom-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

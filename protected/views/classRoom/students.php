@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/course/index/mine/1'),
+	'My Classes'=>array('/classRoom/index/mine/1'),
 	$model->title=>array('view','id'=>$model->id),
 	'Students'
 );
@@ -40,23 +40,23 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'label'=>Yii::t('course','View experiments'),
             'icon-position'=>'left',
             'icon'=>'document',
-        	'url'=>array('/course/experiments/'.$model->id.''),
+        	'url'=>array('/classRoom/experiments/'.$model->id.''),
         ),
    		array(
 			'label'=>Yii::t('course','View reports'),
 			'icon-position'=>'left',
     		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
     		'icon'=>'document',
-    		'url'=>array('/course/reports/'.$model->id),
+    		'url'=>array('/classRoom/reports/'.$model->id),
     	),
         array(
             'label'=>Yii::t('course','Course information'),
             'icon-position'=>'left',
             'icon'=>'document',
-        	'url'=>array('/course/view/'.$model->id.''),
+        	'url'=>array('/classRoom/view/'.$model->id.''),
         ),
         array(
-            'label'=>Yii::t('course','Update course'),
+            'label'=>Yii::t('course','Update class'),
             'icon-position'=>'left',
 	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),
@@ -139,10 +139,10 @@ echo CHtml::script('
 $(".apply").live("click", 
 function ()
 {
-	return apply_course($(this).attr("tag"),"/op/agree");
+	return apply_classRoom($(this).attr("tag"),"/op/agree");
 }
 );
-function apply_course(id,op)
+function apply_classRoom(id,op)
 {
 	if(id!="")
 	{
@@ -155,7 +155,7 @@ function apply_course(id,op)
 $(".capply").live("click", 
 function ()
 {
-	return apply_course($(this).attr("tag"),"/op/deny");
+	return apply_classRoom($(this).attr("tag"),"/op/deny");
 }
 );
 

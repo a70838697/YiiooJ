@@ -50,9 +50,9 @@ if(UUserIdentity::isStudent())
 }
 ?>
 <?php 
-if(UUserIdentity::isAdmin()||($experiment->course->user_id==Yii::app()->user->id))
+if(UUserIdentity::isAdmin()||($experiment->classRoom->user_id==Yii::app()->user->id))
 {
-	echo CHtml::link( "Delete",array("course/deleteExperiment","id"=>$experiment->id) ,array('confirm' =>Yii::t('course', 'Are you sure to delete the experiment?')));
+	echo CHtml::link( "Delete",array("classRoom/deleteExperiment","id"=>$experiment->id) ,array('confirm' =>Yii::t('course', 'Are you sure to delete the experiment?')));
 }
 ?>
 <!-- experiment -->

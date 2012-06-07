@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table '{{experiments}}':
  * @property integer $id
- * @property integer $course_id
+ * @property integer $class_room_id
  * @property string $title
  * @property integer $experiment_type_id
  * @property string $sequence
@@ -57,8 +57,8 @@ class Experiment extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('course_id, title, sequence,due_time, description, begin, end,aim, exercise_id', 'required'),
-			array('course_id, experiment_type_id, status, exercise_id', 'numerical', 'integerOnly'=>true),
+			array('class_room_id, title, sequence,due_time, description, begin, end,aim, exercise_id', 'required'),
+			array('class_room_id, experiment_type_id, status, exercise_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>160),
 			array('aim', 'length', 'max'=>512),
 			array('memo', 'length', 'max'=>256),
@@ -71,7 +71,7 @@ class Experiment extends CActiveRecord
 	              'setOnEmpty'=>false,'on'=>'insert'), 			
 	        // The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, course_id, title, experiment_type_id, sequence, description, user_id, status, begin, end, created, exercise_id', 'safe', 'on'=>'search'),
+			array('id, class_room_id, title, experiment_type_id, sequence, description, user_id, status, begin, end, created, exercise_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,24 +83,24 @@ class Experiment extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'course' => array(self::BELONGS_TO, 'Course', 'course_id'),
+			'classRoom' => array(self::BELONGS_TO, 'ClassRoom', 'class_room_id'),
 			'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id', 'with'=>'exercise_problems'),
 			'myreport' => array(self::HAS_ONE, 'ExperimentReport', 'experiment_id','condition'=>'user_id='.Yii::app()->user->id),
 		);
 	}
 	/**
-	 * @param Course the post that this experiment belongs to. If null, the method
-	 * will query for the course.
+	 * @param ClassRoom the post that this experiment belongs to. If null, the method
+	 * will query for the classRoom.
 	 * @return string the permalink URL for this experiment
 	 */
-	public function getUrl($course=null)
+	public function getUrl($classRoom=null)
 	{
-		if($course===null) return Yii::app()->createUrl('experiment/view', array(
+		if($classRoom===null) return Yii::app()->createUrl('experiment/view', array(
 			'id'=>$this->id,
 			'title'=>$this->title,
 		));
-		//	$course=$this->course;
-		return $course->url.'#c'.$this->id;
+		//	$classRoom=$this->classRoom;
+		return $classRoom->url.'#c'.$this->id;
 	}
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -109,7 +109,7 @@ class Experiment extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'course_id' => 'Course',
+			'class_room_id' => 'ClassRoom',
 			'title' => 'Title',
 			'experiment_type_id' => 'Type',
 			'sequence' => 'Sequence',
@@ -138,7 +138,7 @@ class Experiment extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('course_id',$this->course_id);
+		$criteria->compare('class_room_id',$this->class_room_id);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('experiment_type_id',$this->experiment_type_id);
 		$criteria->compare('sequence',$this->sequence,true);

@@ -2,8 +2,8 @@
 if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 {
 	$this->breadcrumbs=array(
-		'Courses'=>array('/course/index'),
-		$model->exercise->experiment->course->title=>array('/course/'.$model->exercise->experiment->course->id),
+		'Classes'=>array('/classRoom/index'),
+		$model->exercise->experiment->classRoom->title=>array('/classRoom/'.$model->exercise->experiment->classRoom->id),
 		$model->exercise->experiment->title=>array('/experiment/'.$model->exercise->experiment->id),
 	);
 	if($exercise_problem!=null)

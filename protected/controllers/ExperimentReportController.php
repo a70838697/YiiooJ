@@ -105,7 +105,7 @@ class ExperimentReportController extends ZController
 		$model=$this->loadModel($id);
 		
 		//$canEdit=UUserIdentity::isAdmin()
-		//||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		//||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 		//$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
 		//There is no authority check here.
 		if(Yii::app()->request->getQuery('submited',null)!==null)
@@ -284,7 +284,7 @@ class ExperimentReportController extends ZController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		//$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+		//$canscore=UUserIdentity::isAdmin()||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 		//$canedit=$canscore
 		//||(UUserIdentity::isStudent() && (
 		//		($model->status==ExperimentReport::STATUS_ALLOW_EDIT )

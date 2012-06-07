@@ -30,7 +30,7 @@ echo CHtml::scriptFile($assets .'/JuiButtonSet.js')."\r\n";
 */
 $canscore=$model->canScore();
 $canedit=$model->canEdit();
-if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id))
+if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id))
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	'id'=>'xyb1',
     'items' => array(
@@ -188,7 +188,7 @@ $arr_attrs=array(
 			),    	
 			
 	   );
-$config=array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",);
+$config=array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upImgExt'=>"jpg,jpeg,gif,png",);
 if(isset($config))
 {
 	$arr_attrs['config']=array_merge($arr_attrs['config'],$config);
@@ -224,7 +224,7 @@ jQuery(function($) {
 jQuery('#comment1').commentsList({'dialogTitle':'Add comment','deleteConfirmString':'Delete this comment?','approveConfirmString':'Approve this comment?','postButton':'Add comment','cancelButton':'Cancel'});
 jQuery('#tabReport').tabs({'collapsible':true});
 jQuery('#scoredialog').dialog({'dialogClass':'rbam-dialog','title':'Give a score','autoOpen':false,'minWidth':800,'height':360,'modal':true});
-$("#ExperimentReport_comment").xheditor({'html5Upload':false,'tools':'full','upLinkUrl':'/YiiooJ1/upload/create/type/report/course/1','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/YiiooJ1/upload/create/type/report/course/1','upImgExt':'jpg,jpeg,gif,png','id':'ExperimentReport_comment','name':'ExperimentReport[comment]'});
+$("#ExperimentReport_comment").xheditor({'html5Upload':false,'tools':'full','upLinkUrl':'/YiiooJ1/upload/create/type/report/classRoom/1','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/YiiooJ1/upload/create/type/report/classRoom/1','upImgExt':'jpg,jpeg,gif,png','id':'ExperimentReport_comment','name':'ExperimentReport[comment]'});
 });
 /*]]>*/
 </script>

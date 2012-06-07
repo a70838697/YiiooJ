@@ -89,7 +89,7 @@ class UploadController extends Controller
         		$filefieldname="qqfile";
         	}
         	if($type=="report"){
-				$folder.="report/".(int)Yii::app()->request->getQuery('course',0)."/";
+				$folder.="report/".(int)Yii::app()->request->getQuery('classRoom',0)."/";
         		$filefieldname="filedata";
         	}
             if($type=="chapter"){

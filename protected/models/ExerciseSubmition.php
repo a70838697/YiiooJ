@@ -109,7 +109,7 @@ class ExerciseSubmition extends CActiveRecord
 			'id'=>$this->id,
 			//'title'=>$this->name,
 		));
-		//	$course=$this->course;
+		//	$classRoom=$this->classRoom;
 		return $model->url.'#c'.$this->id;
 	}
 	/**

@@ -47,7 +47,7 @@ class ExperimentReport extends CActiveRecord
 			&& !($this->status==self::STATUS_NORMAL && $this->experiment->isTimeOut()))
 			return false;
 		if(UUserIdentity::isAdmin())return true;
-		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->classRoom->user_id);
 		return false;
 	}	
 	public function canExtend()
@@ -56,14 +56,14 @@ class ExperimentReport extends CActiveRecord
 		if($this->status==self::STATUS_NORMAL && !($this->experiment->isTimeOut()) ) return false;
 		if($this->status==self::STATUS_ALLOW_EDIT || $this->status==self::STATUS_ALLOW_LATE_EDIT ) return false;
 		if(UUserIdentity::isAdmin())return true;
-		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->classRoom->user_id);
 		return true;
 	}
 	public function canEdit()
 	{
 		if($this->isNewRecord)return false;
 		if(UUserIdentity::isAdmin())return true;
-		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->classRoom->user_id);
 		if($this->user_id==Yii::app()->user->id){
 			if($this->status==self::STATUS_NORMAL && !($this->experiment->isTimeOut()) ) return true;
 			if($this->status==self::STATUS_ALLOW_EDIT || $this->status==self::STATUS_ALLOW_LATE_EDIT) return true;
@@ -74,7 +74,7 @@ class ExperimentReport extends CActiveRecord
 		if($this->status==self::STATUS_SUBMITIED || $this->status==self::STATUS_LATE_SUBMITTED)
 			return false;
 		if(UUserIdentity::isAdmin())return true;
-		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->course->user_id);
+		if(UUserIdentity::isTeacher()) return (Yii::app()->user->id==$this->experiment->classRoom->user_id);
 		if($this->user_id==Yii::app()->user->id) return true;
 		return false;
 	}

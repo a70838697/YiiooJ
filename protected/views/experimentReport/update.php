@@ -1,8 +1,8 @@
 <?php
 	$this->breadcrumbs=array(
-		'My Courses'=>array('/course/index/mine/1'),
-		$model->experiment->course->title=>array('/course/'.$model->experiment->course->id),
-		'Experiments'=>array('/course/experiments','id'=>$model->experiment->course->id),	
+		'My classes'=>array('/classRoom/index/mine/1'),
+		$model->experiment->classRoom->title=>array('/classRoom/'.$model->experiment->classRoom->id),
+		'Experiments'=>array('/classRoom/experiments','id'=>$model->experiment->classRoom->id),	
 		$model->experiment->title=>array('/experiment/'.$model->experiment->id),
 		"Experiment Report",
 	);
@@ -19,7 +19,7 @@ $this->menu=array(
 <?php
 $canEdit=UUserIdentity::isAdmin()
 	||Yii::app()->user->id==$model->user_id
-	||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id);
+	||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(

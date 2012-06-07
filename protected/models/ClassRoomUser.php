@@ -3,7 +3,7 @@
 /**
  * This is the model class for table "{{users}}".
  */
-class CourseUser extends UUser
+class ClassRoomUser extends UUser
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -23,14 +23,14 @@ class CourseUser extends UUser
 
     
     private $reports=null;
-    public function getReports($course_id)
+    public function getReports($classRoom_id)
     {
-    	if($this->reports==null)$this->reports=$this->experimentReports(array("params"=>array(":course_id" =>$course_id)));
+    	if($this->reports==null)$this->reports=$this->experimentReports(array("params"=>array(":classRoom_id" =>$classRoom_id)));
     	return $this->reports;
     }
-    public function getCourseExperimentColumn($course_id,$experiment_id,$isTimeOut)
+    public function getCourseExperimentColumn($classRoom_id,$experiment_id,$isTimeOut)
     {
-    	$this->getReports($course_id);
+    	$this->getReports($classRoom_id);
     	// more than one phone exists for the user
     	if(sizeof($this->reports) > 0)
     	{
@@ -43,15 +43,15 @@ class CourseUser extends UUser
     	}
     	if($isTimeOut)
     	{
-    		return CHtml::link(Yii::t('course',"R"),array("course/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array("onclick"=>'return resubmitReport($(this).attr("href"));'));
+    		return CHtml::link(Yii::t('course',"R"),array("classRoom/resubmitReport","experiment_id"=>$experiment_id,"user_id"=>$this->id), array("onclick"=>'return resubmitReport($(this).attr("href"));'));
     		
     	}
     	return '';
     }
     
-    public function getAverageScore($course_id)
+    public function getAverageScore($classRoom_id)
     {
-    	$this->getReports($course_id);
+    	$this->getReports($classRoom_id);
     	// more than one phone exists for the user
     	if(sizeof($this->reports) > 1)
     	{
@@ -82,7 +82,7 @@ class CourseUser extends UUser
 			array(
 				'group'=>array(self::HAS_ONE, 'GroupUser','user_id','select'=>'id','condition' => 'group.group_id=:group_id and group.status ='.GroupUser::USER_STATUS_ACCEPTED),
 				'experimentReport'=>array(self::HAS_ONE, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score,updated','on' => 'experiment_id=:experiment_id','joinType'=>'LEFT JOIN'),
-				'experimentReports'=>array(self::HAS_MANY, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score,updated','on'=>'EXISTS(select * from {{experiments}} bd where bd.id= experimentReports.experiment_id and bd.course_id=:course_id) '),
+				'experimentReports'=>array(self::HAS_MANY, 'ExperimentReport','user_id','select'=>'experiment_id,id,status,score,updated','on'=>'EXISTS(select * from {{experiments}} bd where bd.id= experimentReports.experiment_id and bd.class_room_id=:classRoom_id) '),
 			)
 		);
 	}

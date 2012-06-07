@@ -3,6 +3,9 @@
 return array (
 		'Student number' => '学号',
 		'Name'=>'姓名',
+		'All classes'=>'全部课程',
+		'My classes'=>'全部课程',
+		
 		'All courses'=>'全部课程',
 		'My courses'=>'我的课程',
 		'Create course'=>'创建课程',

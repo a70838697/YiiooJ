@@ -32,22 +32,22 @@
 		$a=array('label'=>'Home', 'url'=>array('/site/index'),'visible'=>false);
 		$b=array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM Train"));
 		$model=isset($this->model)?$this->model:null;
-		if( (Yii::app()->controller->id=="course" && isset($model->book)))
+		if( (Yii::app()->controller->id=="classRoom" && isset($model->book)))
 		{
 			$a=array('url'=>array('/chapter/view','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
 			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
 		}
-		if( (Yii::app()->controller->id=="chapter" && isset($model->course)))
+		if( (Yii::app()->controller->id=="chapter" && isset($model->classRoom)))
 		{
 			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
-			$a=array('url'=>array('/course/view','id'=>isset($model->course)?$model->course->id:"1"), 'label'=>Yii::t('main',"Experiments"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->course));
+			$a=array('url'=>array('/classRoom/view','id'=>isset($model->course)?$model->classRoom->id:"1"), 'label'=>Yii::t('main',"Experiments"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->course));
 		}
 		
 		$this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				$a,
 				$b,
-				array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::canHaveCourses()),
+				array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
 				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 				array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
 				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),

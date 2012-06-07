@@ -1,8 +1,8 @@
 <?php
 	$this->breadcrumbs=array(
-		'My Courses'=>array('/course/index/mine/1'),
-		$model->experiment->course->title=>array('/course/'.$model->experiment->course->id),
-		'Experiments'=>array('/course/experiments','id'=>$model->experiment->course->id),	
+		'My classes'=>array('/classRoom/index/mine/1'),
+		$model->experiment->classRoom->title=>array('/classRoom/'.$model->experiment->classRoom->id),
+		'Experiments'=>array('/classRoom/experiments','id'=>$model->experiment->classRoom->id),	
 		$model->experiment->title=>array('/experiment/'.$model->experiment->id),
 		"Experiment Report",
 	);
@@ -21,7 +21,7 @@ $this->widget('application.components.widgets.MathJax',array());
 <?php
 $canscore=$model->canScore();
 $canedit=$model->canEdit();
-if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->course->user_id))
+if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id))
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     'items' => array(
         array(
@@ -138,7 +138,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	<div class="row">
 		<?php echo $form->labelEx($model,'comment'); ?>
 		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'comment','rows'=>6,
-			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->course_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+			'config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/course/'.$model->experiment->class_room_id),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'comment'); ?>
 	</div>
 	
