@@ -8,7 +8,7 @@ class ClassRoomController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=1;
-	public $model=null;
+	public $classRoom;
 
 	/**
 	 * @return array action filters
@@ -27,6 +27,7 @@ class ClassRoomController extends Controller
 	 */
 	public function accessRules()
 	{
+		
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
@@ -60,7 +61,7 @@ class ClassRoomController extends Controller
 		$model=$this->loadModel($id,'myMemberShip');
 		$this->checkAccess(array('model'=>$model));		
 		
-		$this->model=$model;
+		$this->classRoom=$model;
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -90,7 +91,7 @@ class ClassRoomController extends Controller
 	public function actionApply($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
-		$this->model=$model;
+		$this->classRoom=$model;
 		$this->checkAccess(array('model'=>$model));				
 		$groupUser=$model->myMemberShip;
 		if($groupUser===null)
@@ -125,8 +126,8 @@ class ClassRoomController extends Controller
 	public function actionReports($id)
 	{
 		$model=$this->loadModel($id);
-		$this->model=$model;
-		
+		$this->classRoom=$model;
+				
 		$criteria=new CDbCriteria(array(
 		));
 		$criteria->select='username';
@@ -165,7 +166,7 @@ class ClassRoomController extends Controller
 	public function actionExperiments($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
-		$this->model=$model;
+		$this->classRoom=$model;
 		$this->checkAccess(array('model'=>$model));				
 		
 		$experiment=UUserIdentity::isTeacher()?$this->newExperiment($model):null;
@@ -182,7 +183,7 @@ class ClassRoomController extends Controller
 	public function actionStudents($id)
 	{
 		$model=$this->loadModel($id);
-		$this->model=$model;
+		$this->classRoom=$model;
 		if(isset($_POST['students_ids']))
 		{
 			foreach(preg_split("/,/",$_POST['students_ids']) as $student_id)
@@ -272,7 +273,7 @@ class ClassRoomController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$this->model=$model;
+		$this->classRoom=$model;
 		$this->checkAccess(array('model'=>$model));		
 		
 		// Uncomment the following line if AJAX validation is needed
@@ -331,6 +332,7 @@ class ClassRoomController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->layout='//layouts/course_center';
 		unset($this->contentMenu);
 		$scopes=array('recentlist');
 		

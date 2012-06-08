@@ -8,7 +8,7 @@ class CourseController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=1;
-	public $model=null;
+	public $course=null;
 
 	/**
 	 * @return array action filters
@@ -55,7 +55,7 @@ class CourseController extends Controller
 		$model=$this->loadModel($id,'myMemberShip');
 		//$this->checkAccess(array('model'=>$model));		
 		
-		$this->model=$model;
+		$this->course=$model;
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -67,6 +67,7 @@ class CourseController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$this->layout='//layouts/course_center';		
 		$model=new Course;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -93,7 +94,7 @@ class CourseController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$this->model=$model;
+		$this->course=$model;
 		//$this->checkAccess(array('model'=>$model));		
 		
 		// Uncomment the following line if AJAX validation is needed
@@ -152,6 +153,7 @@ class CourseController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->layout='//layouts/course_center';
 		unset($this->contentMenu);
 		$scopes=array('recentlist');
 		

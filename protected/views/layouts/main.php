@@ -28,28 +28,13 @@
 
 	<div id="mainmenu">
 		<?php 
-		
-		$a=array('label'=>'Home', 'url'=>array('/site/index'),'visible'=>false);
-		$b=array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM Train"));
-		$model=isset($this->model)?$this->model:null;
-		if( (Yii::app()->controller->id=="classRoom" && isset($model->course) && ($model->course->chapter_id >0)))
-		{
-			$a=array('url'=>array('/chapter/view','id'=>isset($model->course->chapter_id)?$model->course->chapter_id:"1"), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() && ($model->course->chapter_id>0));
-			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->course->chapter_id)?$model->course->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && ($model->course->chapter_id>0));
-		}
-		if( (Yii::app()->controller->id=="chapter" && isset($model->classRoom)))
-		{
-			$b=array('url'=>array('/multipleChoice/list','id'=>isset($model->chapter_id)?$model->chapter_id:"1"), 'label'=>Yii::t('main',"Poblem library"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->book));
-			$a=array('url'=>array('/classRoom/view','id'=>isset($model->course)?$model->classRoom->id:"1"), 'label'=>Yii::t('main',"Experiments"), 'visible'=>UUserIdentity::canHaveCourses() && isset($model->course));
-		}
-		
-		$this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				$a,
-				$b,
+		$items=array(
+				array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
+				array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM train")),
 				array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
-				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge Users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 				array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
+				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
+				array('url'=>array('/organization/index'), 'label'=>Yii::t('main',"Organization"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 				array('url' => Yii::app()->getModule('message')->inboxUrl,
@@ -61,7 +46,10 @@
 				array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getModule('user')->t("Logout").' ('.Yii::app()->user->name.')', 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>Yii::t('main','About'), 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>Yii::t('main','Contact'), 'url'=>array('/site/contact')),
-							),
+		);
+		
+		$this->widget('zii.widgets.CMenu',array(
+			'items'=>$items,
 		)); ?>
 	</div><!-- mainmenu -->
 

@@ -25,15 +25,14 @@ $this->menu=array(
 	</tr>
 </table>
 <?php
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
-        array(
+$items=array(
+        /*array(
             'label'=>Yii::t('course','View experiments'),
         	'icon-position'=>'left',
         	'visible'=>!Yii::app()->user->isGuest,
             'icon'=>'document',
         	'url'=>array('/classRoom/experiments/'.$model->id),
-        ),
+        ),*/
         array(
             'label'=>Yii::t('course','View students'),
         	'icon-position'=>'left',
@@ -54,9 +53,19 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),
         ), 
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+    );
+$count=0;
+foreach($items as $item)
+{
+	if($item['visible'])$count++;
+}
+if($count>0){
+	$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
+			'items' =>$items,
+			'htmlOptions' => array('style' => 'clear: both;'),
+	));
+}
+
 ?>
 
 <?php $this->widget('zii.widgets.CDetailView', array(

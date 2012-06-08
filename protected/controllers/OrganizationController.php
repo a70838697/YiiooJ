@@ -46,13 +46,12 @@ class OrganizationController extends Controller
 	public function accessRules()
 	{
 		return array(
-				array('allow', // allow admin user to perform 'admin' and 'delete' actions
-						'actions'=>array('*'),
-						'roles'=>array('Admin'),
-				),
-				array('deny',  // deny all users
-						'users'=>array('*'),
-				),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'roles'=>array('Admin'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
 		);
 	}
 

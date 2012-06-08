@@ -30,8 +30,7 @@ if(UUserIdentity::isStudent())
 	}
 	
 }
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
+$items= array(
         array(
             'label'=>'Add an problem',
             'icon-position'=>'left',
@@ -66,9 +65,18 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     	),
     		
       
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+    );
+$count=0;
+foreach($items as $item)
+{
+	if($item['visible'])$count++;
+}
+if($count>0){
+	$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
+	    'items' =>$items,
+	    'htmlOptions' => array('style' => 'clear: both;'),
+	));
+}
 ?>
 <?php
 $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());

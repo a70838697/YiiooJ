@@ -26,9 +26,8 @@ $this->menu=array(
 	</tr>
 </table>
 <?php
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
-        array(
+$items= array(
+       array(
             'label'=>Yii::t('course','Add an experiment'),
             'icon-position'=>'left',
             'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
@@ -50,12 +49,13 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
     		'icon'=>'document',
     		'url'=>array('/classRoom/reports/'.$model->id),
     	),
+		/*
     	array(
             'label'=>Yii::t('course','Class information'),
             'icon-position'=>'left',
             'icon'=>'document',
         	'url'=>array('/classRoom/view/'.$model->id.''),
-        ),
+        ),*/
         array(
             'label'=>Yii::t('course','Update class'),
             'icon-position'=>'left',
@@ -64,9 +64,20 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         ), 
         
 
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+    );
+
+$count=0;
+foreach($items as $item)
+{
+	if($item['visible'])$count++;
+}
+if($count>0){
+	$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
+			'items' =>$items,
+			'htmlOptions' => array('style' => 'clear: both;'),
+	));
+}
+
 ?>
 
 <?php if(!(Yii::app()->user->isGuest)){?>

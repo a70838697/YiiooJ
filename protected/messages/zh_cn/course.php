@@ -3,13 +3,16 @@
 return array (
 		'Student number' => '学号',
 		'Name'=>'姓名',
-		'All classes'=>'全部课程',
-		'My classes'=>'全部课程',
+		'All classes'=>'全部课堂',
+		'My classes'=>'我的课堂',
 		
 		'All courses'=>'全部课程',
 		'My courses'=>'我的课程',
 		'Create course'=>'创建课程',
-
+		
+		'Create class'=>'开设课堂',
+		'Class information'=>'课堂信息',
+		
 		'Add students'=>'添加学生',
 		'Create an experiment'=>'新建实验',
 

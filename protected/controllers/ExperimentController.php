@@ -8,6 +8,7 @@ class ExperimentController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=null;
+	public $classRoom=null;
 
 	/**
 	 * @return array action filters
@@ -52,6 +53,8 @@ class ExperimentController extends Controller
 	public function actionView($id)
 	{
 		$experiment=$this->loadModel($id);
+		$this->classRoom=$experiment->classRoom;
+		
 		$exercise_problem=Yii::app()->user->isGuest?null:$this->newExerciseProblem($experiment);
 
 		$this->render('view',array(
@@ -123,7 +126,8 @@ class ExperimentController extends Controller
 	{
 		$experiment=$this->loadModel($id);		
 		$model=new Problem;
-
+		$this->classRoom=$experiment->classRoom;
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -173,7 +177,8 @@ class ExperimentController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		$this->classRoom=$model->classRoom;
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -225,6 +230,7 @@ class ExperimentController extends Controller
 	public function actionReports($id)
 	{
 		$model=$this->loadModel($id);
+		$this->classRoom=$model->classRoom;
 		
 		$criteria=new CDbCriteria(array(
 		));

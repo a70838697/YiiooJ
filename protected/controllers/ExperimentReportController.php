@@ -7,7 +7,8 @@ class ExperimentReportController extends ZController
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/course';
-	public $contentMenu=null;	
+	public $contentMenu=null;
+	public $classRoom=null;
 
 	/**
 	 * @return array action filters
@@ -118,7 +119,7 @@ class ExperimentReportController extends ZController
 		)
 		{
 			throw new CHttpException(404,'The requested page does not exist.');
-		}		
+		}
 		//$canEdit=UUserIdentity::isAdmin()
 		//||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 		//$canSubmited=$canEdit||($model->user_id==Yii::app()->user->id);
@@ -162,6 +163,7 @@ class ExperimentReportController extends ZController
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
+		$this->classRoom=$model->experiment->classRoom;
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -220,7 +222,8 @@ class ExperimentReportController extends ZController
 		    'condition'=>'experiment_id=:experimentID and user_id='.Yii::app()->user->id,
 		    'params'=>array(':experimentID'=>(int)$id),
 		));
-		
+		$this->classRoom=$experiment->classRoom;
+				
 		if($model==null){
 			if($experiment->isTimeOut())
 			{
@@ -334,7 +337,7 @@ class ExperimentReportController extends ZController
 					$this->redirect(array('view','id'=>$model->id));
 			}			
 		}
-
+		$this->classRoom=$model->experiment->classRoom;
 		$this->render('update',array(
 			'model'=>$model,
 		));
