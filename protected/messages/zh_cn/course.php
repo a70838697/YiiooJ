@@ -10,7 +10,7 @@ return array (
 		'My courses'=>'我的课程',
 		'Create course'=>'创建课程',
 		
-		'Create class'=>'开设课堂',
+		'Create class'=>'新开课堂',
 		'Class information'=>'课堂信息',
 		
 		'Add students'=>'添加学生',

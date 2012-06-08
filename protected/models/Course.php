@@ -113,9 +113,9 @@ class Course extends CActiveRecord
         		'with'=>UUserIdentity::isStudent()? array('user:username','myMemberShip','userGroup.userCount'):array('user:username','userGroup.userCount'))
     			,
         	'mine'=>array(
-                'condition'=>UUserIdentity::isTeacher()?
-        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id:
-        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id .")",
+                'condition'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()?
+        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND ({$alias}.user_id=".Yii::app()->user->id." OR EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id ."))":
+        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id,
         	        	),
             'public'=>array(
             	'condition'=>"{$alias}.visibility=".UCourseLookup::COURSE_TYPE_PUBLIC,

@@ -47,6 +47,7 @@
 			array('url'=>array('/chapter/view','id'=>isset($course->chapter_id)?$course->chapter_id:"1",'class_room_id'=>$class_room_id), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() &&isset($course->chapter_id) && ($course->chapter_id>0)),
 			array('url'=>array('/classRoom/experiments','id'=>$class_room_id), 'label'=>Yii::t('main',"Experiments"), 'visible'=>($class_room_id>0)),
 			array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
+			array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()),
 			array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 			array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 			array('url' => Yii::app()->getModule('message')->inboxUrl,
