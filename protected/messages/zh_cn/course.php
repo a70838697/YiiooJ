@@ -4,6 +4,8 @@ return array (
 		'Student number' => '学号',
 		'Name'=>'姓名',
 		'All classes'=>'全部课堂',
+		'All current classes'=>'本学期课堂',
+		'My current classes'=>'我本学期课堂',
 		'My classes'=>'我的课堂',
 		
 		'All courses'=>'全部课程',

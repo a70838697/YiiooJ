@@ -336,6 +336,8 @@ class ClassRoomController extends Controller
 		unset($this->contentMenu);
 		$scopes=array('recentlist');
 		
+		if(Yii::app()->request->getQuery('term',null)!==null)
+			$scopes[]='term';
 		if(Yii::app()->request->getQuery('mine',null)!==null)
 			$scopes[]='mine';
 		else $scopes[]='public';

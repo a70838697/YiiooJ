@@ -129,7 +129,10 @@ class ClassRoom extends CActiveRecord
         			"{$alias}.visibility!=". UClassRoomLookup::CLASS_ROOM_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id:
         			"{$alias}.visibility!=". UClassRoomLookup::CLASS_ROOM_TYPE_DELETED ." AND EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id .")",
         	        	),
-            'public'=>array(
+            'term'=>array(
+            	'condition'=>"{$alias}.end>=NOW() and {$alias}.begin<=NOW()",
+            ),
+        	'public'=>array(
             	'condition'=>"{$alias}.visibility=".UClassRoomLookup::CLASS_ROOM_TYPE_PUBLIC,
             ),
         );
