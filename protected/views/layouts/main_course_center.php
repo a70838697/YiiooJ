@@ -30,8 +30,11 @@
 		<?php
 		$items=array(
 				array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
-				array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::canHaveCourses()),
-				array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
+				(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())?
+					array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>true):
+					array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All courses"), 'visible'=>true)
+				,
+				array('url'=>array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('main',"My current classes"), 'visible'=>UUserIdentity::canHaveCourses()),
 				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 				array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 				array('url' => Yii::app()->getModule('message')->inboxUrl,

@@ -14,15 +14,12 @@ $this->menu=array(
 	array('label'=>'Manage ExperimentReport', 'url'=>array('admin')),
 );
 ?>
-
-<h2>Write Experiment Report for <?php echo CHtml::encode($model->experiment->title); ?></h2>
 <?php
 $canEdit=UUserIdentity::isAdmin()
 	||Yii::app()->user->id==$model->user_id
 	||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
+$this->toolbar=array(
         array(
             'label'=>'Save',
             'icon-position'=>'left',
@@ -32,14 +29,6 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         	'linkOptions'=>array('onclick'=>'return saver();',)
         ),
         array(
-            'label'=>'Preview',
-            'icon-position'=>'left',
-            'icon'=>'document', // This a CSS class starting with ".ui-icon-"
-            'url'=>'#',
-	        'visible'=>$canEdit,
-        	'linkOptions'=>array('onclick'=>'return preview();',)
-        ),
-        array(
             'label'=>'Submit',
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
@@ -47,10 +36,16 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	        'visible'=>true,
         	'linkOptions'=>array('onclick'=>'return submitr();',)
         ),
-        
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+		array(
+				'label'=>'Preview',
+				'icon-position'=>'left',
+				'icon'=>'document', // This a CSS class starting with ".ui-icon-"
+				'url'=>'#',
+				'visible'=>$canEdit,
+				'linkOptions'=>array('onclick'=>'return preview();',)
+		),
+
+    );
 echo CHtml::script('
 function preview()
 {

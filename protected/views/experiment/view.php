@@ -1,21 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'My classes'=>array('/classRoom/index/mine/1'),
+	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
 	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	'Experiments'=>array('/classRoom/experiments','id'=>$model->class_room_id),
+	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
 	$model->title,
 );
 
-$this->menu=array(
-	array('label'=>'List Experiment', 'url'=>array('index')),
-	array('label'=>'Create Experiment', 'url'=>array('create')),
-	array('label'=>'Update Experiment', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Experiment', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Experiment', 'url'=>array('admin')),
-);
-?>
-<h1>View Experiment <?php echo CHtml::encode($model->title); ?></h1>
-<?php
 $cansubmit=false;
 $report=null;
 if(UUserIdentity::isStudent())
@@ -30,9 +20,9 @@ if(UUserIdentity::isStudent())
 	}
 	
 }
-$items= array(
+$this->toolbar= array(
         array(
-            'label'=>'Add an problem',
+            'label'=>Yii::t('course','Add a problem'),
             'icon-position'=>'left',
             'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
             'url'=>'#',
@@ -40,19 +30,19 @@ $items= array(
         	'linkOptions'=>array('onclick'=>'return showDialogue();',)
         ),
         array(
-            'label'=>'Update this experiment',
+            'label'=>Yii::t('course','Update experiment'),
             'icon-position'=>'left',
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>array('update', 'id'=>$model->id),
         ), 
         array(
-            'label'=>'List reports',
+            'label'=>Yii::t('course','List reports'),
             'icon-position'=>'left',
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>array('reports', 'id'=>$model->id),
         ),
         array(
-            'label'=>($report==null)?'Write a report':"Update the report",
+            'label'=>Yii::t('course',($report==null)?'Write a report':"Update your report"),
             'icon-position'=>'left',
 	        'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
             'url'=>($report==null)?array('/experimentReport/write', 'id'=>$model->id):array('/experimentReport/update', 'id'=>$report->id),
@@ -66,19 +56,7 @@ $items= array(
     		
       
     );
-$count=0;
-foreach($items as $item)
-{
-	if($item['visible'])$count++;
-}
-if($count>0){
-	$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-	    'items' =>$items,
-	    'htmlOptions' => array('style' => 'clear: both;'),
-	));
-}
-?>
-<?php
+
 $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
  $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -89,7 +67,7 @@ $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
 			'name'=>'class_room',
 			'type'=>'raw',
             'value'=>CHtml::link(CHtml::encode($model->classRoom->title),
-                                 array('course/view','id'=>$model->class_room_id)),		
+                                 array('classRoom/view','id'=>$model->class_room_id)),		
 		),
 		array(
 			'name'=>'experiment_type_id',

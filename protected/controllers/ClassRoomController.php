@@ -1,6 +1,6 @@
 <?php
 
-class ClassRoomController extends Controller
+class ClassRoomController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -8,7 +8,6 @@ class ClassRoomController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=1;
-	public $classRoom;
 
 	/**
 	 * @return array action filters
@@ -30,7 +29,7 @@ class ClassRoomController extends Controller
 		
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','students','view'),
 				'roles'=>array('Teacher','Student','Admin'),
 			),
 			array('allow', // allow Student
@@ -39,7 +38,7 @@ class ClassRoomController extends Controller
 			),
 					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','students','experiments','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('create','update','experiments','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -184,7 +183,7 @@ class ClassRoomController extends Controller
 	{
 		$model=$this->loadModel($id);
 		$this->classRoom=$model;
-		if(isset($_POST['students_ids']))
+		if($this->canAccess(array('model'=>$model),'update') &&isset($_POST['students_ids']))
 		{
 			foreach(preg_split("/,/",$_POST['students_ids']) as $student_id)
 			{
@@ -255,7 +254,6 @@ class ClassRoomController extends Controller
 		if(isset($_POST['ClassRoom']))
 		{
 			$model->attributes=$_POST['ClassRoom'];
-			$model->user_id= Yii::app()->user->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

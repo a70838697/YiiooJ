@@ -1,14 +1,13 @@
 <?php
 
-class ExperimentController extends Controller
+class ExperimentController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/course';
-	public $contentMenu=null;
-	public $classRoom=null;
+	public $contentMenu=1;
 
 	/**
 	 * @return array action filters
@@ -150,16 +149,26 @@ class ExperimentController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id)
 	{
-		$model=new Experiment;
+		$this->class_room_id=(int)$id;
+		$this->classRoom=ClassRoom::model()->findByPk($this->class_room_id);
 
+		if(!$this->classRoom)throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		
+		$model=new Experiment;
+		$model->user_id=Yii::app()->user->id;
+		$model->class_room_id=$id;
+		$model->exercise_id=0;
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Experiment']))
 		{
 			$model->attributes=$_POST['Experiment'];
+			$model->user_id=Yii::app()->user->id;
+			$model->class_room_id=$id;
+			$model->exercise_id=0;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

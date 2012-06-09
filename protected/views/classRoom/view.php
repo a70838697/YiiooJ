@@ -25,7 +25,7 @@ $this->menu=array(
 	</tr>
 </table>
 <?php
-$items=array(
+$this->toolbar=array(
         /*array(
             'label'=>Yii::t('course','View experiments'),
         	'icon-position'=>'left',
@@ -54,17 +54,7 @@ $items=array(
             'url'=>array('update', 'id'=>$model->id),
         ), 
     );
-$count=0;
-foreach($items as $item)
-{
-	if($item['visible'])$count++;
-}
-if($count>0){
-	$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-			'items' =>$items,
-			'htmlOptions' => array('style' => 'clear: both;'),
-	));
-}
+
 
 ?>
 

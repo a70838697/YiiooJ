@@ -53,12 +53,15 @@ class Course extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, user_id', 'required'),
+			array('title', 'required'),
 			array('visibility', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>60),
 			array('sequence', 'length', 'max'=>20),
 			array('memo', 'length', 'max'=>100),
             array('description', 'length', 'min'=>0),
+			array('user_id','default',
+				'value'=>Yii::app()->user->id,
+				'setOnEmpty'=>false,'on'=>'insert'),				
 	        array('created','default',
 	              'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
 	              'setOnEmpty'=>false,'on'=>'insert'),            
@@ -98,7 +101,7 @@ class Course extends CActiveRecord
 			'sequence' => 'Course number',
 			'description' => 'Description',
 			'memo' => 'Memo',
-			'user_id' => 'Teacher',
+			'user_id' => 'Creator',
 			'visibility' => 'Visible',
 			'created' => 'Created',
 		);

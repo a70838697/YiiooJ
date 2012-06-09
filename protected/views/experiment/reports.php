@@ -1,14 +1,27 @@
 <?php
 $this->breadcrumbs=array(
-	'My classes'=>array('/classRoom/index/mine/1'),
+	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
 	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	'Experiments'=>array('/classRoom/experiments','id'=>$model->class_room_id),
-	$model->title=>array('/experiment','id'=>$model->id),
-	'Reports'
+	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
+	$model->title=>array('/experiment/view','id'=>$model->id),
+	Yii::t('course','Reports')
 );
-?>
-<h1>Experiment Reports for <?php echo CHtml::encode($model->title); ?></h1>
-<?php
+$this->toolbar= array(
+	array(
+		'label'=>$model->title,
+		'icon-position'=>'left',
+		'visible'=>!Yii::app()->user->isGuest,
+		'icon'=>'document',
+		'url'=>array('/experiment/view','id'=>$model->id),
+	),
+	array(
+		'label'=>Yii::t('course','Other experiments'),
+		'icon-position'=>'left',
+		'visible'=>!Yii::app()->user->isGuest,
+		'icon'=>'document',
+		'url'=>array('/classRoom/experiments','id'=>$model->class_room_id),
+	)		
+);
 $timeout=$model->afterDeadline();
 $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'groupUser-grid',

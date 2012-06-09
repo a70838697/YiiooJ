@@ -1,17 +1,10 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/classRoom/index/mine/1'),
-	$model->title=>array('view','id'=>$model->id),
-	'Experiments'
+	Yii::t('course','My courses')=>array('/course/index/mine/1'),
+	$model->title=>array('/course/view','id'=>$model->id),
+	Yii::t('course','classes')
 );
 
-$this->menu=array(
-	array('label'=>'List Course', 'url'=>array('index')),
-	array('label'=>'Create Course', 'url'=>array('create')),
-	array('label'=>'Update Course', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Course', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Course', 'url'=>array('admin')),
-);
 ?>
 
 <center><font size='6'><?php echo CHtml::encode($model->title);?></font></center>
@@ -19,22 +12,20 @@ $this->menu=array(
 	<tr>
 	<td><b><?php echo CHtml::encode($model->getAttributeLabel('user_id')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/schoolInfo/view', 'id'=>$model->userinfo->user_id)); ?> | <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?>
-	<td><center><b><?php echo CHtml::encode($model->getAttributeLabel('due_time')); ?>:</b>
-	<?php echo CHtml::encode($model->due_time); ?></center></td>
-	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('location')); ?>:</b>
-	<?php echo CHtml::encode($model->location); ?></td>
+	</td>
 	</tr>
 </table>
 <?php
 $this->toolbar= array(
        array(
-            'label'=>Yii::t('course','Add an experiment'),
+            'label'=>Yii::t('course','Add a class'),
             'icon-position'=>'left',
             'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
             'url'=>'#',
-	        'visible'=>$experiment!==null,
+	        'visible'=>$classRoom!==null,
         	'linkOptions'=>array('onclick'=>'return showDialogue();',)
         ),
+		/*
         array(
             'label'=>Yii::t('course','View students'),
             'icon-position'=>'left',
@@ -56,25 +47,32 @@ $this->toolbar= array(
             'icon'=>'document',
         	'url'=>array('/classRoom/view/'.$model->id.''),
         ),*/
+        array(
+            'label'=>Yii::t('course','Update course'),
+            'icon-position'=>'left',
+	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+            'url'=>array('update', 'id'=>$model->id),
+        ), 
+
     );
 
 ?>
 
 <?php if(!(Yii::app()->user->isGuest)){?>
-<div id="experiments">
+<div id="classRooms">
 		<h3>
-			<?php echo count($model->experiments)!=1 ? count($model->experiments) . ' experiments' : 'One experiment'; ?>
+			<?php echo count($model->classRooms)!=1 ? count($model->classRooms) . ' classes' : '1 class'; ?>
 		</h3>
 
-	<?php if(count($model->experiments)>=1): ?>
-		<?php $this->renderPartial('_experiments',array(
-			'classRoom'=>$model,
-			'experiments'=>$model->experiments,
+	<?php if(count($model->classRooms)>=1): ?>
+		<?php $this->renderPartial('_classRooms',array(
+			'course'=>$model,
+			'classRooms'=>$model->classRooms,
 		)); ?>
 	<?php endif; ?>
-</div><!-- experiment -->
+</div><!-- classRooms -->
 <?php 
-if($experiment!=null){
+if($classRoom!=null){
 echo CHtml::script('
 function showDialogue()
 {
@@ -84,25 +82,25 @@ function showDialogue()
 }
 ');
 
-if(Yii::app()->user->hasFlash('experimentSubmitted')): ?>
+if(Yii::app()->user->hasFlash('classRoomSubmitted')): ?>
 		<div class="flash-success">
-			<?php echo Yii::app()->user->getFlash('experimentSubmitted'); ?>
+			<?php echo Yii::app()->user->getFlash('classRoomSubmitted'); ?>
 		</div>
 <?php endif;	
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'submitiondialog',
     'options'=>array(
 		'dialogClass'=>'rbam-dialog',
-        'title'=>Yii::t('course','Create an experiment'),
-        'autoOpen'=>$experiment->hasErrors(),
+        'title'=>Yii::t('course','Create a class'),
+        'autoOpen'=>$classRoom->hasErrors(),
 		'minWidth'=>800,
 		'height'=>700,
 		'modal'=>true,
     ),
 ));
 ?>
-		<?php $this->renderPartial('/experiment/_form',array(
-			'model'=>$experiment,
+		<?php $this->renderPartial('/classRoom/_form',array(
+			'model'=>$classRoom,
 		)); ?>
 
 <?php 

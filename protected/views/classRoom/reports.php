@@ -1,8 +1,8 @@
 <?php
 $this->breadcrumbs=array(
-	'My Courses'=>array('/classRoom/index/mine/1'),
+	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
 	$model->title=>array('view','id'=>$model->id),
-	'Reports'
+	Yii::t('course','View reports')
 );
 
 $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
@@ -18,13 +18,9 @@ $this->menu=array(
 	array('label'=>'Manage Course', 'url'=>array('admin')),
 );
 */
-?>
-<h1>Experiment Reports for <?php echo CHtml::encode($model->title); ?></h1>
 
-<?php
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-	'id'=>'xyz1',
-    'items' => array(
+/*
+$this->toolbar= array(
         array(
             'label'=>Yii::t('course','View experiments'),
             'icon-position'=>'left',
@@ -39,21 +35,8 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon'=>'document',
         	'url'=>array('/classRoom/students/'.$model->id),
         ),
-    	array(
-            'label'=>Yii::t('course','Class information'),
-            'icon-position'=>'left',
-            'icon'=>'document',
-        	'url'=>array('/classRoom/view/'.$model->id.''),
-        ),
-        array(
-            'label'=>Yii::t('course','Update class'),
-            'icon-position'=>'left',
-	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
-            'url'=>array('update', 'id'=>$model->id),
-        ),               
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+            
+    );*/
 ?>
 <?php
 $columns=array(

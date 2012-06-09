@@ -23,14 +23,14 @@
 		$course=null;
 		$class_room_id=0;
 		
-		if(isset($this->course))
+		if(isset($this->course) && $this->course)
 			$course=$this->course;
 		if($course===null&&isset($this->classRoom))$course=$this->classRoom->course;
 		if(isset($_GET['class_room_id']))$class_room_id=(int)$_GET['class_room_id'];
 		if(isset($this->class_room_id))$class_room_id=$this->class_room_id;
 		if(isset($this->classRoom))$class_room_id=$this->classRoom->id;
-		$course_id=$course->id;
-		$course_title=$course->title;
+		$course_id=$course!==null?$course->id:0;
+		$course_title=$course!==null?$course->title:"";
 		?>
 
 <div class="container" id="page">
@@ -42,12 +42,11 @@
 	<div id="mainmenu">
 	<?php
 		$items=array(
-			array('label'=>Yii::t('main','Course home'), 'url'=>array('/course/view','id'=>$course->id,'class_room_id'=>$class_room_id),'visible'=>true),
-			array('label'=>Yii::t('main','Class home'), 'url'=>array('/classRoom/view','id'=>$class_room_id),'visible'=>($class_room_id>0)),
-			array('url'=>array('/chapter/view','id'=>isset($course->chapter_id)?$course->chapter_id:"1",'class_room_id'=>$class_room_id), 'label'=>Yii::t('main',"Content"), 'visible'=>UUserIdentity::canHaveCourses() &&isset($course->chapter_id) && ($course->chapter_id>0)),
-			array('url'=>array('/classRoom/experiments','id'=>$class_room_id), 'label'=>Yii::t('main',"Experiments"), 'visible'=>($class_room_id>0)),
-			array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
-			array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()),
+			array('url'=>array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('main',"My current classes"), 'visible'=>UUserIdentity::canHaveCourses()),
+			(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())?
+				array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>true):
+				array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All courses"), 'visible'=>true)
+			,
 			array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 			array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 			array('url' => Yii::app()->getModule('message')->inboxUrl,
@@ -64,13 +63,11 @@
 		$this->widget('zii.widgets.CMenu',array(
 			'items'=>$items,
 		)); ?>
-	</div><!-- mainmenu -->
-
-	<?php $this->widget('zii.widgets.CBreadcrumbs', array(
+	</div><?php
+	$this->widget('zii.widgets.CBreadcrumbs', array(
 		'links'=>$this->breadcrumbs,
-	)); ?><!-- breadcrumbs -->
-
-	<?php echo $content; ?>
+	));
+	echo $content; ?>
 
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> by Shuangping Chen.<br/>

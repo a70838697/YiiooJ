@@ -1,14 +1,13 @@
 <?php
 
-class ExperimentReportController extends ZController
+class ExperimentReportController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/course';
-	public $contentMenu=null;
-	public $classRoom=null;
+	public $contentMenu=1;
 
 	/**
 	 * @return array action filters

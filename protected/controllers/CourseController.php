@@ -1,6 +1,6 @@
 <?php
 
-class CourseController extends Controller
+class CourseController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -8,7 +8,6 @@ class CourseController extends Controller
 	 */
 	public $layout='//layouts/course';
 	public $contentMenu=1;
-	public $course=null;
 
 	/**
 	 * @return array action filters
@@ -29,7 +28,7 @@ class CourseController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','classRooms'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow Teacher
@@ -45,7 +44,26 @@ class CourseController extends Controller
 			),
 		);
 	}
-
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionClassRooms($id)
+	{
+		$model=$this->loadModel($id);
+		if($this->getClassRoomId()==0)
+		{
+			$this->layout='//layouts/course_center';
+		}
+				
+	
+		$classRoom=UUserIdentity::isTeacher()||UUserIdentity::isAdmin()?$this->newClassRoom($model):null;
+	
+		$this->render('classRooms',array(
+				'model'=>$model,
+				'classRoom'=>$classRoom,
+		));
+	}
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -205,28 +223,29 @@ class CourseController extends Controller
 	 * @param Course the course that the new experiment belongs to
 	 * @return Experiment the experiment instance
 	 */
-	protected function newExperiment($course)
+	protected function newClassRoom($course)
 	{
-		$experiment=new Experiment;
-		if(isset($_POST['ajax']) && $_POST['ajax']==='experiment-form')
+		$classRoom=new ClassRoom;
+		if(isset($_POST['ajax']) && $_POST['ajax']==='classRoom-form')
 		{
-			echo CActiveForm::validate($experiment);
+			echo CActiveForm::validate($classRoom);
 			Yii::app()->end();
 		}
-		if(isset($_POST['Experiment']))
+		if(isset($_POST['ClassRoom']))
 		{
-			$experiment->attributes=$_POST['Experiment'];
-			$experiment->user_id=Yii::app()->user->id;
-			$experiment->class_room_id=$course->id;
-			$experiment->exercise_id=0;
-			if($experiment->save())
+			$classRoom->attributes=$_POST['ClassRoom'];
+			$classRoom->user_id=Yii::app()->user->id;
+			$classRoom->course_id=$course->id;
+			$classRoom->sequence=$course->sequence;
+			$classRoom->title=$course->title;
+			if($classRoom->save())
 			{
 				//if($comment->status==Comment::STATUS_PENDING)
-				Yii::app()->user->setFlash('experimentSubmitted','Your experiment has been saved.');
+				Yii::app()->user->setFlash('classRoomSubmitted','Your class has been saved.');
 				$this->refresh();
 			}
 		}
-		return $experiment;
+		return $classRoom;
 	}
 	
 	/**

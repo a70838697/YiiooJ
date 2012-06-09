@@ -31,7 +31,9 @@
 		$items=array(
 				array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
 				array('url'=>array('/problem/index'), 'label'=>Yii::t('main',"ACM train")),
-				array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::canHaveCourses()),
+				UUserIdentity::isTeacher()?
+				 array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>UUserIdentity::canHaveCourses())
+				: array('url'=>array('/course/index/term'), 'label'=>Yii::t('main',"Courses"), 'visible'=>UUserIdentity::canHaveCourses()),
 				array('url'=>array('/classRoom/index/mine'), 'label'=>Yii::t('main',"My classes"), 'visible'=>UUserIdentity::canHaveCourses()),
 				array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
 				array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),

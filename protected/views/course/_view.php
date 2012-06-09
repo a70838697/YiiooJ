@@ -1,7 +1,7 @@
 <div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
-	<?php echo CHtml::encode($data->title); ?>
+	<?php echo CHtml::link(CHtml::encode($data->title),array('/course/view','id'=>$data->id)); ?>
 
 <?php if($data->sequence){?>
 	<b><?php //echo CHtml::encode($data->getAttributeLabel('sequence')); ?>:</b>

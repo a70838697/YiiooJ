@@ -23,7 +23,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','rows'=>15),true); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
@@ -34,27 +34,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'user_id'); ?>
-		<?php echo $form->textField($model,'user_id'); ?>
-		<?php echo $form->error($model,'user_id'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'visibility'); ?>
 		<?php echo $form->dropDownList($model,'visibility',UCourseLookup::getCourseStatusMessages()); ?>		
 		<?php echo $form->error($model,'visibility'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'chapter_id'); ?>
-		<?php echo $form->textField($model,'chapter_id',array('size'=>10,'maxlength'=>10)); ?>
-		<?php echo $form->error($model,'chapter_id'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'created'); ?>
-		<?php echo $form->textField($model,'created'); ?>
-		<?php echo $form->error($model,'created'); ?>
 	</div>
 
 	<div class="row buttons">

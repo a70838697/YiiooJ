@@ -15,29 +15,17 @@ $this->menu=array(
 	array('label'=>'Manage ExperimentReport', 'url'=>array('admin')),
 );
 $this->widget('application.components.widgets.MathJax',array());
-?>
 
-<h1>View ExperimentReport #<?php echo $model->id; ?></h1>
-<?php
 $canscore=$model->canScore();
 $canedit=$model->canEdit();
 if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id))
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
+$this->toolbar= array(
         array(
             'label'=>'Edit',
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'visible'=>$canedit,
         	'url'=>array('update', 'id'=>$model->id),
-        ),
-        array(
-            'label'=>'Score',
-            'icon-position'=>'left',
-            'visible'=>$model->canScore(),
-	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
-            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>array('view', 'id'=>$model->id),
         ),
         array(
             'label'=>'Submit',
@@ -48,6 +36,14 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('view', 'id'=>$model->id,'submited'=>'1'),
         ),
         array(
+            'label'=>'Score',
+            'icon-position'=>'left',
+            'visible'=>$model->canScore(),
+	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
+            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+            'url'=>array('view', 'id'=>$model->id),
+        ),
+		array(
             'label'=>'Extend deadline',
             'icon-position'=>'left',
             'visible'=>$model->canExtend() ,
@@ -57,14 +53,13 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
         ),
     	array(
             'label'=>'Print',
+    		'visible'=>true,
             'icon-position'=>'left',
 	        'linkOptions'=>array('target'=>'_blank;',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'url'=>array('report', 'id'=>$model->id),
         ),
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+    );
 ?>
 <?php /*$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

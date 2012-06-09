@@ -1,8 +1,8 @@
 <?php
 $this->breadcrumbs=array(
-	'My classes'=>array('/classRoom/index/mine/1'),
+	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
 	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	'Experiments'=>array('/course/experiments','id'=>$model->class_room_id),
+	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
 	$model->title,
 );
 $this->menu=array(
@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Experiment <?php echo CHtml::encode( $model->title); ?></h1>
+<h2>Update Experiment <?php echo CHtml::encode( $model->title); ?></h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
