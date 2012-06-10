@@ -7,7 +7,7 @@ class CMController extends Controller
 {
 	public $course=null;
 	public $classRoom=null;
-	public $cours_id=0;
+	public $course_id=0;
 	public $course_title='';
 	public $class_room_id=null;
 	private function initInfo()
@@ -22,6 +22,10 @@ class CMController extends Controller
 		}
 		
 		if($this->course===null&&$this->classRoom!==null)$this->course=$this->classRoom->course;
+		if(!$this->course_id && isset($_GET['course_id']))
+		{
+			$this->course=Course::model()->findByPk((int)$_GET['course_id']);
+		}
 		
 	}
 	public function getCourse()

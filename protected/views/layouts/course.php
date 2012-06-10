@@ -11,7 +11,7 @@
 										array('label'=>Yii::t('course','Create a course'), 'url'=>array('/Course/create','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()),
 										array('label'=>Yii::t('course','Create a class'), 'url'=>array('/ClassRoom/create','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>($this->getCourseId()>0)),
 										array('label'=>Yii::t('course','Add an experiment'), 'url'=>array('/Experiment/create','id'=>$this->getClassRoomId()),'visible'=>($this->getClassRoomId()>0)&&((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())),
-										array('label'=>Yii::t('course','Create programming problem'), 'url'=>array('/courseproblem/create','course_id'=>$this->getCourseId())),
+										array('label'=>Yii::t('course','Create programming problem'), 'url'=>array('/courseproblem/create','course_id'=>$this->getCourseId()),'visible'=> $this->getCourseId()>0),
 								),
 						),						
 						array('label'=>Yii::t('course','My'), 'url'=>'#',
@@ -51,8 +51,12 @@
 								),
 						),
 						array('label'=>Yii::t('course','Problem library'), 'url'=>array('#'),
-								'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
+								'visible'=>(UUserIdentity::isTeacher()||UUserIdentity::isAdmin()) && $this->getCourseId()>0,
 								'items'=>array(
+										array('label'=>Yii::t('course','Programming problems'), 'url'=>array('/courseproblem/list','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','New programming problem'), 'url'=>array('/courseproblem/create','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','Multiple choice questions'), 'url'=>array('/multipleChoice/list/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','New multiple choice question'), 'url'=>array('/multipleChoice/create/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 								),
 						),
 						array(

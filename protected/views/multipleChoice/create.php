@@ -9,7 +9,4 @@ $this->menu=array(
 	array('label'=>'Manage MultipleChoice', 'url'=>array('admin')),
 );
 ?>
-
-<h1>Create MultipleChoice</h1>
-
 <?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager,'chapters'=>$chapters)); ?>

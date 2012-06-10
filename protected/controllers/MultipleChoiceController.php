@@ -1,13 +1,12 @@
 <?php
 
-class MultipleChoiceController extends Controller
+class MultipleChoiceController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/onlinejudge';
-	public $contentMenu=null;
+	public $contentMenu=1;
 	/**
 	 * @return array action filters
 	 */
@@ -74,6 +73,7 @@ class MultipleChoiceController extends Controller
 		$model=new MultipleChoice;
 		$choiceOptionManager=new ChoiceOptionManager();
 
+		if( ((int)$id)==0 && $this->getCourse())$id=$this->getCourse()->chapter_id;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -87,15 +87,15 @@ class MultipleChoiceController extends Controller
 			{
 				if($_POST['OldValue']==0)
 				{
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						$choiceOption->isAnswer=($id==$model->answer)?1:0;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						$choiceOption->isAnswer=($id1==$model->answer)?1:0;
 					}
 				}
 				else
 				{
 					$model->answer="";
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						if($choiceOption->isAnswer)$model->answer=$id;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						if($choiceOption->isAnswer)$model->answer=$id1;
 					}
 				}
 			}
@@ -104,8 +104,8 @@ class MultipleChoiceController extends Controller
 				if($model->more_than_one_answer)
 				{
 					$answer=array();
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						if($choiceOption->isAnswer)$answer[]=$id;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						if($choiceOption->isAnswer)$answer[]=$id1;
 					}
 					sort($answer);
 					$model->answer=join($answer,",");
@@ -120,7 +120,7 @@ class MultipleChoiceController extends Controller
 						$choiceOptionManager->save($model);
 						$answer_faker= preg_split('/,/',$model->answer);
 						$answer=array();
-						foreach($choiceOptionManager->items as $id=>$choiceOption){
+						foreach($choiceOptionManager->items as $id1=>$choiceOption){
 							if(in_array($id,$answer_faker))$answer[]=$choiceOption->id;
 						}
 						sort($answer);
@@ -171,7 +171,7 @@ class MultipleChoiceController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-			if(isset($_POST['MultipleChoice']))
+		if(isset($_POST['MultipleChoice']))
 		{
 			$model->attributes=$_POST['MultipleChoice'];
 			$choiceOptionManager->manage(isset($_POST['ChoiceOption'])?$_POST['ChoiceOption']:array());
@@ -290,6 +290,8 @@ class MultipleChoiceController extends Controller
 	 */
 	public function actionList($id)
 	{
+		if( ((int)$id)==0 && $this->getCourse())$id=$this->getCourse()->chapter_id;
+		
 		$nodeRoot=Chapter::model()->findByPk($id);
 		$criteria=new CDbCriteria(array(
 	    ));
