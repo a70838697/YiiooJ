@@ -4,9 +4,11 @@ return array (
 		'Student number' => '学号',
 		'Name'=>'姓名',
 		'All classes'=>'全部课堂',
-		'All current classes'=>'本学期课堂',
-		'My current classes'=>'本学期我的课堂',
-		'My classes'=>'我的课堂',
+		'All current classes'=>'全部当前课堂',
+		'My current classes'=>'我的当前课堂',
+		'My classes'=>'我的全部课堂',
+		
+		'My'=>'我的',
 		
 		'Experiments' => '实验',
 		'Other experiments' => '其他实验',
@@ -18,12 +20,14 @@ return array (
 		'Reports' => '报告',
 		
 		'View classes'=>'查看课堂',
+		'View teachers'=>'教师一览',
+		'Course'=>'课程',
 		'All courses'=>'课程中心',
 		'My courses'=>'我的课程',
-		'Create course'=>'新建课程',
+		'Create a course'=>'新建课程',
 		'Course introduction'=>'课程介绍',
 		
-		'Create class'=>'新开课堂',
+		'Create a class'=>'新开课堂',
 		'Class information'=>'课堂信息',
 		
 		'Add students'=>'添加学生',
@@ -42,12 +46,18 @@ return array (
 		"Average/Times"=>'平均得分/次',
 		'Do you allow her/him to resubmit a report?'=>'您允许学生补交实验报告吗？',
 
+		
+		'Problem library'=>'试题库',
+		'Create programming problem'=>'新建编程题',
 		'Updated time' => '更新时间',
 		'Operation' => '操作',
 		'Score' => '评分',
 		'S'=>'评',
 		'V'=>'看',
 		'R'=>'补',
+		
+		
+		
 		'Update'=>'更新',
 		'View'=>'查看',
 		'Write'=>'写',

@@ -12,7 +12,6 @@ class CMController extends Controller
 	public $class_room_id=null;
 	private function initInfo()
 	{
-		$this->course=null;
 		$this->class_room_id=0;
 		
 		if(isset($_GET['class_room_id']))$this->class_room_id=(int)$_GET['class_room_id'];

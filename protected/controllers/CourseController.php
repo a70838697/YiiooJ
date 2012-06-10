@@ -51,11 +51,7 @@ class CourseController extends CMController
 	public function actionClassRooms($id)
 	{
 		$model=$this->loadModel($id);
-		if($this->getClassRoomId()==0)
-		{
-			$this->layout='//layouts/course_center';
-		}
-				
+		$this->course=$model;
 	
 		$classRoom=UUserIdentity::isTeacher()||UUserIdentity::isAdmin()?$this->newClassRoom($model):null;
 	
@@ -85,7 +81,6 @@ class CourseController extends CMController
 	 */
 	public function actionCreate()
 	{
-		$this->layout='//layouts/course_center';		
 		$model=new Course;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -171,8 +166,6 @@ class CourseController extends CMController
 	 */
 	public function actionIndex()
 	{
-		$this->layout='//layouts/course_center';
-		unset($this->contentMenu);
 		$scopes=array('recentlist');
 		
 		if(Yii::app()->request->getQuery('mine',null)!==null)
@@ -231,13 +224,13 @@ class CourseController extends CMController
 			echo CActiveForm::validate($classRoom);
 			Yii::app()->end();
 		}
+		$classRoom->sequence=$course->sequence;
+		$classRoom->title=$course->title;
 		if(isset($_POST['ClassRoom']))
 		{
 			$classRoom->attributes=$_POST['ClassRoom'];
 			$classRoom->user_id=Yii::app()->user->id;
 			$classRoom->course_id=$course->id;
-			$classRoom->sequence=$course->sequence;
-			$classRoom->title=$course->title;
 			if($classRoom->save())
 			{
 				//if($comment->status==Comment::STATUS_PENDING)

@@ -9,10 +9,11 @@ return array (
 		'Home' => '首页',
 		'Courses' => '课程中心',
 		'Class home' => '课堂主页',
-		'My classes' => '我的课堂',
-		'My current classes'=>'本学期我的课堂',
+		'My classes' => '我的全部课堂',
+		'My current classes'=>'我的当前课堂',
 		'My courses' => '我的课程',
 		'All courses' => '课程中心',
+
 		'RBAM' => '权限管理',
 		'ACM train' => 'ACM训练',
 		'Organization' => '专业管理',
@@ -23,6 +24,7 @@ return array (
 
 		'Messages' => '消息',
 
+		'New' => '新建',
 		'Create' => '添加',
 		'View' => '查看',
 		'Update' => '编辑',

@@ -18,7 +18,7 @@ $this->breadcrumbs=array(
 <?php
 $this->toolbar= array(
        array(
-            'label'=>Yii::t('course','Add a class'),
+            'label'=>Yii::t('course','Create a class'),
             'icon-position'=>'left',
             'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
             'url'=>'#',

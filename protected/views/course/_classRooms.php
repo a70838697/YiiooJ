@@ -27,7 +27,7 @@ if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())
 </td>
 <td>
 <?php 
-if(UUserIdentity::isAdmin()||($experiment->classRoom->user_id==Yii::app()->user->id))
+if(UUserIdentity::isAdmin()||($course->user_id==Yii::app()->user->id))
 {
 	echo CHtml::link( "Delete",array("course/deleteClassRoom","id"=>$classRoom->id) ,array('confirm' =>Yii::t('course', 'Are you sure to delete the class?')));
 }
