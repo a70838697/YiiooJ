@@ -11,13 +11,15 @@ $this->menu=array(
 	array('label'=>'Delete MultipleChoice', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage MultipleChoice', 'url'=>array('admin')),
 );
-?>
-<?php 
-echo CHtml::link(
-    'update', 
-    array('update', 'id'=>$model->id));
-
-$this->widget('application.components.widgets.MathJax',array());
+$this->toolbar= array(
+		array(
+				'label'=>Yii::t('main','Update'),
+				'icon-position'=>'left',
+				'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+				'visible'=>true,
+				'url'=>array('update', 'id'=>$model->id),
+		),
+);
 ?>
 <?php if($model->chapter){?>
 <div>

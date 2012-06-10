@@ -1,14 +1,14 @@
 <?php
 
-class ChapterController extends Controller
+class ChapterController extends CMController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/course';
-	public $course=null;
 	public $model=null;
+	public $contentMenu=1;
 
 	public function   init() {
 		$this->registerAssets();

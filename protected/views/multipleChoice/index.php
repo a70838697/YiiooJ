@@ -12,25 +12,22 @@ $this->menu=array(
 <?php
 if(isset($root))
 {
-$this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
+$this->toolbar= array(
         array(
-            'label'=>Yii::t('course','View course problems'),
+            'label'=>Yii::t('course','View all questions'),
         	'icon-position'=>'left',
-        	//'visible'=>!Yii::app()->user->isGuest,
+        	'visible'=>!Yii::app()->user->isGuest,
             'icon'=>'document',
         	'url'=>array('/multipleChoice/list/'.$root->root),
         ),
         array(
-            'label'=>Yii::t('course','Create course problem'),
+            'label'=>Yii::t('course','New multiple choice question'),
         	'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/multipleChoice/create/'.$root->id),
         ),
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+    );
 }
 $this->widget('application.components.widgets.MathJax',array());
 ?>

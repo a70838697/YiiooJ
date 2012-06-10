@@ -49,9 +49,10 @@ return array (
 		
 		'Problem library'=>'试题库',
 		'New programming problem'=>'新建编程题',
-		'Programming problem'=>'编程题',
+		'Programming problems'=>'编程题',
 		'New multiple choice question'=>'新建选择题',
 		'Multiple choice questions'=>'选择题',
+		'View all questions'=>'所有题目',
 		
 		'Updated time' => '更新时间',
 		'Operation' => '操作',

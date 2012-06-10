@@ -50,6 +50,8 @@ class MultipleChoiceController extends CMController
 	public function actionView($id)
 	{
 		$model=$this->loadModel($id);
+		if($model->chapter)
+			$this->course=$model->chapter->book->course;
 		$choiceOptionManager=new ChoiceOptionManager();
 		$choiceOptionManager->load($model);
 		

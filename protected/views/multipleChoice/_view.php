@@ -13,12 +13,16 @@ $answer_ids=preg_split('/,/',$data->answer);
  
 <?php endforeach;?>
 </table>
-<?php if($data->chapter){?>
 <div>
-Chapter:<?php echo $data->chapter->name; ?>
-<?php echo CHtml::link("View chapter problems",array('/multipleChoice/list/'.$data->chapter_id));?> 
-</div>
+<?php
+echo CHtml::link(Yii::t('main',"View"),array('/multipleChoice/view/'.$data->chapter_id));
+echo "|".CHtml::link(Yii::t('main',"Update"),array('/multipleChoice/view/'.$data->chapter_id));
+?>
+<?php if($data->chapter){?>
+ Chapter:<?php echo $data->chapter->name; ?>(
+<?php echo CHtml::link("View multiple choice problems of the chapter",array('/multipleChoice/list/'.$data->chapter_id));?> )
 <?php }?>
 
+</div>
 
 </div>

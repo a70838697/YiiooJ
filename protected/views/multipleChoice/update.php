@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Multiple Choices'=>array('index'),
+	Yii::t('course','Multiple choice questions')=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
@@ -11,9 +11,16 @@ $this->menu=array(
 	array('label'=>'View MultipleChoice', 'url'=>array('view', 'id'=>$model->id)),
 	array('label'=>'Manage MultipleChoice', 'url'=>array('admin')),
 );
-echo CHtml::link(
-		'view',
-		array('view', 'id'=>$model->id));
+$this->toolbar= array(
+		array(
+				'label'=>Yii::t('main','View'),
+				'icon-position'=>'left',
+				'icon'=>'document', // This a CSS class starting with ".ui-icon-"
+				'visible'=>UUserIdentity::isAdmin()||UUserIdentity::isTeacher()||$model->user_id==yii::app()->user->id,
+				'url'=>array('view', 'id'=>$model->id),
+				'linkOptions'=>array('onclick'=>'return confirm("Are you want to discard your updates");'),
+		),
+);
 ?>
 
 <h1>Update MultipleChoice <?php echo $model->id; ?></h1>

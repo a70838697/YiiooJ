@@ -1,41 +1,29 @@
-<!--
- Nested Set Admin GUI
- Main View File  index.php
-
- @author Spiros Kabasakalis <kabasakalis@gmail.com>,myspace.com/spiroskabasakalis
- @copyright Copyright &copy; 2011 Spiros Kabasakalis
- @since 1.0
- @license The MIT License-->
-
-目前大部分内容待添加
-<br />
 <?php
+$this->breadcrumbs=array(
+		Yii::t('main','Courses')=>array('/course/index')
+);
+if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
+$this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
+
 $course_url= ($model?("/".$model->id):"");
-if((UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin())
-{
-	?>
-
-<ul>
-	<!--     <li>If tree is empty,start by creating one or more root nodes.</li> -->
-	<li>鼠标右键点击树有各种操作，树的节点可以拖到其他节点下面.</li>
-</ul>
-<div>
-	<div style="float: left">
-		<input id="reload" type="button" style="display: block; clear: both;"
-			value="Refresh" class="client-val-form button">
-	</div>
-	<div style="float: left">
-		<input id="add_root" type="button"
-			style="display: block; clear: both;" value="Create Root"
-			class="client-val-form button">
-	</div>
-</div>
-<?php
-}
+$this->toolbar=array(
+		array(
+				'label'=>Yii::t('main','refresh'),
+				'icon-position'=>'left',
+				'icon'=>'document',
+				'url'=>'#',
+				'visible'=>true,
+				'linkOptions'=>array('id'=>'reload'),
+		),
+		array(
+				'label'=>Yii::t('course','New multiple choice question'),
+				'url'=>array('/multipleChoice/create','id'=>'xxxxxxyy','class_room_id'=>$this->getClassRoomId()),
+				'linkOptions'=>array('onclick'=>'return gohere(this.href);'),
+				'visible'=>true,
+		),
+		
+);
 ?>
-
-<!--The tree will be rendered in this div-->
-
 <table>
 	<tr>
 		<td width="20%"><div>
@@ -54,6 +42,11 @@ if((UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin())
 	</tr>
 </table>
 <script type="text/javascript">
+var currentid=<?php echo $model->id ?>;
+function gohere(href){
+	window.location =href.replace(/xxxxxxyy/, currentid);
+	return false;
+}
 $(function () {
 $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 		.jstree({
@@ -199,6 +192,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 		.bind("select_node.jstree", function (event, data) {
            // `data.rslt.obj` is the jquery extended node that was clicked
 				id=data.rslt.obj.attr("id").replace("node_","");
+				currentid=id;
 				$("#showchapter").load("<?php echo $baseUrl;?>/chapter/returnChapter/"+id);
 	        })
 
@@ -412,7 +406,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 		});//post
 	});//click function
 	
-$("#showchapter").load("<?php echo $baseUrl;?>/chapter/returnChapter/1");
+$("#showchapter").load("<?php echo $baseUrl;?>/chapter/returnChapter/<?php echo $model->id;?>");
               $("#reload").click(function () {
 		jQuery("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").jstree("refresh");
 	});
