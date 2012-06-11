@@ -24,7 +24,13 @@ return array (
 
 		'Messages' => '消息',
 		'Comments'=>'评论',
+		
+		
+		
+		'Back'=>'返回上一页面',
 
+
+		'Refresh' => '刷新',
 		'New' => '新建',
 		'Create' => '添加',
 		'View' => '查看',

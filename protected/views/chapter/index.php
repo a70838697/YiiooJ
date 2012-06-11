@@ -7,8 +7,9 @@ $this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'
 
 $course_url= ($model?("/".$model->id):"");
 $this->toolbar=array(
+		array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 		array(
-				'label'=>Yii::t('main','refresh'),
+				'label'=>Yii::t('main','Refresh'),
 				'icon-position'=>'left',
 				'icon'=>'document',
 				'url'=>'#',
@@ -19,9 +20,9 @@ $this->toolbar=array(
 				'label'=>Yii::t('course','New multiple choice question'),
 				'url'=>array('/multipleChoice/create','id'=>'xxxxxxyy','class_room_id'=>$this->getClassRoomId()),
 				'linkOptions'=>array('onclick'=>'return gohere(this.href);'),
-				'visible'=>true,
+				'visible'=>UUserIdentity::isTeacher()|| UUserIdentity::isAdmin(),
 		),
-		
+
 );
 ?>
 <table>
@@ -50,63 +51,70 @@ function gohere(href){
 $(function () {
 $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 		.jstree({
-                           "html_data" : {
-	            "ajax" : {
-                                 "type":"POST",
- 	                          "url" : "<?php echo $baseUrl;?>/chapter/fetchTree<?php echo $course_url ?>",
-	                         "data" : function (n) {
-	                          return {
-                                                  id : n.attr ? n.attr("id") : 0,
-                                                  "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
-                                                   };
-	                }
-  	            }
-	        },
+			"html_data" : {
+				"ajax" : {
+					"type":"POST",
+					"url" : "<?php echo $baseUrl;?>/chapter/fetchTree<?php echo $course_url ?>",
+					"data" : function (n) {
+						return {
+							id : n.attr ? n.attr("id") : 0,
+							"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
+						};
+					}
+				}
+			},
+<?php if(Yii::app()->user->isGuest){?>
+			"contextmenu": {  
+			    "items": {  
+					"create": null,  
+					"rename": null,  
+					"remove": null,  
+					"move": null,
+					"ccp": null  
+				}  
+			},
+<?php }else{?>
+			"contextmenu":  {
+				'items': {
+					"rename" : {
+						"label" : "Rename",
+						"action" : function (obj) { this.rename(obj); }
+					},
+					"update" : {
+						"label"	: "Update",
+						"action"	: function (obj) {
+							id=obj.attr("id").replace("node_","");
+							$.ajax({
+								type: "POST",
+								url: "<?php echo $baseUrl;?>/chapter/returnForm<?php echo $course_url ?>",
+								data:{
+									'update_id':  id,
+									"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
+								},
+								'beforeSend' : function(){
+									$("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").addClass("ajax-sending");
+								},
+								'complete' : function(){
+									$("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
+								},
+								success: function(data){
+									$.fancybox(data,
+									{
+										"transitionIn"	:	"elastic",
+										"transitionOut"    :      "elastic",
+										"speedIn"		:	600,
+										"speedOut"		:	200,
+										"overlayShow"	:	false,
+										"hideOnChapterClick": false,
+										"onClosed":    function(){
+										} //onclosed function
+									})//fancybox
+								} //success
+							});//ajax
+						}//action function
+					},//update
 
-"contextmenu":  { 'items': {
-
-"rename" : {
-	            "label" : "Rename",
-                    "action" : function (obj) { this.rename(obj); }
-                  },
-"update" : {
-	              "label"	: "Update",
-	              "action"	: function (obj) {
-                                                id=obj.attr("id").replace("node_","");
-                     $.ajax({
-                                 type: "POST",
-                                 url: "<?php echo $baseUrl;?>/chapter/returnForm<?php echo $course_url ?>",
-                                data:{
-                                          'update_id':  id,
-                                           "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
-                                              },
-			       'beforeSend' : function(){
-                                           $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").addClass("ajax-sending");
-                                                             },
-                               'complete' : function(){
-                                           $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
-                                                   },
-                    success: function(data){
-
-                        $.fancybox(data,
-                        {    "transitionIn"	:	"elastic",
-                            "transitionOut"    :      "elastic",
-                             "speedIn"		:	600,
-                            "speedOut"		:	200,
-                            "overlayShow"	:	false,
-                            "hideOnChapterClick": false,
-                             "onClosed":    function(){
-                                                                       } //onclosed function
-                        })//fancybox
-
-                    } //success
-                });//ajax
-
-                                                  }//action function
-
-},//update
-
-    "properties" : {
+					 "properties" : {
 	"label"	: "Properties",
 	"action" : function (obj) {
                                    id=obj.attr("id").replace("node_","")
@@ -181,7 +189,8 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 
                   }//items
                   },//context menu
-
+<?php }?>
+                  
 			// the `plugins` array allows you to configure the active plugins on this instance
 			"plugins" : ["themes","html_data","contextmenu","crrm","dnd","ui"],
 			// each plugin you have included can have its own config object
@@ -195,7 +204,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 				currentid=id;
 				$("#showchapter").load("<?php echo $baseUrl;?>/chapter/returnChapter/"+id);
 	        })
-
+<?php if(!Yii::app()->user->isGuest){?>
                 ///EVENTS
                .bind("rename.jstree", function (e, data) {
 		$.ajax({
@@ -221,7 +230,6 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 			                   }
 		});
 	})
-
          .bind("remove.jstree", function (e, data) {
 		$.ajax({
                            type:"POST",
@@ -370,7 +378,8 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 
 		});//each function
 	});   //bind move event
-
+	<?php }?>
+	
                 ;//JSTREE FINALLY ENDS (PHEW!)
 
 //BINDING EVENTS FOR THE ADD ROOT AND REFRESH BUTTONS.

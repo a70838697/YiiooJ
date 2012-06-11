@@ -23,27 +23,11 @@
 
 <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
-
 <body>
-	<?php
-	$course=null;
-	$class_room_id=0;
-
-	if(isset($this->course) && $this->course)
-		$course=$this->course;
-	if($course===null&&isset($this->classRoom))$course=$this->classRoom->course;
-	if(isset($_GET['class_room_id']))$class_room_id=(int)$_GET['class_room_id'];
-	if(isset($this->class_room_id))$class_room_id=$this->class_room_id;
-	if(isset($this->classRoom))$class_room_id=$this->classRoom->id;
-	$course_id=$course!==null?$course->id:0;
-	$course_title=$course!==null?$course->title:"";
-	?>
-
 	<div class="container" id="page">
-
 		<div id="header">
 			<div id="logo">
-				<?php echo Yii::t("main","CVLPJU: Course & Virtual Lab Platform of Jinan University").":".$course_title;//CHtml::encode(Yii::t("main",Yii::app()->name)); ?>
+				<?php echo Yii::t("main","CVLPJU: Course & Virtual Lab Platform of Jinan University").($this->course?":".$this->course->title:"");//CHtml::encode(Yii::t("main",Yii::app()->name)); ?>
 			</div>
 		</div>
 		<!-- header -->

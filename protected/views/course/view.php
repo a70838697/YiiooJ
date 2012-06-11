@@ -15,7 +15,7 @@ $this->toolbar=array(
         array(
             'label'=>Yii::t('course','View classrooms'),
         	'icon-position'=>'left',
-        	'visible'=>!Yii::app()->user->isGuest,
+        	'visible'=>true,
             'icon'=>'document',
         	'url'=>array('/course/classRooms/'.$model->id,'class_room_id'=>$this->getClassRoomId()),
         ),
@@ -29,7 +29,7 @@ $this->toolbar=array(
     	array(
             'label'=>Yii::t('course','Course content'),
     		'icon-position'=>'left',
-	        'visible'=>!Yii::app()->user->isGuest && $model->chapter_id>0,
+	        'visible'=>$model->chapter_id>0,
             'url'=>array('chapter/view', 'id'=>$model->chapter_id,'class_room_id'=>$this->getClassRoomId()),
         ), 
     	array(

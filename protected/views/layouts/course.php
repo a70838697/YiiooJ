@@ -45,8 +45,8 @@
 						array('label'=>Yii::t('course','Course'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),
 								'visible'=>$this->getCourseId()>0,
 								'items'=>array(
-										array('label'=>Yii::t('course',"Course content"), 'url'=>array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->getClassRoomId()), 'visible'=>isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0)),
 										array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
+										array('label'=>Yii::t('course',"Course content"), 'url'=>array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->getClassRoomId()), 'visible'=>isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0)),
 										array('label'=>Yii::t('course','View teachers'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 										array('label'=>Yii::t('course','View classrooms'), 'url'=>array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 								),
@@ -61,7 +61,7 @@
 								),
 						),
 						array(
-								'label'=>'<< Back',
+								'label'=>'<< '.Yii::t('main','Back'),
 								'icon-position'=>'left',
 								'icon'=>'back',
 								'url'=>'#',
