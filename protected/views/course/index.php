@@ -23,7 +23,7 @@ $this->toolbar=array(
 				'icon-position'=>'left',
 				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
 				'url'=>array('/course/index/mine'),
-				'visible'=>true,
+				'visible'=>(!Yii::app()->user->isGuest),
 		),
 		array(
 				'label'=>Yii::t('course','Create course'),
