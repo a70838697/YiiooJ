@@ -195,7 +195,7 @@ class CourseController extends CMController
 				'criteria'=>$criteria,
 				'scopes'=>$scopes,
 				'pagination'=>array(
-			        	'pageSize'=>30,
+			        	'pageSize'=>10,
 			    ),
 			)
 		);

@@ -11,6 +11,7 @@ return array (
 		'My'=>'我的',
 		
 		'classrooms'=>'开课班级',
+		'Classrooms'=>'开课班级',
 		'View classrooms'=>'查看开课',
 		
 		'Experiments' => '实验',
