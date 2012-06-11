@@ -10,6 +10,9 @@ return array (
 		
 		'My'=>'我的',
 		
+		'classrooms'=>'开课班级',
+		'View classrooms'=>'查看开课',
+		
 		'Experiments' => '实验',
 		'Other experiments' => '其他实验',
 		'Add a problem' => '添加编程题',

@@ -23,6 +23,7 @@ return array (
 		'Content' => '课程内容',
 
 		'Messages' => '消息',
+		'Comments'=>'评论',
 
 		'New' => '新建',
 		'Create' => '添加',

@@ -2,20 +2,9 @@
 $this->breadcrumbs=array(
 	Yii::t('course','My courses')=>array('/course/index/mine/1'),
 	$model->title=>array('/course/view','id'=>$model->id),
-	Yii::t('course','classes')
+	Yii::t('course','classrooms')
 );
 
-?>
-
-<center><font size='6'><?php echo CHtml::encode($model->title);?></font></center>
-<table>
-	<tr>
-	<td><b><?php echo CHtml::encode($model->getAttributeLabel('user_id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/schoolInfo/view', 'id'=>$model->userinfo->user_id)); ?> | <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?>
-	</td>
-	</tr>
-</table>
-<?php
 $this->toolbar= array(
        array(
             'label'=>Yii::t('course','Create a class'),
@@ -57,11 +46,9 @@ $this->toolbar= array(
     );
 
 ?>
-
-<?php if(!(Yii::app()->user->isGuest)){?>
 <div id="classRooms">
 		<h3>
-			<?php echo count($model->classRooms)!=1 ? count($model->classRooms) . ' classes' : '1 class'; ?>
+			<?php echo  count($model->classRooms)!=1 ? count($model->classRooms) . ' classes' : '1 class'; ?>
 		</h3>
 
 	<?php if(count($model->classRooms)>=1): ?>
@@ -107,5 +94,4 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	$this->endWidget('zii.widgets.jui.CJuiDialog');
 }
 ?>
-<?php } ?>
 

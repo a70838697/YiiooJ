@@ -1,4 +1,4 @@
-<?php $this->beginContent('//layouts/main_course'); ?>
+<?php $this->beginContent('//layouts/main'); ?>
 <div class="container">
 	<?php
 	if(property_exists($this,'contentMenu') && !empty($this->contentMenu)){
@@ -45,10 +45,10 @@
 						array('label'=>Yii::t('course','Course'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),
 								'visible'=>$this->getCourseId()>0,
 								'items'=>array(
-										array('label'=>Yii::t('course',"Course content"), 'url'=>array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->getClassRoomId()), 'visible'=>UUserIdentity::canHaveCourses() &&isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0)),
+										array('label'=>Yii::t('course',"Course content"), 'url'=>array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->getClassRoomId()), 'visible'=>isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0)),
 										array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 										array('label'=>Yii::t('course','View teachers'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
-										array('label'=>Yii::t('course','View classes'), 'url'=>array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
+										array('label'=>Yii::t('course','View classrooms'), 'url'=>array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 								),
 						),
 						array('label'=>Yii::t('course','Problem library'), 'url'=>array('#'),

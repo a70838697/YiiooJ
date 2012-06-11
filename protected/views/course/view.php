@@ -13,7 +13,7 @@ $this->menu=array(
 );
 $this->toolbar=array(
         array(
-            'label'=>Yii::t('course','View classes'),
+            'label'=>Yii::t('course','View classrooms'),
         	'icon-position'=>'left',
         	'visible'=>!Yii::app()->user->isGuest,
             'icon'=>'document',
