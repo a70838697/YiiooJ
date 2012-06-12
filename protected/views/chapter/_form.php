@@ -120,14 +120,33 @@ $form=$this->beginWidget('CActiveForm', array(
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		The chapter uses an extended wiki format, please refer to <a href="http://www.simplewiki.org/" target="_blank">http://www.simplewiki.org/</a>
-		<?php echo $form->textArea($model,'description',array('rows'=>10, 'cols'=>50)); ?>
+		The chapter uses a Markdown Extra format, please refer to <a href="http://michelf.com/projects/php-markdown/extra/" target="_blank">http://michelf.com/projects/php-markdown/extra/</a>
+			<?php $this->widget('ext.jmarkitup.EMarkitupWidget', array(
+					// you can either use it for model attribute
+					'model' => $model,
+					'attribute' => 'description',
+					
+					'settings'=>'markdown',
+					'options'=>array(
+							'previewParserPath'=>
+							Yii::app()->urlManager->createUrl('site/previewMarkdown')
+					)					
+			))?>
+		<?php //echo $form->textArea($model,'description',array('rows'=>10, 'cols'=>50)); ?>
              <span  id="success-Chapter_description"  class="hid input-notification-success  success png_bg"></span>
            <div><small></small> </div>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
-<? $this->widget('ext.EAjaxUpload.EAjaxUpload',
+<input type="hidden" name= "YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>"  />
+  <input type="hidden" name= "parent_id" value="<?php echo isset($_POST['parent_id'])?$_POST['parent_id']:''; ?>"  />
+
+  <?php  if (!$model->isNewRecord): ?>    <input type="hidden" name= "update_id" value=" <?php echo $model->id; ?>"  />
+     <?php endif; ?>      
+    
+ <table>
+ <tr><td>
+ <? $this->widget('ext.EAjaxUpload.EAjaxUpload',
 array(
         'id'=>'uploadFile',
         'config'=>array(
@@ -146,15 +165,12 @@ array(
                //'showMessage'=>"js:function(message){ alert(message); }"
               )
 )); ?>
-
-<input type="hidden" name= "YII_CSRF_TOKEN" value="<?php echo Yii::app()->request->csrfToken; ?>"  />
-  <input type="hidden" name= "parent_id" value="<?php echo isset($_POST['parent_id'])?$_POST['parent_id']:''; ?>"  />
-
-  <?php  if (!$model->isNewRecord): ?>    <input type="hidden" name= "update_id" value=" <?php echo $model->id; ?>"  />
-     <?php endif; ?>      
-    
+ </td>
+ <td>
    <div class="row buttons">
  <?php   echo  CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save',array('class' => 'button align-right')); ?>	</div>
+ </td></tr>
+ </table>
      
  <?php  $this->endWidget(); ?></div><!-- form -->
 
@@ -191,9 +207,11 @@ insertAtCaret: function(myValue){
 function insertFile(fileName,responseJSON)
 {
 	if(responseJSON.ext=="jpg"||responseJSON.ext=="jpeg"||responseJSON.ext=="png"||responseJSON.ext=="gif")
-		$("#Chapter_description").insertAtCaret(\'\{\{Attachment:\'+responseJSON.fileid+\'|\'+fileName+\'}}\');
+		//$("#Chapter_description").insertAtCaret(\'\{\{Attachment:\'+responseJSON.fileid+\'|\'+fileName+\'}}\');
+		$("#Chapter_description").insertAtCaret(\'![\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'/\'+responseJSON.fileid+\')\');
 	else
-		$("#Chapter_description").insertAtCaret(\'[[Attachment:\'+responseJSON.fileid+\'|\'+fileName+\']]\');
+		//$("#Chapter_description").insertAtCaret(\'[[Attachment:\'+responseJSON.fileid+\'|\'+fileName+\']]\');
+		$("#Chapter_description").insertAtCaret(\'[\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'/\'+responseJSON.fileid+\')\');
 }
 '
 );

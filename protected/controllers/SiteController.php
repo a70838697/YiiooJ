@@ -18,9 +18,26 @@ class SiteController extends Controller
 			'page'=>array(
 				'class'=>'CViewAction',
 			),
+			'previewMarkdown',
 		);
 	}
 
+	/**
+	 * Get a preview for Markdown code
+	 *
+	 * The code to parse is supplied via the $_POST['data'] parameter
+	 */
+	public function actionPreviewMarkdown()
+	{
+		$parser=new CMarkdownParser;
+		//$pattern = '/\\[\\[Attachment:(\d+)|(.*)\\]\\]/i';
+		//$replacement = '${1}1,$3';
+		
+		//preg_replace($pattern, $replacement, $string);
+		
+		$parsedText = $parser->safeTransform($_POST['data']);
+		echo $parsedText;
+	}
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
