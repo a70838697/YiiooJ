@@ -184,7 +184,7 @@ class ChapterController extends CMController
 		*/
 	}
 
-	public function actionReturnForm($id){
+	public function actionReturnForm($id=null){
 
 
 		//don't reload these scripts or they will mess up the page
