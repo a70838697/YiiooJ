@@ -5,6 +5,8 @@ $this->breadcrumbs=array(
 if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
 $this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
 
+$this->widget('application.components.widgets.MathJax',array());
+
 $course_url= ($model?("/".$model->id):"");
 $this->toolbar=array(
 		array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
@@ -416,7 +418,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 	});//click function
 	
 $("#showchapter").load("<?php echo $baseUrl;?>/chapter/returnChapter/<?php echo $model->id;?>");
-              $("#reload").click(function () {
+$("#reload").click(function () {
 		jQuery("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").jstree("refresh");
 	});
 });
