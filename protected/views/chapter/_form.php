@@ -120,7 +120,8 @@ $form=$this->beginWidget('CActiveForm', array(
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		The chapter uses a Markdown Extra format, please refer to <a href="http://michelf.com/projects/php-markdown/extra/" target="_blank">http://michelf.com/projects/php-markdown/extra/</a>
+		The chapter uses a Markdown Extra format, please refer to <a href="http://michelf.com/projects/php-markdown/extra/" target="_blank">http://michelf.com/projects/php-markdown/extra/</a>.</br>
+		You can also use Math formula, such as $x^2$, please ref to <a href="http://www.mediawiki.org/wiki/Extension:MathJax" target="_blank">MathJax </a> and <a href="http://www.codecogs.com/latex/eqneditor.php"  target="_blank">Demo</a>。
 			<?php $this->widget('ext.jmarkitup.EMarkitupWidget', array(
 					// you can either use it for model attribute
 					'model' => $model,
@@ -145,7 +146,12 @@ $form=$this->beginWidget('CActiveForm', array(
      <?php endif; ?>      
     
  <table>
- <tr><td>
+ <tr>
+ <td>
+   <div class="row buttons">
+ <?php   echo  CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save',array('class' => 'button align-right')); ?>	</div>
+ </td>
+ <td>
  <? $this->widget('ext.EAjaxUpload.EAjaxUpload',
 array(
         'id'=>'uploadFile',
@@ -166,10 +172,7 @@ array(
               )
 )); ?>
  </td>
- <td>
-   <div class="row buttons">
- <?php   echo  CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save',array('class' => 'button align-right')); ?>	</div>
- </td></tr>
+ </tr>
  </table>
      
  <?php  $this->endWidget(); ?></div><!-- form -->

@@ -38,7 +38,7 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 			'generatorPaths' => array(
-				'bootstrap.gii', // since 0.9.1
+				//'bootstrap.gii', // since 0.9.1
 				'ext.giix-core', // giix generators
 				'application.gii',  //nested set  Model and Crud templates
 			),
@@ -155,9 +155,9 @@ return array(
 		'syntaxhighlighter' => array(
 			'class' => 'ext.JMSyntaxHighlighter.JMSyntaxHighlighter',
 		),
-		'bootstrap'=>array(
+		/*'bootstrap'=>array(
 			'class'=>'ext.bootstrap.components.Bootstrap', // assuming you extracted bootstrap under extensions
-		),			
+		),*/			
 		'user'=>array(
 			// enable cookie-based authentication
             'class' => 'WebUser',
