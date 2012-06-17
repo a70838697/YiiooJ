@@ -139,6 +139,8 @@ class MultipleChoiceController extends CMController
 		if($id!=null)
 		{
 			$nodeRoot=Chapter::model()->findByPk($id);
+			$nodeRoot=$nodeRoot->book;
+				
 			if($nodeRoot===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);

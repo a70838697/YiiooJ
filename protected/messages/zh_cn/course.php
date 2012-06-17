@@ -9,6 +9,9 @@ return array (
 		'My classes'=>'我的全部课堂',
 		
 		'My'=>'我的',
+
+		'Practices'=>'练习',
+		'Practice'=>'练习',
 		
 		'classrooms'=>'开课班级',
 		'Classrooms'=>'开课班级',

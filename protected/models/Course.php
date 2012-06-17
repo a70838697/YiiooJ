@@ -25,7 +25,7 @@ class Course extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-	
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -40,11 +40,11 @@ class Course extends CActiveRecord
 	public function getUrl()
 	{
 		return Yii::app()->createUrl('course/view', array(
-			'id'=>$this->id,
-			'title'=>$this->title,
+				'id'=>$this->id,
+				'title'=>$this->title,
 		));
 	}
-	
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -53,21 +53,21 @@ class Course extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
-			array('visibility', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>60),
-			array('sequence', 'length', 'max'=>20),
-			array('memo', 'length', 'max'=>100),
-            array('description', 'length', 'min'=>0),
-			array('user_id','default',
-				'value'=>Yii::app()->user->id,
-				'setOnEmpty'=>false,'on'=>'insert'),				
-	        array('created','default',
-	              'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
-	              'setOnEmpty'=>false,'on'=>'insert'),            
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, title, sequence, description, memo, user_id, visibility, chapter_id, created', 'safe', 'on'=>'search'),
+				array('title', 'required'),
+				array('visibility', 'numerical', 'integerOnly'=>true),
+				array('title', 'length', 'max'=>60),
+				array('sequence', 'length', 'max'=>20),
+				array('memo', 'length', 'max'=>100),
+				array('description', 'length', 'min'=>0),
+				array('user_id','default',
+						'value'=>Yii::app()->user->id,
+						'setOnEmpty'=>false,'on'=>'insert'),
+				array('created','default',
+						'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
+						'setOnEmpty'=>false,'on'=>'insert'),
+				// The following rule is used by search().
+				// Please remove those attributes that should not be searched.
+				array('id, title, sequence, description, memo, user_id, visibility, chapter_id, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,14 +79,14 @@ class Course extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-       		'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
-       		'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
-       		'book' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
-			'classRooms' => array(self::HAS_MANY, 'ClassRoom', 'course_id','order'=>'created desc'),
-			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.user_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
-			'userGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'userGroup.type_id='. (Group::GROUP_TYPE_COURSE_BUILDER)),
-			//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.user_group_id'),
-				
+				'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
+				'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
+				'book' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
+				'classRooms' => array(self::HAS_MANY, 'ClassRoom', 'course_id','order'=>'created desc'),
+				'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.user_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
+				'userGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'userGroup.type_id='. (Group::GROUP_TYPE_COURSE_BUILDER)),
+				//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.user_group_id'),
+
 		);
 	}
 
@@ -96,35 +96,55 @@ class Course extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'title' => 'Title',
-			'sequence' => 'Course number',
-			'description' => 'Description',
-			'memo' => 'Memo',
-			'user_id' => 'Creator',
-			'visibility' => 'Visible',
-			'created' => 'Created',
+				'id' => 'ID',
+				'title' => 'Title',
+				'sequence' => 'Course number',
+				'description' => 'Description',
+				'memo' => 'Memo',
+				'user_id' => 'Creator',
+				'visibility' => 'Visible',
+				'created' => 'Created',
 		);
 	}
+
+	public function beforeSave(){
+		if(parent::beforeSave())
+		{
+			if($this->isNewRecord)
+			{
+				$chapter=new Chapter;
+				$chapter->root=0;
+				$chapter->level=1;
+				$chapter->name=$model->title;
+				$chapter->description=$model->description;
+				if($chapter->saveNode(true))
+				{
+					$model->chapter_id=$chapter->id;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	public function scopes()
-    {
+	{
 		$alias = $this->getTableAlias(false,false);
-    	return array(
-            'recentlist'=>array(
-            	'order'=>"{$alias}.created DESC",
-		        'select'=>array("{$alias}.id","{$alias}.user_id","{$alias}.title","{$alias}.visibility","{$alias}.created","{$alias}.memo","{$alias}.sequence"),
-        		'with'=>UUserIdentity::isStudent()? array('user:username','myMemberShip','userGroup.userCount'):array('user:username','userGroup.userCount'))
-    			,
-        	'mine'=>array(
-                'condition'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()?
-        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND ({$alias}.user_id=".Yii::app()->user->id." OR EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id ."))":
-        			"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id,
-        	        	),
-            'public'=>array(
-            	'condition'=>"{$alias}.visibility=".UCourseLookup::COURSE_TYPE_PUBLIC,
-            ),
-        );
-    }
+		return array(
+				'recentlist'=>array(
+						'order'=>"{$alias}.created DESC",
+						'select'=>array("{$alias}.id","{$alias}.user_id","{$alias}.title","{$alias}.visibility","{$alias}.created","{$alias}.memo","{$alias}.sequence"),
+						'with'=>UUserIdentity::isStudent()? array('user:username','myMemberShip','userGroup.userCount'):array('user:username','userGroup.userCount'))
+						,
+						'mine'=>array(
+								'condition'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()?
+								"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND ({$alias}.user_id=".Yii::app()->user->id." OR EXISTS(select 1 from {{group_users}} as gu where gu.group_id={$alias}.user_group_id and gu.user_id= ".Yii::app()->user->id ."))":
+								"{$alias}.visibility!=". UCourseLookup::COURSE_TYPE_DELETED ." AND {$alias}.user_id=".Yii::app()->user->id,
+								),
+								'public'=>array(
+										'condition'=>"{$alias}.visibility=".UCourseLookup::COURSE_TYPE_PUBLIC,
+										),
+										);
+	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -147,7 +167,7 @@ class Course extends CActiveRecord
 		$criteria->compare('created',$this->created);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+				'criteria'=>$criteria,
 		));
 	}
 }

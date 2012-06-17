@@ -91,16 +91,6 @@ class CourseController extends CMController
 			$model->attributes=$_POST['Course'];
 			$model->user_id= Yii::app()->user->id;
 			if($model->save()){
-				$chapter=new Chapter;
-				$chapter->root=0;
-				$chapter->level=1;
-				$chapter->name=$model->title;
-				$chapter->description=$model->description;
-				if($chapter->saveNode(true))
-				{
-					$model->chapter_id=$chapter->id;
-					$model->save();
-				}
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}

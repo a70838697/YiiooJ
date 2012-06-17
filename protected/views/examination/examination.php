@@ -15,16 +15,6 @@
 	</div>
 	<?php
 	echo CHtml::script('
-	function resetEquationNumbers() {
-        var AMS = MathJax.Extension["TeX/AMSmath"];
-        AMS.startNumber = 0;
-        AMS.labels = {};
-     } 
-        MathJax.Hub.Queue(
-          resetEquationNumbers,
-          ["PreProcess",MathJax.Hub],
-          ["Reprocess",MathJax.Hub]
-        ); 			
-		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"chapter_content"]);
 	');
 	?>

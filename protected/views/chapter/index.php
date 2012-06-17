@@ -107,7 +107,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 										"speedIn"		:	600,
 										"speedOut"		:	200,
 										"overlayShow"	:	false,
-										"hideOnChapterClick": false,
+										"hideOnContentClick": false,
 										"onClosed":    function(){
 										} //onclosed function
 									})//fancybox
@@ -140,7 +140,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                              "speedIn"		:	600,
                             "speedOut"		:	200,
                             "overlayShow"	:	false,
-                            "hideOnChapterClick": false,
+                            "hideOnContentClick": false,
                              "onClosed":    function(){
                                                                        } //onclosed function
                         })//fancybox
@@ -278,7 +278,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                              "speedIn"		:	600,
                             "speedOut"		:	200,
                             "overlayShow"	:	false,
-                            "hideOnChapterClick": false,
+                            "hideOnContentClick": false,
                              "onClosed":    function(){
                                                                        } //onclosed function
                         })//fancybox
@@ -407,7 +407,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                              "speedIn"		:	600,
                             "speedOut"		:	200,
                             "overlayShow"	:	false,
-                            "hideOnChapterClick": false,
+                            "hideOnContentClick": false,
                              "onClosed":    function(){
                                                                        } //onclosed function
                         })//fancybox

@@ -15,7 +15,7 @@
 class Examination extends CActiveRecord
 {
 
-         /**
+	/**
 	 * Id of the div in which the tree will berendered.
 	 */
     const ADMIN_TREE_CONTAINER_ID='examination_admin_tree';
@@ -30,10 +30,10 @@ class Examination extends CActiveRecord
 		return parent::model($className);
 	}
 
-        /**
+	/**
 	 * @return string the class name
 	 */
-          public static function className()
+	public static function className()
 	{
 		return __CLASS__;
 	}
@@ -53,16 +53,15 @@ class Examination extends CActiveRecord
 	{
 		// NOTE1: you should only define rules for those attributes that
 		// will receive user inputs.
-                // NOTE2: Remove ALL rules associated with the nested Behavior:
-                //rgt,lft,root,level,id.
+		// NOTE2: Remove ALL rules associated with the nested Behavior:
+		//rgt,lft,root,level,id.
 		return array(
-			array('lft, rgt, level, name, description', 'required'),
-			array('level', 'numerical', 'integerOnly'=>true),
-			array('root, lft, rgt', 'length', 'max'=>10),
-			array('name', 'length', 'max'=>128),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, root, lft, rgt, level, name, description', 'safe', 'on'=>'search'),
+				array('name', 'required'),
+				array('description', 'length', 'min'=>0),
+				array('name', 'length', 'max'=>128),
+				// The following rule is used by search().
+				// Please remove those attributes that should not be searched.
+				array('name, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +73,7 @@ class Examination extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+				'examinations' => array(self::HAS_MANY, 'Examination', 'root'),
 		);
 	}
 
@@ -83,13 +83,13 @@ class Examination extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'root' => 'Root',
-			'lft' => 'Lft',
-			'rgt' => 'Rgt',
-			'level' => 'Level',
-			'name' => 'Name',
-			'description' => 'Description',
+				'id' => 'ID',
+				'root' => 'Root',
+				'lft' => 'Lft',
+				'rgt' => 'Rgt',
+				'level' => 'Level',
+				'name' => 'Name',
+				'description' => 'Description',
 		);
 	}
 
@@ -113,92 +113,100 @@ class Examination extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+				'criteria'=>$criteria,
 		));
 	}
 
-        public function behaviors()
-{
-    return array(
-        'NestedSetBehavior'=>array(
-            'class'=>'ext.nestedBehavior.NestedSetBehavior',
-            'leftAttribute'=>'lft',
-            'rightAttribute'=>'rgt',
-            'levelAttribute'=>'level',
-            'hasManyRoots'=>true
-            )
-    );
-}
+	public function behaviors()
+	{
+		return array(
+				'NestedSetBehavior'=>array(
+						'class'=>'ext.nestedBehavior.NestedSetBehavior',
+						'leftAttribute'=>'lft',
+						'rightAttribute'=>'rgt',
+						'levelAttribute'=>'level',
+						'hasManyRoots'=>true
+				)
+		);
+	}
 
-  public static  function printULTree(){
-     $categories=Examination::model()->findAll(array('order'=>'root,lft'));
-     $level=0;
+	public static  function printULTree($root_id=null){
+		if($root_id==null){
+			//by default, the whole tree is loaded
+			$categories=Examination::model()->findAll(array('order'=>'root,lft'));
+		}
+		else
+		{
+			//only load the children of one tree having a root whose id equals $root_id
+			$categories=Examination::model()->findAll(array('condition'=>'root=:root','order'=>'lft','params'=>array(':root'=>$root_id)));
+		}
+		$level=0;
 
-foreach($categories as $n=>$category)
-{
+		foreach($categories as $n=>$category)
+		{
 
-    if($category->level==$level)
-        echo CHtml::closeTag('li')."\n";
-    else if($category->level>$level)
-        echo CHtml::openTag('ul')."\n";
-    else
-    {
-        echo CHtml::closeTag('li')."\n";
+			if($category->level==$level)
+				echo CHtml::closeTag('li')."\n";
+			else if($category->level>$level)
+				echo CHtml::openTag('ul')."\n";
+			else
+			{
+				echo CHtml::closeTag('li')."\n";
 
-        for($i=$level-$category->level;$i;$i--)
-        {
-            echo CHtml::closeTag('ul')."\n";
-            echo CHtml::closeTag('li')."\n";
-        }
-    }
+				for($i=$level-$category->level;$i;$i--)
+				{
+					echo CHtml::closeTag('ul')."\n";
+					echo CHtml::closeTag('li')."\n";
+				}
+			}
 
-    echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
-      echo CHtml::openTag('a',array('href'=>'#'));
-    echo CHtml::encode($category->name);
-      echo CHtml::closeTag('a');
+			echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
+			echo CHtml::openTag('a',array('href'=>'#'));
+			echo CHtml::encode($category->name);
+			echo CHtml::closeTag('a');
 
-    $level=$category->level;
-}
+			$level=$category->level;
+		}
 
-for($i=$level;$i;$i--)
-{
-    echo CHtml::closeTag('li')."\n";
-    echo CHtml::closeTag('ul')."\n";
-}
+		for($i=$level;$i;$i--)
+		{
+			echo CHtml::closeTag('li')."\n";
+			echo CHtml::closeTag('ul')."\n";
+		}
 
-}
+	}
 
-public static  function printULTree_noAnchors(){
-    $categories=Examination::model()->findAll(array('order'=>'lft'));
-    $level=0;
+	public static  function printULTree_noAnchors(){
+		$categories=Examination::model()->findAll(array('order'=>'lft'));
+		$level=0;
 
-foreach($categories as $n=>$category)
-{
-    if($category->level == $level)
-        echo CHtml::closeTag('li')."\n";
-    else if ($category->level > $level)
-        echo CHtml::openTag('ul')."\n";
-    else         //if $category->level<$level
-    {
-        echo CHtml::closeTag('li')."\n";
+		foreach($categories as $n=>$category)
+		{
+			if($category->level == $level)
+				echo CHtml::closeTag('li')."\n";
+			else if ($category->level > $level)
+				echo CHtml::openTag('ul')."\n";
+			else         //if $category->level<$level
+			{
+				echo CHtml::closeTag('li')."\n";
 
-        for ($i = $level - $category->level; $i; $i--) {
-                    echo CHtml::closeTag('ul') . "\n";
-                    echo CHtml::closeTag('li') . "\n";
-                }
-    }
+				for ($i = $level - $category->level; $i; $i--) {
+					echo CHtml::closeTag('ul') . "\n";
+					echo CHtml::closeTag('li') . "\n";
+				}
+			}
 
-    echo CHtml::openTag('li');
-    echo CHtml::encode($category->name);
-    $level=$category->level;
-}
+			echo CHtml::openTag('li');
+			echo CHtml::encode($category->name);
+			$level=$category->level;
+		}
 
-for ($i = $level; $i; $i--) {
-            echo CHtml::closeTag('li') . "\n";
-            echo CHtml::closeTag('ul') . "\n";
-        }
+		for ($i = $level; $i; $i--) {
+			echo CHtml::closeTag('li') . "\n";
+			echo CHtml::closeTag('ul') . "\n";
+		}
 
-}
+	}
 
 
 

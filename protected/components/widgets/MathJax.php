@@ -73,6 +73,7 @@ class MathJax extends CWidget
 		$this->_field = '
 	<script type="text/x-mathjax-config">
   MathJax.Hub.Config({
+	TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}, extensions: ["AMSmath.js", "AMSsymbols.js"]},
     extensions: ["tex2jax.js"],
     jax: ["input/TeX", "output/HTML-CSS"],
     tex2jax: {

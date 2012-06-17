@@ -1,97 +1,125 @@
-<!--
- Nested Set Admin GUI
- Main View File  index.php
-
- @author Spiros Kabasakalis <kabasakalis@gmail.com>,myspace.com/spiroskabasakalis
- @copyright Copyright &copy; 2011 Spiros Kabasakalis
- @since 1.0
- @license The MIT License-->
-
-<h1> Examination</h1><br>
-<h2>Administration</h2><br>
-<ul>
-     <li>If tree is empty,start by creating one or more root nodes.</li>
-    <li>Right Click on a node to see available operations.</li>
-    <li>Move nodes with Drag And Drop.You can move a non-root node to root position and vice versa.</li>
-     <li>Root nodes cannot be reordered.Their order is fixed  by id.</li>
-</ul>
-<div style="margin-bottom: 70px;" >
-<div style="float:left">
-  <input id="reload"  type="button" style="display:block; clear: both;" value="Refresh"class="client-val-form button">
-</div>
-<div style="float:left">
-  <input id="add_root" type="button" style="display:block; clear: both;" value="Create Root" class="client-val-form button">
-</div>
-</div>
-
-
-<!--The tree will be rendered in this div-->
-
-<div id="<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>" >
-
-</div>
-
-<script  type="text/javascript">
+<?php
+if(!isset($nomenu)){
+	$this->breadcrumbs=array(
+			Yii::t('main','Courses')=>array('/course/index')
+	);
+	if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
+	$this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
+	
+	
+	
+	$this->toolbar=array(
+			array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
+			array(
+					'label'=>Yii::t('main','Refresh'),
+					'icon-position'=>'left',
+					'icon'=>'document',
+					'url'=>'#',
+					'visible'=>true,
+					'linkOptions'=>array('id'=>'reload'),
+			),
+			array(
+					'label'=>Yii::t('course','New multiple choice question'),
+					'url'=>array('/multipleChoice/create','id'=>'xxxxxxyy','class_room_id'=>$this->getClassRoomId()),
+					'linkOptions'=>array('onclick'=>'return gohere(this.href);'),
+					'visible'=>UUserIdentity::isTeacher()|| UUserIdentity::isAdmin(),
+			),
+	
+	);
+}
+$this->widget('application.components.widgets.MathJax',array());
+$course_url= ($model?("/".$model->id):"");
+?>
+<table>
+	<tr>
+		<td width="20%"><div>
+				<table>
+					<tr>
+						<td>
+							<div id="<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</td>
+		<td>
+			<div id="showexamination"></div>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+var currentid=<?php echo $model->id ?>;
+function gohere(href){
+	window.location =href.replace(/xxxxxxyy/, currentid);
+	return false;
+}
 $(function () {
 $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 		.jstree({
-                           "html_data" : {
-	            "ajax" : {
-                                 "type":"POST",
- 	                          "url" : "<?php echo $baseUrl;?>/examination/fetchTree",
-	                         "data" : function (n) {
-	                          return {
-                                                  id : n.attr ? n.attr("id") : 0,
-                                                  "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
-                                                   };
-	                }
-  	            }
-	        },
+			"html_data" : {
+				"ajax" : {
+					"type":"POST",
+					"url" : "<?php echo $baseUrl;?>/examination/fetchTree<?php echo $course_url ?>",
+					"data" : function (n) {
+						return {
+							id : n.attr ? n.attr("id") : 0,
+							"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
+						};
+					}
+				}
+			},
+<?php if(Yii::app()->user->isGuest){?>
+			"contextmenu": {  
+			    "items": {  
+					"create": null,  
+					"rename": null,  
+					"remove": null,  
+					"move": null,
+					"ccp": null  
+				}  
+			},
+<?php }else{?>
+			"contextmenu":  {
+				'items': {
+					"rename" : {
+						"label" : "Rename",
+						"action" : function (obj) { this.rename(obj); }
+					},
+					"update" : {
+						"label"	: "Update",
+						"action"	: function (obj) {
+							id=obj.attr("id").replace("node_","");
+							$.ajax({
+								type: "POST",
+								url: "<?php echo $baseUrl;?>/examination/returnForm<?php echo $course_url ?>",
+								data:{
+									'update_id':  id,
+									"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
+								},
+								'beforeSend' : function(){
+									$("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").addClass("ajax-sending");
+								},
+								'complete' : function(){
+									$("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
+								},
+								success: function(data){
+									$.fancybox(data,
+									{
+										"transitionIn"	:	"elastic",
+										"transitionOut"    :      "elastic",
+										"speedIn"		:	600,
+										"speedOut"		:	200,
+										"overlayShow"	:	false,
+										"hideOnExaminationClick": false,
+										"onClosed":    function(){
+										} //onclosed function
+									})//fancybox
+								} //success
+							});//ajax
+						}//action function
+					},//update
 
-"contextmenu":  { 'items': {
-
-"rename" : {
-	            "label" : "Rename",
-                    "action" : function (obj) { this.rename(obj); }
-                  },
-"update" : {
-	              "label"	: "Update",
-	              "action"	: function (obj) {
-                                                id=obj.attr("id").replace("node_","");
-                     $.ajax({
-                                 type: "POST",
-                                 url: "<?php echo $baseUrl;?>/examination/returnForm",
-                                data:{
-                                          'update_id':  id,
-                                           "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
-                                              },
-			       'beforeSend' : function(){
-                                           $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").addClass("ajax-sending");
-                                                             },
-                               'complete' : function(){
-                                           $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
-                                                   },
-                    success: function(data){
-
-                        $.fancybox(data,
-                        {    "transitionIn"	:	"elastic",
-                            "transitionOut"    :      "elastic",
-                             "speedIn"		:	600,
-                            "speedOut"		:	200,
-                            "overlayShow"	:	false,
-                            "hideOnContentClick": false,
-                             "onClosed":    function(){
-                                                                       } //onclosed function
-                        })//fancybox
-
-                    } //success
-                });//ajax
-
-                                                  }//action function
-
-},//update
-
-    "properties" : {
+					 "properties" : {
 	"label"	: "Properties",
 	"action" : function (obj) {
                                    id=obj.attr("id").replace("node_","")
@@ -160,103 +188,28 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 	"label"	: "Create",
 	"action" : function (obj) { this.create(obj); },
         "separator_after": false
-	}
-
-//The next two context menu items,add_product and list_products are commented out because they are meaningful only if you have
-// a related Product Model (Nested Model HAS MANY Product).See Demo included in extension.
+	},
 
 
-//"add_product" : {
-//	"label"	: "Add Product",
-//	"action" : function (obj) {
-//                                   id=obj.attr("id").replace("node_","")
-//                             $.ajax({
-//                                    type:"POST",
-//			            url:"$baseUrl;'; ?>/product/returnProductForm",
-//			           data:  {
-//				         "id" :id,
-//                                         "YII_CSRF_TOKEN":"Yii::app()->request->csrfToken;'; ?>"
-//			            },
-//                                       beforeSend : function(){
-//                                               $("#::ADMIN_TREE_CONTAINER_ID'; ?>").addClass("ajax-sending");
-//                                                               },
-//                                        complete : function(){
-//                                              $("#::ADMIN_TREE_CONTAINER_ID'; ?>").removeClass("ajax-sending");
-//                                                             },
-//
-//                      success: function(data){
-//
-//                        $.fancybox(data,
-//                        {    "transitionIn"	:	"elastic",
-//                            "transitionOut"    :      "elastic",
-//                             "speedIn"		:	600,
-//                            "speedOut"		:	200,
-//                            "overlayShow"	:	false,
-//                            "hideOnContentClick": false,
-//                             "onClosed":    function(){
-//                                                                       } //onclosed function
-//                        })//fancybox
-//
-//                    } //function
-//
-//		});//ajax
-//
-//
-//
-//                                                },
-//	"separator_before"	: false,	// Insert a separator before the item
-//	"separator_after"	: false	// Insert a separator after the item
-//	},//add product
-
-//   "list_products" : {
-//	"label"	: "List Products",
-//	"action" : function (obj) {
-//                                   id=obj.attr("id").replace("node_","")
-//                             $.ajax({
-//                                         type:"POST",
-//			                 url:"$baseUrl;'; ?>/product/productList",
-//			                 data:{
-//				                   "id" :id,
-//			                           "YII_CSRF_TOKEN":"Yii::app()->request->csrfToken;'; ?>"
-//                                              },
-//			                beforeSend : function(){
-//                                               $("#::ADMIN_TREE_CONTAINER_ID'; ?>").addClass("ajax-sending");
-//                                                               },
-//                                        complete : function(){
-//                                              $("#::ADMIN_TREE_CONTAINER_ID'; ?>").removeClass("ajax-sending");
-//                                                             },
-//                                       success: function(data){
-//                                        $.fancybox(data,
-//                            {  "transitionIn"	:	"elastic",
-//                            "transitionOut"    :      "elastic",
-//                             "speedIn"		:	600,
-//                            "speedOut"		:	200,
-//                            "overlayShow"	:	false,
-//                            "hideOnContentClick": false,
-//                             "onClosed":    function(){
-//                                                                       } //onclosed function
-//                        })//fancybox
-//
-//                    } //function
-//
-//		});//post
-//
-//                                                },
-//	"separator_before"	: false,	// Insert a separator before the item
-//	"separator_after"	: true	// Insert a separator after the item
-//	}//list products
 
                   }//items
                   },//context menu
-
+<?php }?>
+                  
 			// the `plugins` array allows you to configure the active plugins on this instance
-			"plugins" : ["themes","html_data","contextmenu","crrm","dnd"],
+			"plugins" : ["themes","html_data","contextmenu","crrm","dnd","ui"],
 			// each plugin you have included can have its own config object
 			"core" : { "initially_open" : [ <?php echo $open_nodes?> ],'open_parents':true}
 			// it makes sense to configure a plugin only if overriding the defaults
 
 		})
-
+		.bind("select_node.jstree", function (event, data) {
+           // `data.rslt.obj` is the jquery extended node that was clicked
+				id=data.rslt.obj.attr("id").replace("node_","");
+				currentid=id;
+				$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/"+id);
+	        })
+<?php if(!Yii::app()->user->isGuest){?>
                 ///EVENTS
                .bind("rename.jstree", function (e, data) {
 		$.ajax({
@@ -282,7 +235,6 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 			                   }
 		});
 	})
-
          .bind("remove.jstree", function (e, data) {
 		$.ajax({
                            type:"POST",
@@ -361,7 +313,11 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
                    copied_node= (typeof $(data.rslt.oc).attr('id') !='undefined')? $(data.rslt.oc).attr('id').replace("node_",""):'UNDEFINED';
                    new_parent_root=data.rslt.cr!=-1?$(data.rslt.cr).attr('id').replace("node_",""):'root';
                    replaced_node= (typeof $(data.rslt.or).attr('id') !='undefined')? $(data.rslt.or).attr('id').replace("node_",""):'UNDEFINED';
-
+					if(new_parent_root=='root'){
+						alert("The tree allows one root!");
+						$.jstree.rollback(data.rlbk);						
+						return false;
+					}
 
 //                      console.log(data.rslt);
 //                      console.log(pos,'POS');
@@ -427,7 +383,8 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 
 		});//each function
 	});   //bind move event
-
+	<?php }?>
+	
                 ;//JSTREE FINALLY ENDS (PHEW!)
 
 //BINDING EVENTS FOR THE ADD ROOT AND REFRESH BUTTONS.
@@ -462,8 +419,9 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 
 		});//post
 	});//click function
-
-              $("#reload").click(function () {
+	
+$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/<?php echo $model->id;?>");
+$("#reload").click(function () {
 		jQuery("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").jstree("refresh");
 	});
 });

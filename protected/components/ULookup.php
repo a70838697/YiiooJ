@@ -48,4 +48,13 @@ class ULookup
 		self::JUDGE_RESULT_OUTPUT_BUFFER_EXCEED=>'Output Buffer Exceed',
 		self::JUDGE_RESULT_NO_THIS_COMPILER=>'No this compiler',
 	);
+	
+	const PRACTICE_STATUS_PUBLIC=0;
+	const PRACTICE_STATUS_TEACHER=1;
+	const PRACTICE_STATUS_PRIVATE=2;
+	public static $PRACTICE_STATUS_MESSAGES=array(
+		self::PRACTICE_STATUS_PUBLIC=>'Public',
+		self::PRACTICE_STATUS_TEACHER=>'Only teachers can view',
+		self::PRACTICE_STATUS_PRIVATE=>'Private',
+	);
 }
