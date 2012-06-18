@@ -29,17 +29,10 @@ $this->toolbar=array(
 ?>
 <table>
 	<tr>
-		<td width="20%"><div>
-				<table>
-					<tr>
-						<td>
+		<td width="20%" valign="top" style="vertical-align:top">
 							<div id="<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>"></div>
-						</td>
-					</tr>
-				</table>
-			</div>
 		</td>
-		<td>
+		<td valign="top" style="vertical-align:top">
 			<div id="showchapter"></div>
 		</td>
 	</tr>
