@@ -101,7 +101,7 @@ class ChapterController extends CMController
 		$this->course=$model->course;
 		//create an array open_nodes with the ids of the nodes that we want to be initially open
 		//when the tree is loaded.Modify this to suit your needs.Here,we open all nodes on load.
-		$categories= Chapter::model()->findAll(array('condition'=>'root=:root_id','order'=>'lft','params'=>array(':root_id'=>$id)));
+		$categories= Chapter::model()->findAll(array('condition'=>'root=:root_id and level<=1','order'=>'lft','params'=>array(':root_id'=>$id)));
 		$identifiers=array();
 		foreach($categories as $n=>$category)
 		{

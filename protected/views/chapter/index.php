@@ -185,7 +185,9 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                   }//items
                   },//context menu
 <?php }?>
-                  
+			"themes" : {
+				"theme" : "classic"
+			},
 			// the `plugins` array allows you to configure the active plugins on this instance
 			"plugins" : ["themes","html_data","contextmenu","crrm","dnd","ui"],
 			// each plugin you have included can have its own config object
