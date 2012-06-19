@@ -85,7 +85,8 @@ class MathJax extends CWidget
   });
 </script>	';
 		
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js_plugins/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
+		Yii::app()->clientScript->registerScriptFile($this->_defaults['src']);
+		//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js_plugins/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 	}
 	
 
