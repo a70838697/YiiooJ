@@ -32,23 +32,25 @@ $course_url= ($model?("/".$model->id):"");
 ?>
 <table>
 	<tr>
-		<td width="20%"><div>
-				<table>
-					<tr>
-						<td>
-							<div id="<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>"></div>
-						</td>
-					</tr>
-				</table>
+		<td width="20%" valign="top" style="vertical-align:top">
+			<div>
+			<table>
+				<tr>
+					<td>
+						<div id="<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>"></div>
+					</td>
+				</tr>
+			</table>
 			</div>
 		</td>
-		<td>
-			<div id="showexamination"></div>
+	<td valign="top" style="vertical-align:top">
+					<div id="showexamination"></div>
 		</td>
 	</tr>
 </table>
 <script type="text/javascript">
 var currentid=<?php echo $model->id ?>;
+var create_type=0;
 function gohere(href){
 	window.location =href.replace(/xxxxxxyy/, currentid);
 	return false;
@@ -89,6 +91,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 						"label"	: "Update",
 						"action"	: function (obj) {
 							id=obj.attr("id").replace("node_","");
+							children = obj.find('li');
 							$.ajax({
 								type: "POST",
 								url: "<?php echo $baseUrl;?>/examination/returnForm<?php echo $course_url ?>",
@@ -103,11 +106,15 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 									$("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
 								},
 								success: function(data){
+									alert(children.length);
 									$.fancybox(data,
 									{
 										"transitionIn"	:	"elastic",
 										"transitionOut"    :      "elastic",
-										"speedIn"		:	600,
+			                            'width': 800,
+			                            'height': 800,
+			                            'autoDimensions': (children.length>0),
+			                            "speedIn"		:	600,
 										"speedOut"		:	200,
 										"overlayShow"	:	false,
 										"hideOnExaminationClick": false,
@@ -184,16 +191,19 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 
                                                                                      }
 },//remove
-"create" : {
-	"label"	: "Create",
-	"action" : function (obj) { this.create(obj); },
-        "separator_after": false
+	"create" : {
+		"label"	: "Create",
+		"action" : function (obj) { create_type=0;this.create(obj); },
+	        "separator_after": false
 	},
-
-
-
-                  }//items
-                  },//context menu
+	"selectproblem" : {
+		"label"	: "Select problem",
+		"action" : function (obj) { create_type=1;this.create(obj); },
+	        "separator_after": false
+	},
+	
+	}//items
+},//context menu
 <?php }?>
                   
 			// the `plugins` array allows you to configure the active plugins on this instance
@@ -262,7 +272,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
                            parent_id=data.rslt.parent.attr("id").replace("node_","");
             $.ajax({
                     type: "POST",
-                    url: "<?php echo $baseUrl;?>/examination/returnForm",
+                    url: "<?php echo $baseUrl;?>/examination/returnForm/"+"type/"+create_type,
                       data:{   'name': newname,
                                  'parent_id':   parent_id,
                                  "YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
@@ -278,12 +288,14 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
                         $.fancybox(data,
                         {    "transitionIn"	:	"elastic",
                             "transitionOut"    :      "elastic",
-                             "speedIn"		:	600,
+                            'width': 800,
+                            'height': 800,
+                            'autoDimensions': (create_type==0),
+                            "speedIn"		:	600,
                             "speedOut"		:	200,
                             "overlayShow"	:	false,
                             "hideOnContentClick": false,
-                             "onClosed":    function(){
-                                                                       } //onclosed function
+                             "onClosed":    function(){$.jstree.rollback(data.rlbk); } //onclosed function
                         })//fancybox
 
                     } //success

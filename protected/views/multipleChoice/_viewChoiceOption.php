@@ -17,5 +17,3 @@
                 'ChoiceOption[id]'=>$data->id, 
                 'noValidate'=>true)
             ));*/?>
-	
-</div>

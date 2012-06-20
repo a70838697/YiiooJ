@@ -183,27 +183,106 @@ class ExaminationController extends Controller
 		}
 		*/
 	}
+	public function actionSelect($id){
+		$model= $this->loadModel($id);
+		//$examination=$model->examination->practice->chapter->book->course;
+		$type=(int)Yii::app()->request->getQuery('type',0);
+		if(!isset(ULookup::$EXAMINATION_PROBLEM_TYPE_MESSAGES[$type]))
+		{
+			echo "Error";
+			Yii::app()->end();
+		}
+	  
+		if($type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE||
+			$type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE){
+			$chapter=null;
+			if(($chapter_id=(int)Yii::app()->request->getQuery('chapter_id',null))>0)
+			{
+				$chapter=Chapter::model()->findByPk($chapter_id);
+			}
+			else
+			{
+				$chapter=$model->examination->practice->chapter->book;
+			}
+			$criteria=new CDbCriteria(array(
+			));
+			$criteria->with=array("chapter");
+			$criteria->compare("chapter.root", $chapter->root);
+			$criteria->addBetweenCondition("chapter.lft", $chapter->lft,$chapter->rgt);
+			$criteria->compare("t.more_than_one_answer", $type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE?1:0);
+			$criteria->order=("chapter.lft");
+			$dataProvider=new EActiveDataProvider('MultipleChoice',
+				array(
+					'criteria'=>$criteria,
+					'pagination'=>array(
+						'pageSize'=>10,
+					),
+				)
+			);
+			$render=Yii::app()->request->isAjaxRequest ? 'renderPartial' : 'render';
+			$this->$render('_multiple_choice_select', array(
+				'dataProvider'=>$dataProvider,
+				'prefix'=>'courseProblem'
+			));
+		}
+		if($type==ULookup::EXAMINATION_PROBLEM_TYPE_PROGRAMMING){
+			$scopes=array('titled');
+			if((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)
+				$scopes[]='mine';
+			else $scopes[]='public';
+			$criteria=new CDbCriteria(array(
+			));
+			//$id=Yii::app()->request->getQuery('id',null);
+			//if($id!==null && preg_match("/^\d$/",$id))
+			//{
+			//	$criteria->compare('t.id',(int)($id));
+			//}
+			$title=Yii::app()->request->getQuery('title',null);
+			if($title!==null)
+			{
+				$criteria->compare('t.title',$title,true);
+			}
+			$dataProvider=new EActiveDataProvider('Problem',
+				array(
+					'criteria'=>$criteria,
+					'scopes'=>$scopes,
+					'pagination'=>array(
+						'pageSize'=>10,
+					),
+				)
+			);
+			$render=Yii::app()->request->isAjaxRequest ? 'renderPartial' : 'render';
+			$this->$render('_problem_select', array(
+				'dataProvider'=>$dataProvider,
+				'prefix'=>'courseProblem'
+			));
+		}
+	}
 
 	public function actionReturnForm($id=null){
 
+		$type=(int)Yii::app()->request->getQuery('type',0);
 
 		//don't reload these scripts or they will mess up the page
 		//yiiactiveform.js still needs to be loaded that's why we don't use
 		// Yii::app()->clientScript->scriptMap['*.js'] = false;
 		$cs=Yii::app()->clientScript;
 		$cs->scriptMap=array(
-				'jquery.min.js'=>false,
-				'jquery.js'=>false,
-				'jquery.fancybox-1.3.4.js'=>false,
-				'jquery.jstree.js'=>false,
-				'jquery-ui-1.8.12.custom.min.js'=>false,
-				'json2.js'=>false,
+			'jquery.min.js'=>false,
+			'jquery.js'=>false,
+			'jquery.fancybox-1.3.4.js'=>false,
+			'jquery.jstree.js'=>false,
+			'jquery-ui-1.8.12.custom.min.js'=>false,
+			'json2.js'=>false,
 
 		);
 
 
 		//Figure out if we are updating a Model or creating a new one.
-		if(isset($_POST['update_id']))$model= $this->loadModel($_POST['update_id']);
+		if(isset($_POST['update_id'])){
+			$model= $this->loadModel($_POST['update_id']);
+			$type=$model->type_id;
+		}
 		else {
 			$model=new Examination;
 			$model->root=$id;
@@ -211,9 +290,10 @@ class ExaminationController extends Controller
 
 
 		$this->renderPartial('_form', array('model'=>$model,
-				'parent_id'=>!empty($_POST['parent_id'])?$_POST['parent_id']:0
+			'parent_id'=>!empty($_POST['parent_id'])?$_POST['parent_id']:0,
+			'type'=>$type,
 		),
-				false, true);
+			false, true);
 
 	}
 

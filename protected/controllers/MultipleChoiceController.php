@@ -55,11 +55,6 @@ class MultipleChoiceController extends CMController
 		$choiceOptionManager=new ChoiceOptionManager();
 		$choiceOptionManager->load($model);
 		
-		$answer_faker=preg_split('/,/',$model->answer);
-		foreach($choiceOptionManager->items as $id=>$choiceOption){
-			$choiceOption->isAnswer=(in_array($id,$answer_faker))?1:0;
-		}		
-		
 		$this->render('view',array(
 			'model'=>$model,
 			'choiceOptionManager'=>$choiceOptionManager,

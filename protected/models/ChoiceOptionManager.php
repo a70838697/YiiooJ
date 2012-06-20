@@ -29,6 +29,10 @@ class ChoiceOptionManager extends TabularInputManager
     {
         foreach ($model->choiceOptions as $item)
             $this->_items[$item->primaryKey]=$item;
+        $answer_faker=preg_split('/,/',$model->answer);
+        foreach($this->_items as $id=>$choiceOption){
+        	$choiceOption->isAnswer=(in_array($id,$answer_faker))?1:0;
+        }
         return $this;
     }
  

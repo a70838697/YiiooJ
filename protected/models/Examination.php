@@ -4,8 +4,11 @@
  * This is the Nested Set  model class for table "{{examinations}}".
  *
  * The followings are the available columns in table '{{examinations}}':
- * @property string $id
- * @property string $root
+ * @property integer $id
+ * @property integer $problem_id
+ * @property integer $type_id
+ * @property string $sequence
+ * @property integer $root
  * @property string $lft
  * @property string $rgt
  * @property integer $level
@@ -57,6 +60,10 @@ class Examination extends CActiveRecord
 		//rgt,lft,root,level,id.
 		return array(
 				array('name', 'required'),
+				array('problem_id', 'numerical', 'integerOnly'=>true),
+				array('type_id', 'numerical', 'integerOnly'=>true),
+				array('sequence', 'length', 'max'=>20),
+
 				array('description', 'length', 'min'=>0),
 				array('name', 'length', 'max'=>128),
 				// The following rule is used by search().
@@ -74,6 +81,10 @@ class Examination extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 				'examinations' => array(self::HAS_MANY, 'Examination', 'root'),
+				'examination' => array(self::BELONGS_TO, 'Examination', 'root'),
+				'practice' => array(self::HAS_ONE, 'Practice', 'examination_id'),
+				'multiple_choice_problem' => array(self::BELONGS_TO, 'MultipleChoice', 'problem_id'),
+				'Problem' => array(self::BELONGS_TO, 'Problem', 'problem_id'),
 		);
 	}
 
@@ -88,8 +99,10 @@ class Examination extends CActiveRecord
 				'lft' => 'Lft',
 				'rgt' => 'Rgt',
 				'level' => 'Level',
+				'sequence' => 'Sequence',
 				'name' => 'Name',
-				'description' => 'Description',
+			'type_id' => 'Type',
+			'description' => 'Description',
 		);
 	}
 
@@ -162,7 +175,7 @@ class Examination extends CActiveRecord
 
 			echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
 			echo CHtml::openTag('a',array('href'=>'#'));
-			echo CHtml::encode($category->name);
+			echo CHtml::encode($category->sequence.$category->name);
 			echo CHtml::closeTag('a');
 
 			$level=$category->level;

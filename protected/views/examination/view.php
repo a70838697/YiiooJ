@@ -1,7 +1,7 @@
 <?php
 ?>
 
-<h1>Examination <?php echo $model->name; ?></h1>
+<h1>Examination <?php echo $model->sequence.".&nbsp;".$model->name; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

@@ -1,8 +1,9 @@
-
+<!-- 
 Search by:   <b>Category:</b> <select id='pro_type' onchange='research();'><option value='public'>Public</option><option value='mine'>Mine</option></select>
 &nbsp;&nbsp;<b>ID:</b> <input id='prob_id'  size ='5' onchange='research();' />
 &nbsp;&nbsp; <b>Problem Title:</b> <input  id='prob_title' maxLength='20'  size ='10'  onchange='research();' /> &nbsp;&nbsp;<input type=button onclick='research();' value="Search" />
 <br/><font size="3">Click the green ID to select a problem Or <?php echo CHtml::link("Create a problem", array('/'.$this->prefix.'problem/create'))?> </font>
+ -->
 <?php
 echo CHtml::script(
 '
@@ -38,7 +39,7 @@ function research()
 		array(
 			'name'=>'title',
 			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode($data->title),array("'.$this->prefix.'problem/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
+			'value'=>'CHtml::link(CHtml::encode(substr($data->description,0,20)),array("multipleChoice/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
 		),
 	),
 ));
