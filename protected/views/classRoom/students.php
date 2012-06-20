@@ -144,7 +144,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'submitiondialog',
     'options'=>array(
 		'dialogClass'=>'rbam-dialog',
-        'title'=>'Create an experiment',
+        'title'=>'Select students',
         'autoOpen'=>false,
 		'minWidth'=>500,
 		'height'=>500,

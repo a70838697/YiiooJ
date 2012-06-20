@@ -45,19 +45,19 @@ function gohere(href){
 }
 $(function () {
 $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
-		.jstree({
-			"html_data" : {
-				"ajax" : {
-					"type":"POST",
-					"url" : "<?php echo $baseUrl;?>/chapter/fetchTree<?php echo $course_url ?>",
-					"data" : function (n) {
-						return {
-							id : n.attr ? n.attr("id") : 0,
-							"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
-						};
-					}
+	.jstree({
+		"html_data" : {
+			"ajax" : {
+				"type":"POST",
+				"url" : "<?php echo $baseUrl;?>/chapter/fetchTree<?php echo $course_url ?>",
+				"data" : function (n) {
+					return {
+						id : n.attr ? n.attr("id") : 0,
+						"YII_CSRF_TOKEN":"<?php echo Yii::app()->request->csrfToken;?>"
+					};
 				}
-			},
+			}
+		},
 <?php if(Yii::app()->user->isGuest){?>
 			"contextmenu": {  
 			    "items": {  

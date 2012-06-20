@@ -41,23 +41,23 @@ $success='function(data){
 
     if (response.success ==true)
     {
-         jQuery("#'.Chapter::ADMIN_TREE_CONTAINER_ID.'").jstree("refresh");
-         $("#success-chapter")
+		setTimeout("$.fancybox.close();",3000);
+        jQuery("#'.Chapter::ADMIN_TREE_CONTAINER_ID.'").jstree("refresh");
+        $("#success-chapter")
         .fadeOut(1000, "linear",function(){
-                                                             $(this)
-                                                            .append("<div> '.$val_success_message.'</div>")
-                                                            .fadeIn(2000, "linear")
-                                                            }
-                       );
+			$(this)
+			.append("<div> '.$val_success_message.'</div>")
+			.fadeIn(2000, "linear")
+		});
         $("#chapter-form").slideToggle(1500);'.
         (isset($updatesuccess)?$updatesuccess:'').
     '}
-         else {
-                   $("#error-chapter")
-                   .hide()
-                    .show()
-                    .css({"opacity": 1 })
-                   .append("<div>"+response.message+"</div>").fadeIn(2000);
+    else {
+    	$("#error-chapter")
+    	.hide()
+    	.show()
+    	.css({"opacity": 1 })
+    	.append("<div>"+response.message+"</div>").fadeIn(2000);
 
               jQuery("#'.Chapter::ADMIN_TREE_CONTAINER_ID.'").jstree("refresh");
 
