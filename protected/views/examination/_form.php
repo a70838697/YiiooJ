@@ -42,7 +42,7 @@ $success='function(data){
 
     if (response.success ==true)
     {
-		setTimeout("$.fancybox.close();",3000);    
+		setTimeout("$.fancybox.close();",2000);    
          jQuery("#'.Examination::ADMIN_TREE_CONTAINER_ID.'").jstree("refresh");
          $("#success-examination")
         .fadeOut(1000, "linear",function(){
@@ -129,6 +129,11 @@ $form=$this->beginWidget('CActiveForm', array(
 		<?php echo $form->textField($model,'sequence',array('size'=>60,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'sequence'); ?>
 	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'score'); ?>
+		<?php echo $form->textField($model,'score',array('size'=>10,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'score'); ?>
+	</div>	
 	<?php echo $form->labelEx($model,'name'); ?>    <?php  echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128,'value'=>(isset($_POST['name'])?$_POST['name']:$model->name),'style'=>'width:88%;'));  ?>       <span  id="success-Chapter_name"  class="hid input-notification-success  success png_bg"></span>
     <div><small></small> </div>
      <?php   echo $form->error($model,'name');  ?>    </div>

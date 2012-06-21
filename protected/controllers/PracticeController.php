@@ -87,11 +87,15 @@ class PracticeController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$test=Yii::app()->request->getQuery('test',null);
+		if($test!==null)$test=(int)$test;
+				
 		$model=$this->loadModel($id);
 		if($model->chapter)
 			$this->course=$model->chapter->course;		
 		$this->render('view',array(
 			'model'=>$model,
+			'test'=>$test,
 		));
 	}
 

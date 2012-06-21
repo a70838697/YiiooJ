@@ -11,6 +11,7 @@
  * @property integer $root
  * @property string $lft
  * @property string $rgt
+ * @property float $score
  * @property integer $level
  * @property string $name
  * @property string $description
@@ -63,7 +64,8 @@ class Examination extends CActiveRecord
 				array('problem_id', 'numerical', 'integerOnly'=>true),
 				array('type_id', 'numerical', 'integerOnly'=>true),
 				array('sequence', 'length', 'max'=>20),
-
+				array('score', 'numerical'),
+				
 				array('description', 'length', 'min'=>0),
 				array('name', 'length', 'max'=>128),
 				// The following rule is used by search().
@@ -101,6 +103,7 @@ class Examination extends CActiveRecord
 				'level' => 'Level',
 				'sequence' => 'Sequence',
 				'name' => 'Name',
+			'score'=>'Score',
 			'type_id' => 'Type',
 			'description' => 'Description',
 		);
@@ -175,7 +178,7 @@ class Examination extends CActiveRecord
 
 			echo CHtml::openTag('li',array('id'=>'node_'.$category->id,'rel'=>$category->name));
 			echo CHtml::openTag('a',array('href'=>'#'));
-			echo CHtml::encode($category->sequence.$category->name);
+			echo CHtml::encode($category->sequence."($category->score points)".$category->name);
 			echo CHtml::closeTag('a');
 
 			$level=$category->level;

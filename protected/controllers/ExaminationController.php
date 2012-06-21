@@ -95,6 +95,8 @@ class ExaminationController extends Controller
 	}
 	public function actionView($id)
 	{
+		$test=Yii::app()->request->getQuery('test',null);
+		if($test!==null)$test=(int)$test;
 	
 		$model=$this->loadModel($id);
 		$this->model=$model;
@@ -117,6 +119,7 @@ class ExaminationController extends Controller
 				'baseUrl'=> $baseUrl,
 				'open_nodes'=> $open_nodes,
 				'model'=>$model,
+				'test'=>$test,
 		));
 	}
 	/**
@@ -285,6 +288,7 @@ class ExaminationController extends Controller
 		}
 		else {
 			$model=new Examination;
+			$model->name="Question #";
 			$model->root=$id;
 		}
 
@@ -322,7 +326,9 @@ class ExaminationController extends Controller
 
 	}
 	public function actionReturnExamination(){
-
+		$test=Yii::app()->request->getQuery('test',null);
+		if($test!==null)$test=(int)$test;
+		
 		//don't reload these scripts or they will mess up the page
 		//yiiactiveform.js still needs to be loaded that's why we don't use
 		// Yii::app()->clientScript->scriptMap['*.js'] = false;
@@ -341,6 +347,7 @@ class ExaminationController extends Controller
 
 		$this->renderPartial('examination', array(
 				'model'=>$model,
+				'test'=>$test,
 		),
 				false, true);
 

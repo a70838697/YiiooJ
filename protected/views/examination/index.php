@@ -28,7 +28,7 @@ if(!isset($nomenu)){
 	);
 }
 $this->widget('application.components.widgets.MathJax',array());
-$course_url= ($model?("/".$model->id):"");
+$course_url= ($model?("/".$model->id):"").(isset($test)&&$test!==null?("/test/".$test):"");
 ?>
 <table>
 	<tr>
@@ -106,7 +106,6 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 									$("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
 								},
 								success: function(data){
-									alert(children.length);
 									$.fancybox(data,
 									{
 										"transitionIn"	:	"elastic",
@@ -217,7 +216,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
            // `data.rslt.obj` is the jquery extended node that was clicked
 				id=data.rslt.obj.attr("id").replace("node_","");
 				currentid=id;
-				$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/"+id);
+				$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/"+id+"<?php echo (isset($test)&&$test!==null?("/test/".$test):"")?>");
 	        })
 <?php if(!Yii::app()->user->isGuest){?>
                 ///EVENTS
@@ -432,7 +431,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 		});//post
 	});//click function
 	
-$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/<?php echo $model->id;?>");
+$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/<?php echo $model->id;?>"+"<?php echo (isset($test)&&$test!==null?("/test/".$test):"")?>");
 $("#reload").click(function () {
 		jQuery("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").jstree("refresh");
 	});
