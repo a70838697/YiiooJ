@@ -28,6 +28,16 @@ class QuizAnswer extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	
+	public function checkAnswer($examination=null)
+	{
+		if($examination==null) $examination=$this->examination;
+		if($examination->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE)
+		{
+			$this->makeReview(0, $this->multiple_choice_problem->answer==$this->answer?$this->examination->score:0);
+		}
+		
+	}
 	/**
 	 * @return string the associated database table name
 	 */
@@ -44,14 +54,50 @@ class QuizAnswer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('quiz_id, examination_id, answer, create_time, update_time, user_id, reviewer_id, review, review_time', 'required'),
-			array('quiz_id, examination_id, create_time, update_time, user_id, reviewer_id, review_time', 'numerical', 'integerOnly'=>true),
+			array('quiz_id, examination_id, answer, user_id, review', 'required'),
+			array('quiz_id, examination_id, user_id', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
+			array('create_time, update_time','default',
+				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
+				'setOnEmpty'=>false,'on'=>'insert'),
+			array('update_time','default',
+				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
+				'setOnEmpty'=>false,'on'=>'update'),
+			array('user_id','default',
+				'value'=>Yii::app()->user->id,
+				'setOnEmpty'=>false,'on'=>'insert'),			
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, quiz_id, examination_id, answer, create_time, update_time, user_id, score, reviewer_id, review, review_time', 'safe', 'on'=>'search'),
 		);
 	}
+	
+
+	public function makeReview($user_id,$score)
+	{
+		$this->reviewer_id=$user_id;
+		$this->review_time=$score;
+		$this->review_time=new CDbExpression('UNIX_TIMESTAMP()');
+	}
+	/**
+	 * set initial value
+	 * @return true or false.
+	 */
+	protected function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+			if($this->isNewRecord)
+			{
+			}
+			else 
+			{
+			}
+			return true;
+		}
+		else
+			return false;
+	}	
 
 	/**
 	 * @return array relational rules.
@@ -61,6 +107,7 @@ class QuizAnswer extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'examination' => array(self::BELONGS_TO, 'Examination', 'examination_id'),
 		);
 	}
 

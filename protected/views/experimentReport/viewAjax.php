@@ -35,7 +35,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	'id'=>'xyb1',
     'items' => array(
         array(
-            'label'=>Yii::t('course','Edit'),
+            'label'=>Yii::t('main','Edit'),
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
 	        'linkOptions'=>array('target'=>'_blank;',),
@@ -51,7 +51,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('viewAjax', 'id'=>$model->id),
         ),
         array(
-            'label'=>Yii::t('course','Submit'),
+            'label'=>Yii::t('main','Submit'),
             'icon-position'=>'left',
             'visible'=>$model->canSubmit(),
 	        'linkOptions'=>array('onclick'=>'return submitr(this.href);',),
@@ -67,7 +67,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'url'=>array('viewAjax', 'id'=>$model->id,'extended'=>'1'),
         ),
     	array(
-            'label'=>Yii::t('course','Print'),
+            'label'=>Yii::t('main','Print'),
             'icon-position'=>'left',
 	        'linkOptions'=>array('target'=>'_blank;',),
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"

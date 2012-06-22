@@ -326,8 +326,10 @@ class ExaminationController extends Controller
 
 	}
 	public function actionReturnExamination(){
-		$test=Yii::app()->request->getQuery('test',null);
+		$this->test=Yii::app()->request->getQuery('test',null);
 		if($test!==null)$test=(int)$test;
+		
+		Yii::app()->params['test']=$test;
 		
 		//don't reload these scripts or they will mess up the page
 		//yiiactiveform.js still needs to be loaded that's why we don't use
@@ -345,9 +347,28 @@ class ExaminationController extends Controller
 
 		$model=$this->loadModel($_GET['id']);
 
+		$trees=$model->descendants()->findAll();
+		array_unshift($trees,$model);
+		
+		if(isset($_POST['submit_id'])&& $test!==null){
+			foreach ($trees as $node)
+			{
+				if($node->answer===null){
+					$node->answer=new QuizAnswer();
+					$node->answer->examination_id=$node->id;
+					$node->answer->test_id=$test;
+				}
+				$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
+				$node->answer->checkAnswer();
+				$node->answer->save();
+			}
+		}
+				
 		$this->renderPartial('examination', array(
 				'model'=>$model,
 				'test'=>$test,
+				'newQuizAnswer'=>new QuizAnswer(),
+				'trees'=>$trees,
 		),
 				false, true);
 

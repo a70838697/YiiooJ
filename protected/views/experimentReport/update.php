@@ -20,32 +20,32 @@ $canEdit=UUserIdentity::isAdmin()
 	||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id);
 
 $this->toolbar=array(
-        array(
-            'label'=>'Save',
-            'icon-position'=>'left',
-            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>'#',
-	        'visible'=>$canEdit,
-        	'linkOptions'=>array('onclick'=>'return saver();',)
-        ),
-        array(
-            'label'=>'Submit',
-            'icon-position'=>'left',
-            'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>'#',
-	        'visible'=>true,
-        	'linkOptions'=>array('onclick'=>'return submitr();',)
-        ),
-		array(
-				'label'=>'Preview',
-				'icon-position'=>'left',
-				'icon'=>'document', // This a CSS class starting with ".ui-icon-"
-				'url'=>'#',
-				'visible'=>$canEdit,
-				'linkOptions'=>array('onclick'=>'return preview();',)
-		),
+	array(
+		'label'=>Yii::t('main','Save'),
+		'icon-position'=>'left',
+		'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+		'url'=>'#',
+		'visible'=>$canEdit,
+		'linkOptions'=>array('onclick'=>'return saver();',)
+	),
+	array(
+		'label'=>Yii::t('main','Preview'),
+		'icon-position'=>'left',
+		'icon'=>'document', // This a CSS class starting with ".ui-icon-"
+		'url'=>'#',
+		'visible'=>$canEdit,
+		'linkOptions'=>array('onclick'=>'return preview();',)
+	),
+	array(
+		'label'=>Yii::t('main','Submit'),
+		'icon-position'=>'left',
+		'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
+		'url'=>'#',
+		'visible'=>true,
+		'linkOptions'=>array('onclick'=>'return submitr();',)
+	),
 
-    );
+);
 echo CHtml::script('
 function preview()
 {

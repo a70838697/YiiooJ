@@ -43,6 +43,8 @@ class Controller extends CController
 		
 	}
 
+	public $test_id=null;
+	
 	public $course=null;
 	public $classRoom=null;
 	public $course_id=0;
