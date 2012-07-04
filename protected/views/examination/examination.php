@@ -135,6 +135,8 @@
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
 			echo $parsedText;
+			$parsedText = $parser->safeTransform($node->multiple_choice_problem->description);
+			echo $parsedText;
 			if($quiz!==null)
 			{
 				$answer_nodes=$quiz_answer_manager->getItems();	
