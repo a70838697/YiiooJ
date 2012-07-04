@@ -25,4 +25,4 @@ $this->toolbar= array(
 
 <h1>Update MultipleChoice <?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager,'chapters'=>$chapters)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'choiceOptionManager'=>$choiceOptionManager,'chapters'=>$chapters,'type'=>$type)); ?>

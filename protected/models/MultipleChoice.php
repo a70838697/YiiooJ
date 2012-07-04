@@ -10,7 +10,7 @@
  * @property integer $create_time
  * @property integer $update_time
  * @property string $answer
- * @property integer $more_than_one_answer
+ * @property integer $question_type
  * @proptery integer $chapter_id
  */
 class MultipleChoice extends CActiveRecord
@@ -42,7 +42,7 @@ class MultipleChoice extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('description,answer', 'required'),
-			array('more_than_one_answer', 'numerical', 'integerOnly'=>true),
+			array('question_type', 'numerical', 'integerOnly'=>true),
 			array('chapter_id', 'numerical', 'integerOnly'=>true),
 			array('answer', 'length', 'max'=>255),
 			array('create_time','default',
@@ -80,7 +80,7 @@ class MultipleChoice extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'more_than_one_answer'=> 'The problem have more than one answer',
+			'question_type'=> 'Question type',
 			'description' => 'Description',
 			'user_id' => 'User',
 			'create_time' => 'Create Time',

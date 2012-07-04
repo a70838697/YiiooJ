@@ -11,6 +11,10 @@ $this->menu=array(
 	array('label'=>'Delete MultipleChoice', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage MultipleChoice', 'url'=>array('admin')),
 );
+$fill="Fill";
+if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE||
+	$model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE
+	)$fill="";
 $this->widget('application.components.widgets.MathJax',array());
 $this->toolbar= array(
 		array(
@@ -18,7 +22,7 @@ $this->toolbar= array(
 				'icon-position'=>'left',
 				'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
 				'visible'=>true,
-				'url'=>array('update', 'id'=>$model->id),
+				'url'=>array('update'.$fill, 'id'=>$model->id),
 		),
 );
 ?>

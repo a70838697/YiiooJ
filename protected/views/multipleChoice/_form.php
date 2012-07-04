@@ -24,8 +24,8 @@
 	<?php }?>
 <table>
 <tr>
-	<th><?php echo $form->checkBox($model,'more_than_one_answer', array('value'=>1, 'uncheckValue'=>0)); ?></th><th><?php  echo $form->labelEx($model,'more_than_one_answer');?><?php echo $form->error($model,'answer'); ?></th>
-    <th></th>
+<th colspan=3><?php  echo $form->labelEx($model,'question_type');?><?php echo $form->error($model,'answer'); ?>
+<?php echo $form->dropDownList($model,'question_type',isset($type)&&$type=='Fill'?ULookup::$EXAMINATION_PROBLEM_TYPE_COMMON_MESSAGES1:ULookup::$EXAMINATION_PROBLEM_TYPE_COMMON_MESSAGES2,array('encode'=>false)); ?></th>
 </tr>
 <?php foreach($choiceOptionManager->items as $id=>$choiceOption):?>
  
@@ -49,7 +49,7 @@
 <script type="text/javascript">
 /*<![CDATA[*/
 jQuery(function($) {
-$('body').on('click','#MultipleChoice_more_than_one_answer',function(){jQuery.yii.submitForm(this,'',{'OldValue':<?php echo $model->more_than_one_answer;?>,'noValidate':true});return false;});
+$('body').on('change','#MultipleChoice_question_type',function(){jQuery.yii.submitForm(this,'',{'OldValue':<?php echo $model->question_type;?>,'noValidate':true});return false;});
 });
 /*]]>*/
 </script>

@@ -108,14 +108,17 @@
 		<table>
 			<?php foreach($choiceOptionManager->items as $id=>$choiceOption):?>
 			<tr>
-				<td width=10><?php echo $node->multiple_choice_problem->more_than_one_answer?
-				$form->checkBox($answer_nodes[$node->id], "[$node->id][$id]answer", array(
+				<td width=10>
+				<?php
+				if(ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE==$node->type_id)
+					echo $form->radioButton($answer_nodes[$node->id], '[$node->id]answer', array(
+						'value'=>"$id",
+						'uncheckValue'=>null
+					));
+				elseif(ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE==$node->type_id)
+				echo $form->checkBox($model, "[$id]isAnswer", array(
 					'value'=>1,
 					'uncheckValue'=>0
-				))
-				:$form->radioButton($answer_nodes[$node->id], "[$node->id]answer", array(
-					'value'=>"$id",
-					'uncheckValue'=>null
 				));
 				?>
 				</td>
@@ -125,6 +128,17 @@
 			<?php endforeach;?>
 		</table>
 		<?php
+			}
+		}
+		else if($node->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_QUESTION)
+		{
+			$parser=new CMarkdownParser;
+			$parsedText = $parser->safeTransform($node->description);
+			echo $parsedText;
+			if($quiz!==null)
+			{
+				$answer_nodes=$quiz_answer_manager->getItems();	
+				echo $form->textArea($answer_nodes[$node->id], "[$node->id]answer",array('rows'=>20, 'cols'=>60));
 			}
 		}
 

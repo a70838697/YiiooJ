@@ -30,7 +30,7 @@ class MultipleChoiceController extends CMController
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','createFill','updateFill','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -65,6 +65,69 @@ class MultipleChoiceController extends CMController
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionCreateFill($id=null)
+	{
+		$model=new MultipleChoice;
+		$choiceOptionManager=new ChoiceOptionManager();
+	
+		if( ((int)$id)==0 && $this->getCourse())$id=$this->getCourse()->chapter_id;
+	
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+	
+	
+		if(isset($_POST['MultipleChoice']))
+		{
+			$model->attributes=$_POST['MultipleChoice'];
+			$model->answer="-1";
+			$choiceOptionManager->manage(isset($_POST['ChoiceOption'])?$_POST['ChoiceOption']:array());
+			if (!isset($_POST['noValidate']))
+			{
+				$valid=$model->validate();
+				$valid=$choiceOptionManager->validate($model) && $valid;
+	
+				if($valid)
+				{
+					if($model->save())
+					{
+						$choiceOptionManager->save($model);
+						$this->redirect(array('view','id'=>$model->id));
+					}
+				}
+			}
+		}
+	
+		$treeArray=array();
+		if($id!=null)
+		{
+			$nodeRoot=Chapter::model()->findByPk($id);
+			$nodeRoot=$nodeRoot->book;
+	
+			if($nodeRoot===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
+			$tree=$nodeRoot->descendants()->findAll();
+			if(!empty($tree))
+			{
+				foreach ($tree as $node)
+				{
+					//var_dump($node);
+					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
+				}
+			}
+		}
+		$this->render('create',array(
+				'model'=>$model,
+				'choiceOptionManager'=>$choiceOptionManager,
+				'chapters'=>$treeArray,
+				'type'=>'Fill'
+		));
+	}	
+	
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
 	public function actionCreate($id=null)
 	{
 		$model=new MultipleChoice;
@@ -82,7 +145,7 @@ class MultipleChoiceController extends CMController
 			$choiceOptionManager->manage(isset($_POST['ChoiceOption'])?$_POST['ChoiceOption']:array());
 			if (isset($_POST['OldValue']))
 			{
-				if($_POST['OldValue']==0)
+				if($_POST['OldValue']==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE)
 				{
 					foreach($choiceOptionManager->items as $id1=>$choiceOption){
 						$choiceOption->isAnswer=($id1==$model->answer)?1:0;
@@ -98,7 +161,7 @@ class MultipleChoiceController extends CMController
 			}
 			if (!isset($_POST['noValidate']))
 			{
-				if($model->more_than_one_answer)
+				if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE)
 				{
 					$answer=array();
 					foreach($choiceOptionManager->items as $id1=>$choiceOption){
@@ -114,17 +177,21 @@ class MultipleChoiceController extends CMController
 				{
 					if($model->save())
 					{
-						$choiceOptionManager->save($model);
-						$answer_faker= preg_split('/,/',$model->answer);
-						$answer=array();
-						foreach($choiceOptionManager->items as $id1=>$choiceOption){
-							if(in_array($id,$answer_faker))$answer[]=$choiceOption->id;
+						if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE
+							||$model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE
+							){
+							$choiceOptionManager->save($model);
+							$answer_faker= preg_split('/,/',$model->answer);
+							$answer=array();
+							foreach($choiceOptionManager->items as $id1=>$choiceOption){
+								if(in_array($id1,$answer_faker))$answer[]=$choiceOption->id;
+							}
+							sort($answer);
+							
+							$model->answer = join($answer,",");
+							$model->save();
+							$this->redirect(array('view','id'=>$model->id));
 						}
-						sort($answer);
-						
-						$model->answer = join($answer,",");
-						$model->save();
-						$this->redirect(array('view','id'=>$model->id));
 					}
 				}
 			}
@@ -152,10 +219,72 @@ class MultipleChoiceController extends CMController
 		$this->render('create',array(
 				'model'=>$model,
 				'choiceOptionManager'=>$choiceOptionManager,
-				'chapters'=>$treeArray
+				'chapters'=>$treeArray,
+			'type'=>'choice'
+				
 		));		
 	}
-
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdateFill($id)
+	{
+		$model=$this->loadModel($id);
+		$choiceOptionManager=new ChoiceOptionManager();
+		$choiceOptionManager->load($model);
+	
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+	
+		if(isset($_POST['MultipleChoice']))
+		{
+			$model->attributes=$_POST['MultipleChoice'];
+			$model->answer="-1";
+			$choiceOptionManager->manage(isset($_POST['ChoiceOption'])?$_POST['ChoiceOption']:array());
+			if (!isset($_POST['noValidate']))
+			{
+				$valid=$model->validate();
+				$valid=$choiceOptionManager->validate($model) && $valid;
+	
+				if($valid)
+				{
+					if($model->save())
+					{
+							$choiceOptionManager->save($model);
+							$this->redirect(array('view','id'=>$model->id));
+					}
+				}
+			}
+		}
+	
+	
+		$treeArray=array();
+		if($model->chapter!=null)
+		{
+			$nodeRoot=$model->chapter->book;
+			if($nodeRoot===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
+			$tree=$nodeRoot->descendants()->findAll();
+			if(!empty($tree))
+			{
+				foreach ($tree as $node)
+				{
+					//var_dump($node);
+					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
+				}
+			}
+		}
+	
+		$this->render('update',array(
+				'model'=>$model,
+				'choiceOptionManager'=>$choiceOptionManager,
+				'chapters'=>$treeArray,
+				'type'=>'Fill'
+		));
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -178,25 +307,25 @@ class MultipleChoiceController extends CMController
 			{
 				if($_POST['OldValue']==0)
 				{
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						$choiceOption->isAnswer=($id==$model->answer)?1:0;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						$choiceOption->isAnswer=($id1==$model->answer)?1:0;
 					}
 				}
 				else
 				{
 					$model->answer="";
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						if($choiceOption->isAnswer)$model->answer=$id;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						if($choiceOption->isAnswer)$model->answer=$id1;
 					}
 				}
 			}
 			if (!isset($_POST['noValidate']))
 			{
-				if($model->more_than_one_answer)
+				if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE)
 				{
 					$answer=array();
-					foreach($choiceOptionManager->items as $id=>$choiceOption){
-						if($choiceOption->isAnswer)$answer[]=$id;
+					foreach($choiceOptionManager->items as $id1=>$choiceOption){
+						if($choiceOption->isAnswer)$answer[]=$id1;
 					}
 					sort($answer);
 					$model->answer=join($answer,",");
@@ -208,17 +337,21 @@ class MultipleChoiceController extends CMController
 				{
 					if($model->save())
 					{
-						$choiceOptionManager->save($model);
-						$answer_faker=preg_split('/,/',$model->answer);
-						$answer=array();
-						foreach($choiceOptionManager->items as $id=>$choiceOption){
-							if(in_array($id,$answer_faker))$answer[]=$choiceOption->id;
+						if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE
+								||$model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE
+						){
+							$choiceOptionManager->save($model);
+							$answer_faker=preg_split('/,/',$model->answer);
+							$answer=array();
+							foreach($choiceOptionManager->items as $id1=>$choiceOption){
+								if(in_array($id1,$answer_faker))$answer[]=$choiceOption->id;
+							}
+							
+							sort($answer);
+							$model->answer = join($answer,",");
+							$model->save();
+							$this->redirect(array('view','id'=>$model->id));
 						}
-						
-						sort($answer);
-						$model->answer = join($answer,",");
-						$model->save();
-						$this->redirect(array('view','id'=>$model->id));
 					}
 				}
 			}
@@ -250,7 +383,8 @@ class MultipleChoiceController extends CMController
 		$this->render('update',array(
 			'model'=>$model,
 			'choiceOptionManager'=>$choiceOptionManager,
-			'chapters'=>$treeArray
+			'chapters'=>$treeArray,
+			'type'=>''
 		));
 	}
 

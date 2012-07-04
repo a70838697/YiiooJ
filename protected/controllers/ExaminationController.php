@@ -195,7 +195,38 @@ class ExaminationController extends Controller
 			echo "Error";
 			Yii::app()->end();
 		}
-	  
+		if($type==ULookup::EXAMINATION_PROBLEM_TYPE_FILL||
+				$type==ULookup::EXAMINATION_PROBLEM_TYPE_QUESTION){
+			$chapter=null;
+			if(($chapter_id=(int)Yii::app()->request->getQuery('chapter_id',null))>0)
+			{
+				$chapter=Chapter::model()->findByPk($chapter_id);
+			}
+			else
+			{
+				$chapter=$model->examination->practice->chapter->book;
+			}
+			$criteria=new CDbCriteria(array(
+			));
+			$criteria->with=array("chapter");
+			$criteria->compare("chapter.root", $chapter->root);
+			$criteria->addBetweenCondition("chapter.lft", $chapter->lft,$chapter->rgt);
+			$criteria->compare("t.question_type", $type);
+			$criteria->order=("chapter.lft");
+			$dataProvider=new EActiveDataProvider('MultipleChoice',
+					array(
+							'criteria'=>$criteria,
+							'pagination'=>array(
+									'pageSize'=>10,
+							),
+					)
+			);
+			$render=Yii::app()->request->isAjaxRequest ? 'renderPartial' : 'render';
+			$this->$render('_multiple_choice_select', array(
+					'dataProvider'=>$dataProvider,
+					'prefix'=>'courseProblem'
+			));
+		}	  
 		if($type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE||
 			$type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE){
 			$chapter=null;
@@ -212,7 +243,7 @@ class ExaminationController extends Controller
 			$criteria->with=array("chapter");
 			$criteria->compare("chapter.root", $chapter->root);
 			$criteria->addBetweenCondition("chapter.lft", $chapter->lft,$chapter->rgt);
-			$criteria->compare("t.more_than_one_answer", $type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE?1:0);
+			$criteria->compare("t.question_type", $type);
 			$criteria->order=("chapter.lft");
 			$dataProvider=new EActiveDataProvider('MultipleChoice',
 				array(

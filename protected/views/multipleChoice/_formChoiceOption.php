@@ -1,14 +1,16 @@
 <tr>
 	<td>
-		<?php echo $multiple_model->more_than_one_answer?
-			$form->checkBox($model, "[$id]isAnswer", array(
-					'value'=>1,
-					'uncheckValue'=>0
-			))
-			:$form->radioButton($multiple_model, 'answer', array(
+		<?php 
+		if(ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE==$multiple_model->question_type)
+			echo $form->radioButton($multiple_model, 'answer', array(
 				    'value'=>"$id",
 				    'uncheckValue'=>null
 				));
+		elseif(ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE==$multiple_model->question_type)
+			echo $form->checkBox($model, "[$id]isAnswer", array(
+					'value'=>1,
+					'uncheckValue'=>0
+			));
 		?>
 	</td>
     <td>
