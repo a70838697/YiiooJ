@@ -30,6 +30,9 @@ class Experiment extends CActiveRecord
 
 	public function isTimeOut()
 	{
+		$timezone = "Asia/Chongqing";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
+		
 		$nowt=CDateTimeParser::parse(date("Y-m-d"),"yyyy-MM-dd");
 		$begin_date=CDateTimeParser::parse($this->begin,"yyyy-MM-dd") ;
 		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;

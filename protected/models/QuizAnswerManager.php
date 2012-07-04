@@ -49,9 +49,11 @@ class QuizAnswerManager
     		}
     		if($save_post)
     		{
-	    		$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
-	    		$node->answer->checkAnswer();
-	    		if(! $node->answer->save()) $success=false;
+    			if(isset($_POST['QuizAnswer'][$node->id])){
+		    		$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
+		    		$node->answer->checkAnswer();
+		    		if(! $node->answer->save()) $success=false;
+    			}
 	    		//print_r($node->answer->getErrors());
     		}
     		$this->_items[$node->id]=$node->answer;

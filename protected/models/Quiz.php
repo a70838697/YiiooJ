@@ -18,6 +18,17 @@
  */
 class Quiz extends CActiveRecord
 {
+	public function isTimeOut()
+	{
+		$timezone = "Asia/Chongqing";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
+
+		$nowt=CDateTimeParser::parse(date("Y-m-d H:i:s"),"yyyy-MM-dd hh:mm:ss");
+		$begin_date=CDateTimeParser::parse($this->begin,"yyyy-MM-dd hh:mm:ss") ;
+		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd hh:mm:ss") ;
+		return ($nowt>$end_date || $nowt<$begin_date);
+	}
+		
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

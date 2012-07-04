@@ -361,6 +361,18 @@ class ExaminationController extends Controller
 		if($quiz!==null){
 			$quiz=(int)$quiz;
 			Yii::app()->params['quiz']=$quiz;
+			$quiz_model= Quiz::model()->findByPk((int)$quiz);
+			
+			if($quiz_model===null||$quiz_model->isTimeOut())
+			{
+				if(isset($_POST['submit_id']))
+				{
+					echo json_encode (array('success'=>false,'message'=>'Timeout!'));
+					exit;
+				}
+				throw new CHttpException(404,'The requested page does not exist.');
+			}
+				
 		}
 		
 		
