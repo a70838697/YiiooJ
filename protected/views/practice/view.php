@@ -21,6 +21,7 @@ $this->toolbar= array(
 		),
 );
 ?>
+<!-- 
 <?php if($model->chapter){?>
 <div>
 Chapter:<?php echo $model->chapter->name; ?>
@@ -30,6 +31,7 @@ Chapter:<?php echo $model->chapter->name; ?>
 <?php echo '<b>Memo:</b><br/>'; ?>
 <?php echo $model->memo; ?>
 </div>
+ -->
 <div>
 <?php 
 		//create an array open_nodes with the ids of the nodes that we want to be initially open
