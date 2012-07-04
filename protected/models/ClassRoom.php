@@ -19,6 +19,10 @@
  */
 class ClassRoom extends CActiveRecord
 {
+	public function getTitleAndYear()
+	{
+		return $this->title . " " . $this->begin;
+	}
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return ClassRoom the static model class

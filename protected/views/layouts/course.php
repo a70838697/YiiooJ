@@ -12,6 +12,7 @@
 										array('label'=>Yii::t('course','Create a class'), 'url'=>array('/ClassRoom/create','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>($this->getCourseId()>0)),
 										array('label'=>Yii::t('course','Add an experiment'), 'url'=>array('/Experiment/create','id'=>$this->getClassRoomId()),'visible'=>($this->getClassRoomId()>0)&&((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())),
 										array('label'=>Yii::t('course','Practices'), 'url'=>array('/practice/create','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','New quiz'), 'url'=>array('/quiz/create','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','New programming problem'), 'url'=>array('/courseproblem/create','course_id'=>$this->getCourseId()),'visible'=> $this->getCourseId()>0),
 										array('label'=>Yii::t('course','New multiple choice question'), 'url'=>array('/multipleChoice/create/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 								),
@@ -35,6 +36,12 @@
 								'items'=>array(
 										array('url'=>array('/classRoom/experiments','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"View experiments"),'visible'=>($this->getClassRoomId()>0)),
 										array('label'=>Yii::t('course','View reports'), 'url'=>array('/classRoom/reports','id'=>$this->getClassRoomId()),'visible'=>($this->getClassRoomId()>0)&&((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())),
+								),
+						),
+						array('url'=>array('/classRoom/quizzes','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"Quizzes"),
+								'visible'=>($this->getClassRoomId()>0),
+								'items'=>array(
+										array('url'=>array('/classRoom/quizzes','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"Quizzes"),'visible'=>($this->getClassRoomId()>0)),
 								),
 						),
 						array('url'=>array('/classRoom/students','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"View students"),

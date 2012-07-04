@@ -50,7 +50,7 @@ Chapter:<?php echo $model->chapter->name; ?>
 				'baseUrl'=> $baseUrl,
 				'open_nodes'=> $open_nodes,
 				'model'=>$model->examination,
-				'test'=>$test,
+				'quiz'=>$quiz,
 		));
 ?>
 		</div>

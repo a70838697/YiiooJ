@@ -18,6 +18,7 @@
  */
 class QuizAnswer extends CActiveRecord
 {
+	public $answer_var;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -54,7 +55,7 @@ class QuizAnswer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('quiz_id, examination_id, answer, user_id, review', 'required'),
+			array('quiz_id, examination_id, answer', 'required'),
 			array('quiz_id, examination_id, user_id', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
 			array('create_time, update_time','default',
@@ -76,7 +77,7 @@ class QuizAnswer extends CActiveRecord
 	public function makeReview($user_id,$score)
 	{
 		$this->reviewer_id=$user_id;
-		$this->review_time=$score;
+		$this->score=$score;
 		$this->review_time=new CDbExpression('UNIX_TIMESTAMP()');
 	}
 	/**
@@ -121,6 +122,7 @@ class QuizAnswer extends CActiveRecord
 			'quiz_id' => 'Quiz',
 			'examination_id' => 'Examination',
 			'answer' => 'Answer',
+			'answer_var' => 'Answer',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
 			'user_id' => 'User',

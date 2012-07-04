@@ -2,6 +2,7 @@
 
 class PracticeController extends Controller
 {
+	public $contentMenu=1;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -87,15 +88,15 @@ class PracticeController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$test=Yii::app()->request->getQuery('test',null);
-		if($test!==null)$test=(int)$test;
+		$quiz=Yii::app()->request->getQuery('quiz',null);
+		if($quiz!==null)$quiz=(int)$quiz;
 				
 		$model=$this->loadModel($id);
 		if($model->chapter)
 			$this->course=$model->chapter->course;		
 		$this->render('view',array(
 			'model'=>$model,
-			'test'=>$test,
+			'quiz'=>$quiz,
 		));
 	}
 
@@ -164,8 +165,28 @@ class PracticeController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('update',array(
+		$treeArray=array();
+		$id=$model->chapter_id;
+		if($id!=null)
+		{
+			$nodeRoot=Chapter::model()->findByPk($id);
+			$nodeRoot->book;
+			if($nodeRoot===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+			$treeArray[$nodeRoot->id]=str_repeat('&nbsp;',2*($nodeRoot->level-1)).CHtml::encode($nodeRoot->name);
+			$tree=$nodeRoot->descendants()->findAll();
+			if(!empty($tree))
+			{
+				foreach ($tree as $node)
+				{
+					//var_dump($node);
+					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
+				}
+			}
+		}		
+		$this->render('create',array(
 			'model'=>$model,
+			'chapters'=>$treeArray
 		));
 	}
 

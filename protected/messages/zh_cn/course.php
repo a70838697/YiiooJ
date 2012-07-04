@@ -53,7 +53,10 @@ return array (
 	"Average/Times"=>'平均得分/次',
 	'Do you allow her/him to resubmit a report?'=>'您允许学生补交实验报告吗？',
 
-
+	'Quizzes'=>'测试/练习题',
+	'New quiz'=>'新建测试/练习',
+	
+	
 	'Problem library'=>'试题库',
 	'New programming problem'=>'新建编程题',
 	'Programming problems'=>'编程题',

@@ -95,12 +95,12 @@ class ExaminationController extends Controller
 	}
 	public function actionView($id)
 	{
-		$test=Yii::app()->request->getQuery('test',null);
-		if($test!==null)$test=(int)$test;
+		$quiz=Yii::app()->request->getQuery('quiz',null);
+		if($quiz!==null)$quiz=(int)$quiz;
 	
 		$model=$this->loadModel($id);
 		$this->model=$model;
-		$this->course=$model->root->course;
+		$this->course=$model->examination->practice->chapter->book->course;
 		//create an array open_nodes with the ids of the nodes that we want to be initially open
 		//when the tree is loaded.Modify this to suit your needs.Here,we open all nodes on load.
 		$categories= Examination::model()->findAll(array('condition'=>'root=:root_id','order'=>'lft','params'=>array(':root_id'=>$id)));
@@ -119,7 +119,7 @@ class ExaminationController extends Controller
 				'baseUrl'=> $baseUrl,
 				'open_nodes'=> $open_nodes,
 				'model'=>$model,
-				'test'=>$test,
+				'quiz'=>$quiz,
 		));
 	}
 	/**
@@ -326,10 +326,12 @@ class ExaminationController extends Controller
 
 	}
 	public function actionReturnExamination(){
-		$this->test=Yii::app()->request->getQuery('test',null);
-		if($test!==null)$test=(int)$test;
+		$quiz=Yii::app()->request->getQuery('quiz',null);
+		if($quiz!==null){
+			$quiz=(int)$quiz;
+			Yii::app()->params['quiz']=$quiz;
+		}
 		
-		Yii::app()->params['test']=$test;
 		
 		//don't reload these scripts or they will mess up the page
 		//yiiactiveform.js still needs to be loaded that's why we don't use
@@ -349,25 +351,20 @@ class ExaminationController extends Controller
 
 		$trees=$model->descendants()->findAll();
 		array_unshift($trees,$model);
+		$quiz_answer_manager= new QuizAnswerManager();
+		$quiz_answer_manager->load($trees,isset($_POST['submit_id'])&& $quiz!==null);
 		
-		if(isset($_POST['submit_id'])&& $test!==null){
-			foreach ($trees as $node)
-			{
-				if($node->answer===null){
-					$node->answer=new QuizAnswer();
-					$node->answer->examination_id=$node->id;
-					$node->answer->test_id=$test;
-				}
-				$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
-				$node->answer->checkAnswer();
-				$node->answer->save();
-			}
+		if(isset($_POST['submit_id'])&& $quiz!==null)
+		{
+			echo json_encode (array('success'=>true,'message'=>'You can not remove the root!'));
+			exit;			
 		}
+		
 				
 		$this->renderPartial('examination', array(
 				'model'=>$model,
-				'test'=>$test,
-				'newQuizAnswer'=>new QuizAnswer(),
+				'quiz'=>$quiz,
+				'quiz_answer_manager'=>$quiz_answer_manager,
 				'trees'=>$trees,
 		),
 				false, true);

@@ -33,16 +33,16 @@ class ClassRoomController extends CMController
 				'roles'=>array('Teacher','Student','Admin'),
 			),
 			array('allow', // allow Student
-				'actions'=>array('apply','experiments'),
+				'actions'=>array('apply','experiments','quizzes'),
 				'roles'=>array('Student'),			
 			),
 					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','experiments','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('create','update','experiments','quizzes','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','experiments','students','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('admin','delete','create','update','experiments','quizzes','students','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Admin'),
 			),
 			array('deny',  // deny all users
@@ -175,6 +175,22 @@ class ClassRoomController extends CMController
 			'experiment'=>$experiment,
 		));
 	}
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionQuizzes($id)
+	{
+		$model=$this->loadModel($id);
+		$this->classRoom=$model;
+				
+		$dataProvider=new CActiveDataProvider('Quiz',array( 'criteria'=>array( 'condition'=>'class_room_id='.$model->id, 'order'=>'end DESC')));
+	
+		$this->render('quizzes',array(
+				'model'=>$model,
+				'dataProvider'=>$dataProvider,
+		));
+	}	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed

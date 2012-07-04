@@ -8,7 +8,7 @@ if(!isset($nomenu)){
 	
 	
 	
-	$this->toolbar=array(
+	$toolbar=array(
 			array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
 			array(
 					'label'=>Yii::t('main','Refresh'),
@@ -26,9 +26,13 @@ if(!isset($nomenu)){
 			),
 	
 	);
+	if($this->toolbar!==null)
+	{
+		$this->toolbar=array_merge($this->toolbar,$toolbar);
+	}
 }
 $this->widget('application.components.widgets.MathJax',array());
-$course_url= ($model?("/".$model->id):"").(isset($test)&&$test!==null?("/test/".$test):"");
+$course_url= ($model?("/".$model->id):"").(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"");
 ?>
 <table>
 	<tr>
@@ -216,7 +220,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
            // `data.rslt.obj` is the jquery extended node that was clicked
 				id=data.rslt.obj.attr("id").replace("node_","");
 				currentid=id;
-				$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/"+id+"<?php echo (isset($test)&&$test!==null?("/test/".$test):"")?>");
+				$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/"+id+"<?php echo (isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"")?>");
 	        })
 <?php if(!Yii::app()->user->isGuest){?>
                 ///EVENTS
@@ -431,7 +435,7 @@ $("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>")
 		});//post
 	});//click function
 	
-$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/<?php echo $model->id;?>"+"<?php echo (isset($test)&&$test!==null?("/test/".$test):"")?>");
+$("#showexamination").load("<?php echo $baseUrl;?>/examination/returnExamination/<?php echo $model->id;?>"+"<?php echo (isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"")?>");
 $("#reload").click(function () {
 		jQuery("#<?php echo Examination::ADMIN_TREE_CONTAINER_ID;?>").jstree("refresh");
 	});

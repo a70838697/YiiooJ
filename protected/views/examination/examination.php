@@ -1,6 +1,6 @@
 <?php
 	$formId='examination-form';
-	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($test)&&$test!==null?("/test/".$test):""));
+	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):""));
 	$val_error_msg='Examination answers were not saved.';
 	$val_success_message='Examination answers were saved successfuly.';
 
@@ -37,7 +37,7 @@
 	?>
 
 	<?php
-	if($test!==null){
+	if($quiz!==null){
 	?>
 <div class="form">
 	<?php
@@ -86,7 +86,7 @@
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
 			echo $parsedText;
-			if($test===null)
+			if($quiz===null)
 			{
 				?>
 		<table>
@@ -103,16 +103,17 @@
 			}
 			else
 			{
+				$answer_nodes=$quiz_answer_manager->getItems();
 				?>
 		<table>
 			<?php foreach($choiceOptionManager->items as $id=>$choiceOption):?>
 			<tr>
 				<td width=10><?php echo $node->multiple_choice_problem->more_than_one_answer?
-				$form->checkBox($node->answer?$node->answer:newQuizAnswer, "[$node->id][$id]answer", array(
+				$form->checkBox($answer_nodes[$node->id], "[$node->id][$id]answer", array(
 					'value'=>1,
 					'uncheckValue'=>0
 				))
-				:$form->radioButton($node->answer?$node->answer:newQuizAnswer, "[$node->id]answer", array(
+				:$form->radioButton($answer_nodes[$node->id], "[$node->id]answer", array(
 					'value'=>"$id",
 					'uncheckValue'=>null
 				));
@@ -131,7 +132,7 @@
 	?>
 	</div>
 	<?php 
-	if($test!==null){
+	if($quiz!==null){
 		?>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class' => 'button align-right')); ?>
