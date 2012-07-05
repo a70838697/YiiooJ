@@ -39,7 +39,7 @@ function research()
 		array(
 			'name'=>'title',
 			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode(substr($data->description,0,20)),array("multipleChoice/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
+			'value'=>'CHtml::link(CHtml::encode(mb_substr($data->description,0,20)),array("multipleChoice/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
 		),
 	),
 ));
