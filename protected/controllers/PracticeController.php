@@ -92,7 +92,7 @@ class PracticeController extends Controller
 		if($quiz!==null)$quiz=(int)$quiz;
 		$quiz_model= Quiz::model()->findByPk((int)$quiz);
 
-		if($quiz_model===null||$quiz_model->isTimeOut())
+		if($quiz_model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 	
 				

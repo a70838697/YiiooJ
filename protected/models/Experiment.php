@@ -40,6 +40,7 @@ class Experiment extends CActiveRecord
 	}
 	public function afterDeadline()
 	{
+		$timezone = "Asia/Chongqing";
 		$nowt=CDateTimeParser::parse(date("Y-m-d"),"yyyy-MM-dd");
 		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
 		return ($nowt>$end_date)?1:0;

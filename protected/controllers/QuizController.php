@@ -35,7 +35,7 @@ class QuizController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','students'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -112,6 +112,47 @@ class QuizController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionStudents($id)
+	{
+		$model=$this->loadModel($id);
+		$this->classRoom=$model->classRoom;
+				
+		$criteria=new CDbCriteria(array(
+		));
+		$criteria->select='username';
+		$criteria->with=array('info','schoolInfo','group');
+		$criteria->params=array(':group_id'=>$this->classRoom->user_group_id);
+		
+		$dataProvider=new EActiveDataProvider('ClassRoomUser',
+				array(
+						'criteria'=>$criteria,
+						'sort'=>array(
+								'attributes'=>array(
+										'name'=>array(
+												'asc'=>'info.lastname,info.firstname',
+												'desc'=>'info.lastname DESC,info.firstname DESC',
+										),
+										'schoolInfo.identitynumber',
+										'username',
+								),
+						),
+						'pagination'=>array(
+								'pageSize'=>30,
+						),
+				)
+		);
+		
+		$this->render('students',array(
+			'model'=>$model,
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
 
 	/**
 	 * Deletes a particular model.

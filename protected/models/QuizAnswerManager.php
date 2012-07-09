@@ -36,7 +36,7 @@ class QuizAnswerManager
     	return $valid;
     
     }
-    public function load($trees,$save_post=false)
+    public function load($trees,$save_post=0)
     {
     	$success=true;
     	$this->_items=array();
@@ -47,14 +47,24 @@ class QuizAnswerManager
     			$node->answer->examination_id=$node->id;
     			$node->answer->quiz_id=(int)Yii::app()->params['quiz'];
     		}
-    		if($save_post)
+    		if($save_post!=0)
     		{
-    			if(isset($_POST['QuizAnswer'][$node->id])){
-		    		$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
-		    		$node->answer->checkAnswer();
-		    		if(! $node->answer->save()) $success=false;
+    			if($save_post==1)
+    			{
+	    			if(isset($_POST['QuizAnswer'][$node->id])){
+			    		$node->answer->attributes=$_POST['QuizAnswer'][$node->id];
+			    		$node->answer->checkAnswer();
+			    		if(! $node->answer->save()) $success=false;
+	    			}
     			}
-	    		//print_r($node->answer->getErrors());
+    			if($save_post==2)
+    			{
+    				if(isset($_POST['QuizAnswer'][$node->id]['score'])){
+    					$node->answer->makeReview(Yii::app()->user->id,$_POST['QuizAnswer'][$node->id]['score']);
+			    		if(! $node->answer->save()) $success=false;
+    				}
+    			}
+    			//print_r($node->answer->getErrors());
     		}
     		$this->_items[$node->id]=$node->answer;
     	}

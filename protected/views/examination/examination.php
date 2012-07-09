@@ -1,6 +1,6 @@
 <?php
 	$formId='examination-form';
-	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):""));
+	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"").(isset(Yii::app()->params['hisId'])&&Yii::app()->params['hisId']!==null?("/user_id/".Yii::app()->params['hisId']):""));
 	$val_error_msg='Examination answers were not saved.';
 	$val_success_message='Examination answers were saved successfuly.';
 
@@ -136,6 +136,11 @@
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
 			echo $parsedText;
+			if($savetype==2)
+			{
+				$answer_nodes=$quiz_answer_manager->getItems();	
+				echo $form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
+			}
 			$parsedText = $parser->safeTransform($node->multiple_choice_problem->description);
 			echo $parsedText;
 			if($quiz!==null)

@@ -358,12 +358,17 @@ class ExaminationController extends Controller
 	}
 	public function actionReturnExamination(){
 		$quiz=Yii::app()->request->getQuery('quiz',null);
+		if(UUserIdentity::isAdmin() || UUserIdentity::isTeacher())
+		{
+			$user_id=Yii::app()->request->getQuery('user_id',null);
+			if($user_id!=null)Yii::app()->params['hisId']=(int)$user_id;
+		}
 		if($quiz!==null){
 			$quiz=(int)$quiz;
 			Yii::app()->params['quiz']=$quiz;
 			$quiz_model= Quiz::model()->findByPk((int)$quiz);
 			
-			if($quiz_model===null||$quiz_model->isTimeOut())
+			if($quiz_model===null)
 			{
 				if(isset($_POST['submit_id']))
 				{
@@ -395,7 +400,20 @@ class ExaminationController extends Controller
 		$trees=$model->descendants()->findAll();
 		array_unshift($trees,$model);
 		$quiz_answer_manager= new QuizAnswerManager();
-		$quiz_answer_manager->load($trees,isset($_POST['submit_id'])&& $quiz!==null);
+		$savetype=0;
+		if(isset($_POST['submit_id'])&& $quiz!==null)
+		{
+			if(! $quiz_model->isTimeOut())
+			{
+				$savetype=1;
+			}
+		}
+		if($quiz_model->afterDeadline() && (UUserIdentity::isAdmin()||UUserIdentity::isTeacher()))
+		{
+			$savetype=2;
+		}
+		
+		$quiz_answer_manager->load($trees,$savetype);
 		
 		if(isset($_POST['submit_id'])&& $quiz!==null)
 		{
@@ -409,6 +427,7 @@ class ExaminationController extends Controller
 				'quiz'=>$quiz,
 				'quiz_answer_manager'=>$quiz_answer_manager,
 				'trees'=>$trees,
+			'savetype'=>$savetype,
 		),
 				false, true);
 

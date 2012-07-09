@@ -18,6 +18,14 @@
  */
 class Quiz extends CActiveRecord
 {
+	public function afterDeadline()
+	{
+		$timezone = "Asia/Chongqing";
+		$nowt=CDateTimeParser::parse(date("Y-m-d H:i:s"),"yyyy-MM-dd hh:mm:ss");
+		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd hh:mm:ss") ;
+		return ($nowt>$end_date)?1:0;
+	}
+	
 	public function isTimeOut()
 	{
 		$timezone = "Asia/Chongqing";
@@ -81,6 +89,8 @@ class Quiz extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'classRoom' => array(self::BELONGS_TO, 'ClassRoom', 'class_room_id'),
+			'practice' => array(self::BELONGS_TO, 'Practice', 'practice_id'),
 		);
 	}
 
