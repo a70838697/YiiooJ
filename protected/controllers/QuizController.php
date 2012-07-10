@@ -31,7 +31,7 @@ class QuizController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','students'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -119,6 +119,13 @@ class QuizController extends Controller
 	 */
 	public function actionStudents($id)
 	{
+		if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher()){
+		
+		}
+		else
+		{
+			throw new CHttpException(404,'The requested page does not exist.');
+		}
 		$model=$this->loadModel($id);
 		$this->classRoom=$model->classRoom;
 				
