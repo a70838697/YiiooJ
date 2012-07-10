@@ -360,7 +360,7 @@ class ExaminationController extends Controller
 		$quiz=Yii::app()->request->getQuery('quiz',null);
 		if(UUserIdentity::isAdmin() || UUserIdentity::isTeacher())
 		{
-			$user_id=Yii::app()->request->getQuery('user_id',null);
+			$user_id=Yii::app()->request->getQuery('hisId',null);
 			if($user_id!=null)Yii::app()->params['hisId']=(int)$user_id;
 		}
 		if($quiz!==null){

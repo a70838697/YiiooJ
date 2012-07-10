@@ -61,7 +61,13 @@ class QuizAnswerManager
     			{
     				if(isset($_POST['QuizAnswer'][$node->id]['score'])){
     					$node->answer->makeReview(Yii::app()->user->id,$_POST['QuizAnswer'][$node->id]['score']);
-			    		if(! $node->answer->save()) $success=false;
+			    		if($node->answer->save())
+			    		{
+			    		}
+			    		else
+			    		{
+			    			$success=false;
+			    		}
     				}
     			}
     			//print_r($node->answer->getErrors());

@@ -1,6 +1,6 @@
 <?php
 	$formId='examination-form';
-	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"").(isset(Yii::app()->params['hisId'])&&Yii::app()->params['hisId']!==null?("/user_id/".Yii::app()->params['hisId']):""));
+	$ajaxUrl=CController::createUrl('examination/returnExamination/'. $model->id.(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"").(isset(Yii::app()->params['hisId'])&&Yii::app()->params['hisId']!==null?("/hisId/".Yii::app()->params['hisId']):""));
 	$val_error_msg='Examination answers were not saved.';
 	$val_success_message='Examination answers were saved successfuly.';
 
@@ -13,6 +13,7 @@
 				$("#success-examination").fadeOut(1000, "linear",function(){
 					$(this).append("<div> '.$val_success_message.'</div>").fadeIn(2000, "linear")
 				});
+				if(refreshcontent)refreshcontent();
 			}
 			else {
 				$("#success-examination").hide();
@@ -78,6 +79,11 @@
 		if($node->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_FOLDER){
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
+			if($savetype==2)
+			{
+				$answer_nodes=$quiz_answer_manager->getItems();
+				echo $form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
+			}			
 			echo $parsedText;
 		}
 		else if($node->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE

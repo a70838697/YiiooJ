@@ -107,6 +107,10 @@ function showQuestion(examination_id,user_id)
 	reloadReport("'.UCHtml::theUrl(array("examination/returnExamination/")).'"+"/id/"+examination_id+"/quiz/'.$model->id .'/hisId/"+user_id,"open");
 	return false;	
 }
+function refreshcontent(){
+	$("#viewreport").dialog("close");
+	reloadGrid();
+}
 function reloadReport(url,dialog_status)
 {
 	if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();

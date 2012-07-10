@@ -19,6 +19,7 @@
 class QuizAnswer extends CActiveRecord
 {
 	public $answer_var;
+	private $score_old=0;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -55,9 +56,10 @@ class QuizAnswer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('quiz_id, examination_id, answer', 'required'),
+			array('quiz_id, examination_id', 'required'),
 			array('quiz_id, examination_id, user_id', 'numerical', 'integerOnly'=>true),
 			array('score', 'numerical'),
+			array('answer',  'length', 'min'=>0),
 			array('create_time, update_time','default',
 				'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
 				'setOnEmpty'=>false,'on'=>'insert'),
@@ -66,7 +68,7 @@ class QuizAnswer extends CActiveRecord
 				'setOnEmpty'=>false,'on'=>'update'),
 			array('user_id','default',
 				'value'=>Yii::app()->user->id,
-				'setOnEmpty'=>false,'on'=>'insert'),			
+				'setOnEmpty'=>true,'on'=>'insert'),			
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, quiz_id, examination_id, answer, create_time, update_time, user_id, score, reviewer_id, review, review_time', 'safe', 'on'=>'search'),
@@ -98,8 +100,43 @@ class QuizAnswer extends CActiveRecord
 		}
 		else
 			return false;
-	}	
-
+	}
+	protected function afterFind()
+	{
+		$this->score_old=$this->score;
+		parent::afterFind();
+		return true;
+	}		
+	protected function afterSave()
+	{
+		parent::afterSave();
+		{
+			if($this->score!=$this->score_old)
+			{
+				
+				$nodetemp=$this->examination;
+				if($nodetemp->id!=$nodetemp->root)
+				{
+					$nodetemp=$nodetemp->getParent();
+					if($nodetemp->answer===null)
+					{
+						$nodetemp->answer=new QuizAnswer();
+						$nodetemp->answer->examination_id=$nodetemp->id;
+						$nodetemp->answer->quiz_id=$this->quiz_id;
+						$nodetemp->answer->answer="";
+						$nodetemp->answer->user_id=$this->user_id;
+					}
+					$nodetemp->answer->makeReview($this->reviewer_id,$nodetemp->answer->score+$this->score-$this->score_old);
+					$nodetemp->answer->save();
+				}				
+			}
+			else
+			{
+			}
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * @return array relational rules.
 	 */
