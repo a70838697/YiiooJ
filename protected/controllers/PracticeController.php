@@ -90,10 +90,12 @@ class PracticeController extends Controller
 	{
 		$quiz=Yii::app()->request->getQuery('quiz',null);
 		if($quiz!==null)$quiz=(int)$quiz;
-		$quiz_model= Quiz::model()->findByPk((int)$quiz);
-
-		if($quiz_model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		else {
+			$quiz_model= Quiz::model()->findByPk((int)$quiz);
+	
+			if($quiz_model===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+		}
 	
 				
 		$model=$this->loadModel($id);
