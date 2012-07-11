@@ -89,8 +89,8 @@ class PracticeController extends Controller
 	public function actionView($id)
 	{
 		$quiz=Yii::app()->request->getQuery('quiz',null);
-		if($quiz!==null)$quiz=(int)$quiz;
-		else {
+		if($quiz!==null){
+			$quiz=(int)$quiz;
 			$quiz_model= Quiz::model()->findByPk((int)$quiz);
 	
 			if($quiz_model===null)
