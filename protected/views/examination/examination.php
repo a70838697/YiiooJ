@@ -5,9 +5,9 @@
 	$val_success_message='Examination answers were saved successfuly.';
 
 
-	$cansave=(isset($quiz)&&$quiz===0 )
+	$cansave=(isset($quiz)&&$quiz!==0 )
 		|| (	isset($quiz_model) &&$quiz_model!==null && ((UUserIdentity::isStudent() &&!$quiz_model->isTimeOut())
-			||( (UUserIdentity::isTeacher()||UUserIdentity::isTeacher()) &&$quiz_model->afterDeadLine())
+			||( (UUserIdentity::isTeacher()||UUserIdentity::isAdmin()) &&$quiz_model->afterDeadLine())
 			)
 	);
 	$canhaveform=(isset($quiz)&&$quiz!==0 ) && (
