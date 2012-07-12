@@ -5,6 +5,14 @@
 	$val_success_message='Examination answers were saved successfuly.';
 
 
+	$cansave=(isset($quiz)&&$quiz===0 )
+		|| (	isset($quiz_model) &&$quiz_model!==null && ((UUserIdentity::isStudent() &&!$quiz_model->isTimeOut())
+			||( (UUserIdentity::isTeacher()||UUserIdentity::isTeacher()) &&!$quiz_model->afterDeadLine())
+			)
+	);
+	$canhaveform=(isset($quiz)&&$quiz!==0 ) && (
+		(UUserIdentity::isStudent()) || (isset(Yii::app()->params['hisId'])&&Yii::app()->params['hisId']!==null)
+			);
 	$success='function(data){
 			var response= jQuery.parseJSON (data);
 			if (response.success ==true)
@@ -38,7 +46,7 @@
 	?>
 
 	<?php
-	if($quiz!==null){
+	if($canhaveform){
 	?>
 <div class="form">
 	<?php
@@ -68,8 +76,10 @@
 		}
 	?>
 	<?php
-	$node=$trees[0];
-//	foreach ($trees as $node)
+	
+	$answer_nodes=$quiz_answer_manager->getItems();	
+	//$node=$trees[0];
+	foreach ($trees as $node)
 	{
 		?>
 
@@ -79,11 +89,14 @@
 		if($node->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_FOLDER){
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
-			if($savetype==2)
+					if($canhaveform&&$savetype==2)
 			{
-				$answer_nodes=$quiz_answer_manager->getItems();
-				echo $form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
-			}			
+				echo "Score:".$form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
+			}
+			else if(isset($answer_nodes[$node->id]) &&$answer_nodes[$node->id]->review_time>0)
+			{
+				echo "Score:<font color=red>".$answer_nodes[$node->id]->score.'</font><br/>';
+			}		
 			echo $parsedText;
 		}
 		else if($node->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE
@@ -142,17 +155,20 @@
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
 			echo $parsedText;
-			if($savetype==2)
+			if($canhaveform&&$savetype==2)
 			{
-				$answer_nodes=$quiz_answer_manager->getItems();	
-				echo $form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
+				echo "Score:".$form->textField($answer_nodes[$node->id], "[$node->id]score",array('maxSize'=>4));
+			}
+			else if(isset($answer_nodes[$node->id]) &&$answer_nodes[$node->id]->review_time>0)
+			{
+				echo "Score:<font color=red>".$answer_nodes[$node->id]->score.'</font><br/>';
 			}
 			$parsedText = $parser->safeTransform($node->multiple_choice_problem->description);
 			echo $parsedText;
-			if($quiz!==null)
+			if($canhaveform)
 			{
 				$answer_nodes=$quiz_answer_manager->getItems();	
-				echo $form->textArea($answer_nodes[$node->id], "[$node->id]answer",array('rows'=>20, 'cols'=>60));
+				echo $form->textArea($answer_nodes[$node->id], "[$node->id]answer",array('rows'=>20, 'cols'=>80,'disabled'=>($cansave && UUserIdentity::isStudent())?'false':'true'));
 			}
 		}
 
@@ -160,11 +176,15 @@
 	?>
 	</div>
 	<?php 
-	if($quiz!==null){
+	if($canhaveform){
+		if($cansave){
 		?>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class' => 'button align-right')); ?>
 	</div>
+	<?php 
+		}
+	?>
 	<div id="success-examination" class="notification success png_bg"
 		style="display: none;"></div>
 

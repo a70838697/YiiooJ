@@ -358,6 +358,7 @@ class ExaminationController extends Controller
 	}
 	public function actionReturnExamination(){
 		$quiz=Yii::app()->request->getQuery('quiz',null);
+		$quiz_model=null;
 		if(UUserIdentity::isAdmin() || UUserIdentity::isTeacher())
 		{
 			$user_id=Yii::app()->request->getQuery('hisId',null);
@@ -428,6 +429,7 @@ class ExaminationController extends Controller
 				'quiz_answer_manager'=>$quiz_answer_manager,
 				'trees'=>$trees,
 			'savetype'=>$savetype,
+			'quiz_model'=>$quiz_model,
 		),
 				false, true);
 

@@ -88,7 +88,7 @@ class Examination extends CActiveRecord
 				'practice' => array(self::HAS_ONE, 'Practice', 'examination_id'),
 				'multiple_choice_problem' => array(self::BELONGS_TO, 'MultipleChoice', 'problem_id'),
 				'Problem' => array(self::BELONGS_TO, 'Problem', 'problem_id'),
-				'answer'=>array(self::HAS_ONE,'QuizAnswer','examination_id','condition'=>'answer.user_id='.(isset(Yii::app()->params['quiz'])?(int)yii::app()->params['hisId']:(int)yii::app()->user->id).' and answer.quiz_id='.(isset(Yii::app()->params['quiz']) && (Yii::app()->params['quiz']!==null)?(int)Yii::app()->params['quiz']:-1)),
+				'answer'=>array(self::HAS_ONE,'QuizAnswer','examination_id','condition'=>'answer.user_id='.(isset(Yii::app()->params['hisId'])?(int)yii::app()->params['hisId']:(int)yii::app()->user->id).' and answer.quiz_id='.(isset(Yii::app()->params['quiz']) && (Yii::app()->params['quiz']!==null)?(int)Yii::app()->params['quiz']:-1)),
 		);
 	}
 
