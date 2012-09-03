@@ -115,8 +115,8 @@ class Course extends CActiveRecord
 				$chapter=new Chapter;
 				$chapter->root=0;
 				$chapter->level=1;
-				$chapter->name=$model->title;
-				$chapter->description=$model->description;
+				$chapter->name=$this->title;
+				$chapter->description=$this->description;
 				if($chapter->saveNode(true))
 				{
 					$model->chapter_id=$chapter->id;
