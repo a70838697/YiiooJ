@@ -211,10 +211,10 @@ function insertFile(fileName,responseJSON)
 {
 	if(responseJSON.ext=="jpg"||responseJSON.ext=="jpeg"||responseJSON.ext=="png"||responseJSON.ext=="gif")
 		//$("#Chapter_description").insertAtCaret(\'\{\{Attachment:\'+responseJSON.fileid+\'|\'+fileName+\'}}\');
-		$("#Chapter_description").insertAtCaret(\'![\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'/\'+responseJSON.fileid+\')\');
+		$("#Chapter_description").insertAtCaret(\'![\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'\'+responseJSON.fileid+\')\');
 	else
 		//$("#Chapter_description").insertAtCaret(\'[[Attachment:\'+responseJSON.fileid+\'|\'+fileName+\']]\');
-		$("#Chapter_description").insertAtCaret(\'[\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'/\'+responseJSON.fileid+\')\');
+		$("#Chapter_description").insertAtCaret(\'[\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'\'+responseJSON.fileid+\')\');
 }
 '
 );
