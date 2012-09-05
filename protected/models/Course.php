@@ -123,6 +123,7 @@ class Course extends CActiveRecord
 					return true;
 				}
 			}
+			else return true;
 		}
 		return false;
 	}
