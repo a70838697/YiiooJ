@@ -45,7 +45,7 @@ $this->toolbar=array(
 				'icon-position'=>'left',
 				'icon'=>'document',
 				'url'=>array('/classRoom/create','id'=>$this->getCourseId()),
-				'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin()
+				'visible'=>false//UUserIdentity::isTeacher()||UUserIdentity::isAdmin()
 		),
 );
 ?>
