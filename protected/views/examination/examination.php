@@ -6,11 +6,12 @@
 
 
 	$cansave=(isset($quiz)&&$quiz!==0 )
-		|| (	isset($quiz_model) &&$quiz_model!==null && ((UUserIdentity::isStudent() &&!$quiz_model->isTimeOut())
+		&& ( (	isset($quiz_model) &&$quiz_model!==null && ((UUserIdentity::isStudent() &&!$quiz_model->isTimeOut())
 			||( (UUserIdentity::isTeacher()||UUserIdentity::isAdmin()) &&$quiz_model->afterDeadLine())
 			)
+		)
 	);
-	$canhaveform=(isset($quiz)&&$quiz!==0 ) && (
+	$canhaveform=(isset($quiz)&&$quiz!==null ) && (
 		(UUserIdentity::isStudent()) || (isset(Yii::app()->params['hisId'])&&Yii::app()->params['hisId']!==null)
 			);
 	$success='function(data){
@@ -106,13 +107,13 @@
 			$parser=new CMarkdownParser;
 			$parsedText = $parser->safeTransform($node->description);
 			echo $parsedText;
-			if($quiz===null)
+			if(!$canhaveform)
 			{
 				?>
 		<table>
 			<?php foreach($choiceOptionManager->items as $id=>$choiceOption):?>
 			<tr>
-				<td width=10><?php echo $choiceOption->isAnswer?UCHtml::image("accept.png"):"";?>
+				<td width=10><?php if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())echo $choiceOption->isAnswer?UCHtml::image("accept.png"):"";?>
 				</td>
 				<td align="left"><?php echo CHtml::encode($choiceOption->description); ?>
 				</td>
@@ -168,7 +169,8 @@
 			if($canhaveform)
 			{
 				$answer_nodes=$quiz_answer_manager->getItems();	
-				echo $form->textArea($answer_nodes[$node->id], "[$node->id]answer",array('rows'=>20, 'cols'=>80,'disabled'=>($cansave && UUserIdentity::isStudent())?'false':'true'));
+				echo $form->textArea($answer_nodes[$node->id], "[$node->id]answer",
+					($cansave && UUserIdentity::isStudent())?array('rows'=>20, 'cols'=>80):array('rows'=>20, 'cols'=>80,'disabled'=>'true'));
 			}
 		}
 

@@ -409,7 +409,7 @@ class ExaminationController extends Controller
 				$savetype=1;
 			}
 		}
-		if($quiz_model->afterDeadline() && (UUserIdentity::isAdmin()||UUserIdentity::isTeacher()))
+		if($quiz!==null && $quiz_model->afterDeadline() && (UUserIdentity::isAdmin()||UUserIdentity::isTeacher()))
 		{
 			$savetype=2;
 		}
