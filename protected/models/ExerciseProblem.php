@@ -35,7 +35,7 @@ class ExerciseProblem extends CActiveRecord
 	 */
 	public function getUrl()
 	{
-		return Yii::app()->createUrl('exerciseproblem/view', array(
+		return Yii::app()->createUrl('exerciseProblem/view', array(
 			'id'=>$this->id,
 			'title'=>$this->title,
 		));
