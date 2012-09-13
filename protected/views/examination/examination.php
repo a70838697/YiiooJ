@@ -164,7 +164,7 @@
 			{
 				echo "Score:<font color=red>".$answer_nodes[$node->id]->score.'</font><br/>';
 			}
-			$parsedText = $parser->safeTransform($node->multiple_choice_problem->description);
+			$parsedText = $node->multiple_choice_problem->description; //$parser->safeTransform($node->multiple_choice_problem->description);
 			echo $parsedText;
 			if($canhaveform)
 			{
