@@ -119,7 +119,7 @@ class Course extends CActiveRecord
 				$chapter->description=$this->description;
 				if($chapter->saveNode(true))
 				{
-					$model->chapter_id=$chapter->id;
+					$this->chapter_id=$chapter->id;
 					return true;
 				}
 			}
