@@ -132,7 +132,7 @@
 				<td width=10>
 				<?php
 				if(ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE==$node->type_id)
-					echo $form->radioButton($answer_nodes[$node->id], '[$node->id]answer', array(
+					echo $form->radioButton($answer_nodes[$node->id], "[$node->id]answer", array(
 						'value'=>"$id",
 						'uncheckValue'=>null
 					));

@@ -36,7 +36,7 @@ class QuizAnswer extends CActiveRecord
 		if($examination==null) $examination=$this->examination;
 		if($examination->type_id==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE)
 		{
-			$this->makeReview(0, $this->multiple_choice_problem->answer==$this->answer?$this->examination->score:0);
+			$this->makeReview(0, ($examination->multiple_choice_problem->answer==$this->answer)?$examination->score:0);
 		}
 		
 	}
