@@ -152,6 +152,10 @@ return array(
 
 	// application components
 	'components'=>array(
+		'session'=>array(
+			'timeout'=>7200,
+		),
+		
 		'syntaxhighlighter' => array(
 			'class' => 'ext.JMSyntaxHighlighter.JMSyntaxHighlighter',
 		),
