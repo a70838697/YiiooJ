@@ -105,7 +105,7 @@
 			$choiceOptionManager=new ChoiceOptionManager();
 			$choiceOptionManager->load($node->multiple_choice_problem);
 			$parser=new CMarkdownParser;
-			$parsedText = $parser->safeTransform($node->multiple_choice_problem->description);
+			$parsedText = CHtml::encode($node->multiple_choice_problem->description);
 			echo $parsedText;
 			if(!$canhaveform)
 			{
