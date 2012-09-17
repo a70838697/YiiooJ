@@ -87,7 +87,7 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 			'name'=>'Author',
 			'type'=>'raw',
 			'visible'=>((Yii::app()->user->isGuest) || Yii::app()->request->getQuery('mine',null)===null),
-			'value'=>'CHtml::link($data->user?CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user_id)):""',
+			'value'=>'$data->user?CHtml::link(CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user_id)):""',
 		),
 		array(
 			'name'=>'Status',
