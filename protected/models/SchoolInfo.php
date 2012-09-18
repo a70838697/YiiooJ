@@ -45,12 +45,13 @@ class SchoolInfo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, first_year,identitynumber,unit_id', 'required'),
-			array('user_id, first_year, status, unit_id', 'numerical', 'integerOnly'=>true),
+			array('user_id, identitynumber,unit_id', 'required'),
+			array('user_id, status, unit_id', 'numerical', 'integerOnly'=>true),
 			array('identitynumber', 'length', 'max'=>40),
 			array('identitynumber', 'unique', 'message' => ("This user's identitynumber already exists.")),
 			array('identitynumber', 'length', 'min'=>7),
-			array('first_year','validateYear'),
+			array('identitynumber', 'match', 'pattern' => '/^[0-9]+$/', 'message' => ("Your identitynumber should be a digit string.")),
+			array('identitynumber','validateYear'),
 						
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -59,8 +60,9 @@ class SchoolInfo extends CActiveRecord
 	}
     public function validateYear($attribute,$params)
     {
-    	if($this->first_year<1990||$this->first_year>(int)date("Y")){
-            $this->addError('first_year','The year you entered is not validate.');
+    	$this->first_year=(int)substr($this->identitynumber,0,4);
+    	if($this->first_year<1970||$this->first_year>(int)date("Y")){
+            $this->addError('identitynumber','The first four digits should be a year.');
             return;
     	}
     }	
@@ -89,7 +91,7 @@ class SchoolInfo extends CActiveRecord
 			'first_year' => 'The year you came to this university',
 			'status' => 'Status',
 			'unit_id' => 'Major/Unit',
-			'identitynumber' => 'Student / Teacher number',
+			'identitynumber' => 'Student Number/ Teacher ID',
 		);
 	}
 

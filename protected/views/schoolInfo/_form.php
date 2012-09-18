@@ -27,12 +27,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'first_year'); ?>
-		<?php echo $form->textField($model,'first_year'); ?>
-		<?php echo $form->error($model,'first_year'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'unit_id'); ?>
 		<?php echo $form->dropDownList($model,'unit_id',$units,array('encode'=>false)); ?>
 		<?php echo $form->error($model,'unit_id'); ?>
