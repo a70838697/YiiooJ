@@ -102,6 +102,10 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 		),
 		'created',
 		array(
+			'name'=>'modification_times',
+			'visible'=>(UUserIdentity::isTeacher())||(UUserIdentity::isAdmin()),
+		),
+		array(
 			'name'=>'used_time',
 			'type'=>'raw',
 			'value'=>'($data->status==ULookup::JUDGE_RESULT_ACCEPTED)?$data->used_time."ms":""',

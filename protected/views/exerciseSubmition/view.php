@@ -95,7 +95,11 @@ $this->widget('zii.widgets.CDetailView', array(
         array(
             'name'=>'modified',
         	'visible'=>($model->created!=$model->modified),
-        ),        
+        ),
+        array(
+            'name'=>'modification_times',
+        	'visible'=>(UUserIdentity::isTeacher())||(UUserIdentity::isAdmin()),
+        ),
         array(
             'name'=>'compiler_id',
             'type'=>'raw',
