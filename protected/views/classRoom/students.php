@@ -22,6 +22,14 @@ $this->toolbar=  array(
 	        'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
         	'linkOptions'=>array('onclick'=>'return showDialogue();',)
         ),
+		array(
+				'label'=>Yii::t('course','Approve all applications'),
+				'icon-position'=>'left',
+				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
+				'url'=>'#',
+				'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+				'linkOptions'=>array('onclick'=>'return approveall();',)
+		),
     );
 
 if(!(Yii::app()->user->isGuest)){
@@ -87,6 +95,14 @@ echo UCHtml::cssFile('pager.css');
 ));
 
 echo CHtml::script('
+function approveall()
+{
+	$.get("'.CHtml::normalizeUrl(array("/classRoom/change/".$model->id)).'", function(data) {
+		$.fn.yiiGridView.update(\'groupUser-grid\');
+	});
+	return false;
+}
+	
 $(".apply").live("click", 
 function ()
 {
@@ -97,7 +113,7 @@ function apply_classRoom(id,op)
 {
 	if(id!="")
 	{
-		$.get("'.CHtml::normalizeUrl(array("/group/apply/")).'"+"/"+id+op, function(data) {
+		$.get("'.CHtml::normalizeUrl(array("/group/apply")).'"+"/"+id+op, function(data) {
 			$.fn.yiiGridView.update(\'groupUser-grid\');
 		});
 	}

@@ -38,11 +38,11 @@ class ClassRoomController extends CMController
 			),
 					
 			array('allow', // allow Teacher
-				'actions'=>array('create','update','experiments','quizzes','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('create','change','update','experiments','quizzes','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Teacher'),			
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','experiments','quizzes','students','reports','deleteExperiment','resubmitReport'),
+				'actions'=>array('admin','change','delete','create','update','experiments','quizzes','students','reports','deleteExperiment','resubmitReport'),
 				'roles'=>array('Admin'),
 			),
 			array('deny',  // deny all users
@@ -65,6 +65,14 @@ class ClassRoomController extends CMController
 			'model'=>$model,
 		));
 	}
+	public function actionChange($id)
+	{
+		$model=$this->loadModel($id,'myMemberShip');
+		
+		GroupUser::model()->updateAll(array('status'=>GroupUser::USER_STATUS_ACCEPTED),'group_id='.$model->user_group_id);
+		die;
+	}
+	
 	private function addStudentMember($model,$student_id,$status)
 	{
 		if($model->user_group_id==0)

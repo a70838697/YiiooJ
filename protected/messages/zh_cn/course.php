@@ -38,7 +38,9 @@ return array (
 	'Class information'=>'课堂信息',
 
 	'Add students'=>'添加学生',
-	'Create an experiment'=>'新建实验',
+	'Add students'=>'添加学生',
+	'Approve all applications'=>'批准全部选修学生的申请',
+	
 
 	'Add an experiment'=>'添加实验',
 
