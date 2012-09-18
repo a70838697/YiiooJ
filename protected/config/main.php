@@ -53,6 +53,7 @@ return array(
 			'recoveryUrl' => array('/user/recovery'),            # recovery password path
 			'loginUrl' => array('/user/login'),                  # login form path
 			'returnUrl' => array('/site/index'),                 # page after login
+			'firstLoginUrl' => array('/schoolInfo/update'),     # page after login
 			'returnLogoutUrl' => array('/user/login'),           # page after logout
 		),			
 		// RBAM Configuration
