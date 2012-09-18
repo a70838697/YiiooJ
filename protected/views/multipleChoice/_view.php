@@ -15,8 +15,8 @@ $answer_ids=preg_split('/,/',$data->answer);
 </table>
 <div>
 <?php
-echo CHtml::link(Yii::t('main',"View"),array('/multipleChoice/view/'.$data->chapter_id));
-echo "|".CHtml::link(Yii::t('main',"Update"),array('/multipleChoice/view/'.$data->chapter_id));
+echo CHtml::link(Yii::t('main',"View"),array('/multipleChoice/view/'.$data->id));
+echo "|".CHtml::link(Yii::t('main',"Update"),array('/multipleChoice/update/'.$data->id));
 ?>
 <?php if($data->chapter){?>
  Chapter:<?php echo $data->chapter->name; ?>(
