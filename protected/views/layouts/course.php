@@ -62,11 +62,12 @@
 						array('label'=>Yii::t('course','Problem library'), 'url'=>array('#'),
 								'visible'=>(UUserIdentity::isTeacher()||UUserIdentity::isAdmin()) && $this->getCourseId()>0,
 								'items'=>array(
-										array('label'=>Yii::t('course','Practices'), 'url'=>array('/practice/index','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
-										array('label'=>Yii::t('course','Programming problems'), 'url'=>array('/courseproblem/list','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','New programming problem'), 'url'=>array('/courseproblem/create','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
-										array('label'=>Yii::t('course','Multiple choice questions'), 'url'=>array('/multipleChoice/list/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
-										array('label'=>Yii::t('course','New multiple choice question'), 'url'=>array('/multipleChoice/create/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','Programming problems'), 'url'=>array('/courseproblem/list','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','Practices'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/practice/index','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','Multiple choice questions'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/list/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','New multiple choice question'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/create/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
+										array('label'=>Yii::t('course','New empty fill question'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/createFill/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 								),
 						),
 						array(
