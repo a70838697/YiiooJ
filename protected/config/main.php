@@ -154,6 +154,7 @@ return array(
 	// application components
 	'components'=>array(
 		'session'=>array(
+			'class' => 'CDbHttpSession',
 			'timeout'=>7200,
 		),
 		
