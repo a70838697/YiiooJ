@@ -16,6 +16,7 @@
  * @property integer $compiler_id
  * @property string $created
  * @property string $modified
+ * @property string $modification_times
  */
 class Submition extends CActiveRecord
 {
@@ -36,6 +37,17 @@ class Submition extends CActiveRecord
 	{
 		return '{{submitions}}';
 	}
+	protected function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+			if( !($this->isNewRecord))
+			{
+				$this->modification_times=$this->modification_times+1;
+			}
+		}
+		return true;
+	}	
 
 	/**
 	 * @return array validation rules for model attributes.

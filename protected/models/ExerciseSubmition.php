@@ -16,6 +16,7 @@
  * @property integer $compiler_id
  * @property string $created
  * @property string $modified
+ * @property string $modification_times
  */
 class ExerciseSubmition extends CActiveRecord
 {
@@ -67,7 +68,7 @@ class ExerciseSubmition extends CActiveRecord
 		$alias = $this->getTableAlias(false,false);
     	return array(
             'list'=>array(
-		        'select'=>array("{$alias}.id","LENGTH({$alias}.source) AS code_length","{$alias}.user_id","{$alias}.problem_id","{$alias}.status","{$alias}.created","{$alias}.used_time","{$alias}.used_memory","{$alias}.compiler_id","{$alias}.result"),
+		        'select'=>array("{$alias}.id","LENGTH({$alias}.source) AS code_length","{$alias}.user_id","{$alias}.problem_id","{$alias}.status","{$alias}.created","{$alias}.used_time","{$alias}.used_memory","{$alias}.compiler_id","{$alias}.result","{$alias}.modification_times"),
         		'with'=>array(
         			'user:username',
         			'problem:titled',
@@ -90,6 +91,17 @@ class ExerciseSubmition extends CActiveRecord
             ),
         );
     }
+    protected function beforeSave()
+    {
+    	if(parent::beforeSave())
+    	{
+    		if( !($this->isNewRecord))
+    		{
+    			$this->modification_times=$this->modification_times+1;
+    		}
+    	}
+    	return true;
+    }    
 	/**
 	 * @return array relational rules.
 	 */
@@ -131,6 +143,7 @@ class ExerciseSubmition extends CActiveRecord
 			'code_length'=>'Code Len.',
 			'created' => 'Submiting time',
 			'modified' => 'Re-submiting time',
+			'modification_times' => 'Modification times',
 		);
 	}
 
