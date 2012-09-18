@@ -38,8 +38,10 @@ return array (
 	'Class information'=>'课堂信息',
 
 	'Add students'=>'添加学生',
-	'Add students'=>'添加学生',
 	'Approve all applications'=>'批准全部选修学生的申请',
+	'Approve by teacher'=>'选课需老师批准',
+	'Approve automatically'=>'系统自动批准',
+	'Deny'=>'关闭选课',
 	
 
 	'Add an experiment'=>'添加实验',

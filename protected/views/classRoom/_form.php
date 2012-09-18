@@ -78,6 +78,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'application_option'); ?>
+		<?php echo $form->dropDownList($model,'application_option',ClassRoom::getApplicationOptionMessage()); ?>		
+		<?php echo $form->error($model,'application_option'); ?>
+	</div>	
+	
+	<div class="row">
 		<?php echo $form->labelEx($model,'environment'); ?>
 		<?php echo $form->textField($model,'environment',array('size'=>60,'maxlength'=>256)); ?>
 		<?php echo $form->error($model,'environment'); ?>

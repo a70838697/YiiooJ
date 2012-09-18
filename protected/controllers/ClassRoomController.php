@@ -103,10 +103,12 @@ class ClassRoomController extends CMController
 		$groupUser=$model->myMemberShip;
 		if($groupUser===null)
 		{
-			if(Yii::app()->request->getQuery('op',null)=='apply'){
-				$groupUser=$this->addStudentMember($model,Yii::app()->user->id,GroupUser::USER_STATUS_APPLIED);
-				if(!$groupUser)
-					throw new CHttpException(404,'The requested operation can not be done.');
+			if($model->application_option!=ClassRoom::STUDENT_APPLICATION_OPTION_DENY){
+				if(Yii::app()->request->getQuery('op',null)=='apply'){
+					$groupUser=$this->addStudentMember($model,Yii::app()->user->id,$model->application_option!=ClassRoom::STUDENT_APPLICATION_OPTION_APPROVE?GroupUser::USER_STATUS_APPLIED:GroupUser::USER_STATUS_ACCEPTED);
+					if(!$groupUser)
+						throw new CHttpException(404,'The requested operation can not be done.');
+				}
 			}
 		}else {
 			if(Yii::app()->request->getQuery('op',null)=='cancel')

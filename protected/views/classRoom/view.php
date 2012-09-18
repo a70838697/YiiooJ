@@ -58,7 +58,10 @@ $this->toolbar=array(
 
 ?>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
+<?php
+
+$APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
+ $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
         //'name',
@@ -77,6 +80,10 @@ $this->toolbar=array(
         'location',
         'environment',
         array(
+			'name'=>'application_option',
+            'value'=>$APPPLICATION_MSG[$model->application_option],
+        ),
+		array(
 			'name'=>'visibility',
             'value'=>UCourseLookup::$COURSE_TYPE_MESSAGES[$model->visibility],
         ),

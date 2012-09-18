@@ -13,12 +13,25 @@
  * @property string $due_time
  * @property integer $user_id
  * @property integer $begin
+ * @property integer $application_option
  * @property integer $end
  * @property integer $visibility
  * @property integer $created
  */
 class ClassRoom extends CActiveRecord
 {
+	const STUDENT_APPLICATION_OPTION_APPROVE=0;
+	const STUDENT_APPLICATION_OPTION_ALLOW=1;
+	const STUDENT_APPLICATION_OPTION_DENY=9;
+	public static function getApplicationOptionMessage()
+	{
+		$a=array();
+		$a[self::STUDENT_APPLICATION_OPTION_APPROVE]=Yii::t('course','Approve by teacher');
+		$a[self::STUDENT_APPLICATION_OPTION_ALLOW]=Yii::t('course','Approve automatically');
+		$a[self::STUDENT_APPLICATION_OPTION_DENY]=Yii::t('course','Deny');
+		return $a;
+	}
+		
 	public function getTitleAndYear()
 	{
 		return $this->title . " " . $this->begin;
@@ -59,7 +72,7 @@ class ClassRoom extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, user_id, begin, end', 'required'),
-			array('visibility', 'numerical', 'integerOnly'=>true),
+			array('visibility,application_option', 'numerical', 'integerOnly'=>true),
 			array('begin', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
 			array('end', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
 			array('title', 'length', 'max'=>60),
@@ -68,7 +81,7 @@ class ClassRoom extends CActiveRecord
             array('description', 'length', 'min'=>0),
             array('location', 'length', 'max'=>32),
             array('environment', 'length', 'max'=>256),
-            array('due_time', 'length', 'max'=>30),
+			array('application_option', 'length', 'max'=>30),
 			array('user_id','default',
 				'value'=>Yii::app()->user->id,
 				'setOnEmpty'=>false,'on'=>'insert'),				
@@ -111,6 +124,7 @@ class ClassRoom extends CActiveRecord
 			'title' => 'Title',
 			'sequence' => 'Class sequence number',
 			'description' => 'Description',
+			'application_option'=>'Application option',
 			'location' => 'Classroom',
 			'environment' => 'Environment',
 			'due_time' => 'Weekly Time',
