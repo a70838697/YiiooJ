@@ -131,6 +131,8 @@ function showReport(id)
 }
 function reloadReport(url,dialog_status)
 {
+	
+	if(jQuery("#score-form"))jQuery("#score-form").remove()
 	if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();
 	if(jQuery("#comment1"))jQuery("#comment1").remove();
 	//$("#ExperimentReport_comment").xheditor(false);
