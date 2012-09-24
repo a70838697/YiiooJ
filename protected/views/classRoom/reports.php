@@ -135,6 +135,7 @@ function reloadReport(url,dialog_status)
 	if(jQuery("#score-form"))jQuery("#score-form").remove()
 	if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("destroy").remove();
 	if(jQuery("#comment1"))jQuery("#comment1").remove();
+	if(jQuery("#ExperimentReport_score"))jQuery("#ExperimentReport_score").remove();
 	//$("#ExperimentReport_comment").xheditor(false);
 	if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
 	if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
