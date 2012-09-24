@@ -187,7 +187,7 @@ $experiment_remarks.='
 
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 	'id'=>'tabReport',
-    'tabs'=>array("Report of ".$model->user->info->lastname.$model->user->info->firstname=>$writeReport,
+    'tabs'=>array("Report of ".$model->user->info->lastname.$model->user->info->firstname=>$writeReport." Finish time:".date('Y-m-d H:i:s',$model->updated)." Rank:" .$model->rank,
     		"Remarks"=>$experiment_remarks,
     		"Experiment Information"=>$experimentInfomation.$experiment,
     		),

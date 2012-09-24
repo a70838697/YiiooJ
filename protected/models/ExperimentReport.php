@@ -111,7 +111,8 @@ class ExperimentReport extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'experiment' => array(self::BELONGS_TO, 'Experiment', 'experiment_id'),
-			'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),		
+			'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
+			'rank'=>array(self::STAT, 'ExperimentReport', array('experiment_id'=>'experiment_id'),'condition'=>'updated<t.updated'),	
 		);
 	}
 

@@ -252,6 +252,8 @@ class ExperimentReportController extends CMController
 
 		if(isset($_POST['ExperimentReport']))
 		{
+			$bneedupdatetime=(isset($_POST['ExperimentReport']['report']) && $model->report!=$_POST['ExperimentReport']['report'])
+				||(isset($_POST['ExperimentReport']['conclusion']) && $model->conclusion!=$_POST['ExperimentReport']['conclusion']);
 			$model->attributes=$_POST['ExperimentReport'];
 			if(Yii::app()->request->getQuery('preview',null)!==null)
 			{
@@ -259,7 +261,7 @@ class ExperimentReportController extends CMController
 					'model'=>$model));
 				die;
 			}else{
-				$model->updated = new CDbExpression('UNIX_TIMESTAMP()');
+				if($bneedupdatetime)$model->updated = new CDbExpression('UNIX_TIMESTAMP()');
 				if(Yii::app()->request->getQuery('submited',null)!==null)
 				{
 					if($model->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT)
