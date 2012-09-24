@@ -124,6 +124,7 @@ $(document).ready(function() {
 		
 			jQuery("#tabReport").tabs("select", 1);
 			reloadGrid();
+			if(jQuery("#viewreport"))$("#viewreport").dialog("close");
 		});
 		return false;
 	});
