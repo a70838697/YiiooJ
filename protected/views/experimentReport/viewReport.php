@@ -129,7 +129,7 @@ if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exer
 	if(count($submitions)>0){
 	$submition_content.='<tr >'.
 		'<table style="font-size: 10pt;  font-family: 宋体;"><tr><th>ID</th><th>状态</th><th>提交时间</th><th>修改次数</th><th>名次</th></tr>';
-		$isfirstAccept=true;
+		$isfirstAccept=UUserIdentity::isTeacher() && UUserIdentity::Admin();
 		foreach($submitions as $submition){
 			$submition_content.="<tr><td>".CHtml::link($submition->id,array("exerciseSubmition/view","id"=>$submition->id), array('target'=>'_blank'))."</td>
 			<td>".ULookup::$JUDGE_RESULT_MESSAGES[$submition->status]."</td>"
