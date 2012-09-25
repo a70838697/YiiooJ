@@ -58,6 +58,14 @@ class ClassRoomController extends CMController
 	public function actionView($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
+		if(UUserIdentity::isStudent())
+		{
+			$timezone = "Asia/Chongqing";
+			$date = date_create('now');
+			date_add($date,new DateInterval('P-'.Setting::get('PrePaymentDays').'D'));
+			$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
+			if($date>$end_date) $this->denyAccess();
+		}
 		$this->checkAccess(array('model'=>$model));		
 		
 		$this->classRoom=$model;
