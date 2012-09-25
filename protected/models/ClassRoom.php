@@ -42,10 +42,9 @@ class ClassRoom extends CActiveRecord
 		if(UUserIdentity::isStudent())
 		{
 			$timezone = "Asia/Chongqing";
-			$date = date_create('now');
+			$date = time();
 			$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
-			date_add($end_date,new DateInterval('P90D'));
-			return ($date>$end_date);
+			return ($date-$end_date>90*14400);
 		}
 		return false;
 	}
