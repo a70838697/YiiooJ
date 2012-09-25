@@ -53,6 +53,8 @@ class ExperimentController extends CMController
 	{
 		$experiment=$this->loadModel($id);
 		$this->classRoom=$experiment->classRoom;
+		if($this->classRoom->denyStudent())$this->denyAccess();
+		
 		
 		$exercise_problem=Yii::app()->user->isGuest?null:$this->newExerciseProblem($experiment);
 

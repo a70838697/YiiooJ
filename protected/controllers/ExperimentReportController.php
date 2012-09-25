@@ -163,6 +163,7 @@ class ExperimentReportController extends CMController
 			}
 		}
 		$this->classRoom=$model->experiment->classRoom;
+		if($this->classRoom->denyStudent())$this->denyAccess();
 		$this->render('view',array(
 			'model'=>$model,
 		));

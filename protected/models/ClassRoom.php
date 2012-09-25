@@ -36,6 +36,19 @@ class ClassRoom extends CActiveRecord
 	{
 		return $this->title . " " . $this->begin;
 	}
+	
+	public function denyStudent()
+	{
+		if(UUserIdentity::isStudent())
+		{
+			$timezone = "Asia/Chongqing";
+			$date = date_create('now');
+			$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
+			date_add($end_date,new DateInterval('P90D'));
+			return ($date>$end_date);
+		}
+		return false;
+	}
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return ClassRoom the static model class

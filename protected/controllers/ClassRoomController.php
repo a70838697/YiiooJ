@@ -58,16 +58,9 @@ class ClassRoomController extends CMController
 	public function actionView($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
-		if(UUserIdentity::isStudent())
-		{
-			$timezone = "Asia/Chongqing";
-			$date = date_create('now');
-			date_add($date,new DateInterval('P-90D'));
-			$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
-			if($date>$end_date) $this->denyAccess();
-		}
 		$this->checkAccess(array('model'=>$model));		
 		
+		if($model->denyStudent())$this->denyAccess();
 		$this->classRoom=$model;
 		$this->render('view',array(
 			'model'=>$model,
@@ -106,6 +99,7 @@ class ClassRoomController extends CMController
 	public function actionApply($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
+		if($model->denyStudent())$this->denyAccess();
 		$this->classRoom=$model;
 		$this->checkAccess(array('model'=>$model));				
 		$groupUser=$model->myMemberShip;
@@ -184,6 +178,7 @@ class ClassRoomController extends CMController
 	public function actionExperiments($id)
 	{
 		$model=$this->loadModel($id,'myMemberShip');
+		if($model->denyStudent())$this->denyAccess();
 		$this->classRoom=$model;
 		$this->checkAccess(array('model'=>$model));				
 		
@@ -201,6 +196,7 @@ class ClassRoomController extends CMController
 	public function actionQuizzes($id)
 	{
 		$model=$this->loadModel($id);
+		if($model->denyStudent())$this->denyAccess();
 		$this->classRoom=$model;
 				
 		$dataProvider=new CActiveDataProvider('Quiz',array( 'criteria'=>array( 'condition'=>'class_room_id='.$model->id, 'order'=>'end DESC')));
