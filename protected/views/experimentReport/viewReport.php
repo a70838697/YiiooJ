@@ -21,8 +21,9 @@
 		if($node!=null)$zhuanye=$node->name;
 	}
 	
-	?>
-
+echo  ($model->user->schoolInfo==null?"&nbsp;":$model->user->schoolInfo->identitynumber)."|". $model->user->info->lastname.$model->user->info->firstname.
+	"|".date('Y-m-d H:i:s',$model->updated)."|Rank:" .$model->finishRank."/".$model->experiment->classRoom->studentGroup->userCount;
+?>
 <?php 
 $gMessages=UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES();
 $experimentInfomation='
@@ -187,7 +188,7 @@ $experiment_remarks.='
 
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 	'id'=>'tabReport',
-    'tabs'=>array("Report of ".$model->user->info->lastname.$model->user->info->firstname=>$writeReport." Finish time:".date('Y-m-d H:i:s',$model->updated)." Rank:" .$model->rank,
+    'tabs'=>array("Report"=>$writeReport,
     		"Remarks"=>$experiment_remarks,
     		"Experiment Information"=>$experimentInfomation.$experiment,
     		),

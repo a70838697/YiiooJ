@@ -112,7 +112,6 @@ class ExperimentReport extends CActiveRecord
 		return array(
 			'experiment' => array(self::BELONGS_TO, 'Experiment', 'experiment_id'),
 			'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
-			'rank'=>array(self::STAT, 'ExperimentReport', array('experiment_id'=>'experiment_id'),'condition'=>'updated<t.updated'),	
 		);
 	}
 
@@ -155,4 +154,13 @@ class ExperimentReport extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	/**
+	 * @return how many person finished the experiment before me.
+	 */
+	public function getFinishRank()
+	{
+		return ExperimentReport::model()->count("experiment_id=:experiment_id and updated<:updated",
+			array(":experiment_id"=>$this->experiment_id,":updated"=>$this->updated))+1;
+	}
+	
 }
