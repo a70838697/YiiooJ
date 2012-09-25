@@ -63,8 +63,8 @@ function ()
 );
 $("#selectproblem").load("'.CHtml::normalizeUrl(array('courseProblem/select/public')) .'",{},function(){'.
 "
-jQuery('#problem-grid').yiiGridView({'ajaxUpdate':['1','problem-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'pageVar':'Problem_page'});
-".
+jQuery('#problem-grid').yiiGridView({'ajaxUpdate':['1','problem-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','pageVar':'Problem_page'});
+	".
 '});
 ');
 ?>
