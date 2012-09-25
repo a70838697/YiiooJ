@@ -112,6 +112,7 @@ $experiment='<div>
 	<td style="font-size: 14pt;  font-family: 宋体;"><b>三、实验内容</b></td>
 </tr>';
 
+$submition_content="";
 if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exercise_problems as $exerciseProblem){ 
 	$experiment.='
 <tr >
@@ -120,6 +121,26 @@ if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exer
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;">'. $exerciseProblem->problem->description.'</td>
 </tr>';
+	$submitions=$exerciseProblem->submitions(array('condition'=>'user_id='.$model->user_id));
+	$submition_content.='
+	<tr >
+	<td style="font-size: 10pt;  font-family: 宋体;"><b>'. $exerciseProblem->sequence.CHtml::encode($exerciseProblem->title).'提交'. count($submitions) .'次</b></td>
+	</tr>';
+	if(count($submitions)>0){
+	$submition_content.='<tr >'.
+		'<table style="font-size: 10pt;  font-family: 宋体;"><tr><th>ID</th><th>状态</th><th>提交时间</th><th>修改次数</th><th>名次</th></tr>';
+		$isfirstAccept=true;
+		foreach($submitions as $submition){
+			$submition_content.="<tr><td>".CHtml::link($submition->id,array("exerciseSubmition/view","id"=>$submition->id), array('target'=>'_blank'))."</td>
+			<td>".ULookup::$JUDGE_RESULT_MESSAGES[$submition->status]."</td>"
+			."<td>".$submition->modified."</td>"
+			."<td>".$submition->modification_times."</td>"
+			."<td>".( ($isfirstAccept&&$submition->status== ULookup::JUDGE_RESULT_ACCEPTED)?($submition->acceptedRank+1):"") ."</td>"
+			."</tr>";
+			if(($isfirstAccept&& $submition->status== ULookup::JUDGE_RESULT_ACCEPTED))$isfirstAccept=false;
+		}
+		$submition_content.='</table></tr>';
+	}
 }
 $experiment.='
 <tr >
@@ -134,6 +155,7 @@ $experiment.='
 <tr >
 	<td style="font-size: 14pt;  font-family: 宋体;"><b>四、实验分析*</b></td><td><b>得分：</b>'. ($model->score==0?'未评':$model->score).'</td>
 </tr>
+'.$submition_content.'
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;" colspan=2>
 		'. $model->report.'

@@ -72,6 +72,7 @@ class ExerciseProblem extends CActiveRecord
 		return array(
 			'problem' => array(self::BELONGS_TO, 'Problem', 'problem_id'),
 			'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
+			'submitions'=>array(self::HAS_MANY,"ExerciseSubmition",array("exercise_id"=>"exercise_id","problem_id"=>"problem_id")),
 		);
 	}
 
