@@ -124,7 +124,7 @@ if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exer
 	$submitions=$exerciseProblem->submitions(array('condition'=>'user_id='.$model->user_id));
 	$submition_content.='
 	<tr >
-	<td style="font-size: 10pt;  font-family: 宋体;"><b>'. $exerciseProblem->sequence.CHtml::encode($exerciseProblem->title).'提交'. count($submitions) .'次</b></td>
+	<td style="font-size: 10pt;  font-family: 宋体;"><b>'. $exerciseProblem->sequence.".".CHtml::encode($exerciseProblem->title).'提交'. count($submitions) .'次</b></td>
 	</tr>';
 	if(count($submitions)>0){
 	$submition_content.='<tr >'.
@@ -152,10 +152,12 @@ $experiment.='
 <?php $writeReport='
 <div style="width:750px">
 <table   width="100%">
+'.$submition_content.'
+</table>
+<table   width="100%">
 <tr >
 	<td style="font-size: 14pt;  font-family: 宋体;"><b>四、实验分析*</b></td><td><b>得分：</b>'. ($model->score==0?'未评':$model->score).'</td>
 </tr>
-'.$submition_content.'
 <tr >
 	<td style="font-size: 12pt;  font-family: 宋体;" colspan=2>
 		'. $model->report.'

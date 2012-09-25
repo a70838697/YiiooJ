@@ -118,7 +118,7 @@ class ExerciseSubmition extends CActiveRecord
     {
     	if(parent::beforeSave())
     	{
-    		if( !($this->isNewRecord))
+			if( !($this->isNewRecord))
     		{
     			$this->modification_times=$this->modification_times+1;
     		}
