@@ -62,7 +62,7 @@ class ClassRoomController extends CMController
 		{
 			$timezone = "Asia/Chongqing";
 			$date = date_create('now');
-			date_add($date,new DateInterval('P-'.Setting::get('PrePaymentDays').'D'));
+			date_add($date,new DateInterval('P-90D'));
 			$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd") ;
 			if($date>$end_date) $this->denyAccess();
 		}
