@@ -157,6 +157,7 @@ class ExperimentController extends CMController
 		if(!$this->classRoom)throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 		
 		$model=new Experiment;
+		$model->aim="<ul><li>aim<br/></li></ul><br />";
 		$model->user_id=Yii::app()->user->id;
 		$model->class_room_id=$id;
 		$model->exercise_id=0;

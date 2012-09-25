@@ -421,6 +421,7 @@ class ClassRoomController extends CMController
 	protected function newExperiment($classRoom)
 	{
 		$experiment=new Experiment;
+		$experiment->aim="<ul><li>aim<br/></li></ul><br />";
 		if(isset($_POST['ajax']) && $_POST['ajax']==='experiment-form')
 		{
 			echo CActiveForm::validate($experiment);

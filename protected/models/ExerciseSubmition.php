@@ -91,6 +91,29 @@ class ExerciseSubmition extends CActiveRecord
             ),
         );
     }
+    public function getAcceptedRank(){
+    	$criteria = new CDbCriteria(array(
+    			'select' => 'user_id',
+    	));
+    	$criteria->compare('exercise_id',$this->exercise_id);
+    	$criteria->compare('problem_id',$this->problem_id);
+    	$criteria->compare("status", ULookup::JUDGE_RESULT_ACCEPTED);
+    	$criteria->compare("modified", "<".$this->modified);
+    	$criteria->distinct=true;
+    	 
+    	return ExerciseSubmition::model()->count($criteria);
+    }
+    public function getTotalAccepted(){
+    	$criteria = new CDbCriteria(array(
+    			'select' => 'user_id',
+    	));
+    	$criteria->compare('exercise_id',$this->exercise_id);
+    	$criteria->compare('problem_id',$this->problem_id);
+    	$criteria->compare("status", ULookup::JUDGE_RESULT_ACCEPTED);
+    	$criteria->distinct=true;
+    
+    	return ExerciseSubmition::model()->count($criteria);
+    }    
     protected function beforeSave()
     {
     	if(parent::beforeSave())
