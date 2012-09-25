@@ -8,7 +8,7 @@ echo CHtml::script(
 '
 function research()
 {
-	var urlh=\''.CHtml::normalizeUrl(array($this->prefix."/problem/select")).'\';
+	var urlh=\''.CHtml::normalizeUrl(array($this->prefix."Problem/select")).'\';
 	if($(\'#pro_type\').val()=="mine")urlh+="/mine/1";
 	if($.trim($(\'#prob_id\').val())!=""){
 		var id=parseInt($.trim($(\'#prob_id\').val()));
@@ -38,7 +38,7 @@ function research()
 		array(
 			'name'=>'title',
 			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode($data->title),array("'.$this->prefix.'problem/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
+			'value'=>'CHtml::link(CHtml::encode($data->title),array("'.$this->prefix.'Problem/view","id"=>$data->id),  array("id"=>"ap".$data->id,"target"=>"_blank"))',
 		),
 	),
 ));
