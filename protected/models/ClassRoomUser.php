@@ -53,7 +53,7 @@ class ClassRoomUser extends UUser
     {
     	$this->getReports($classRoom_id);
     	// more than one phone exists for the user
-    	if(sizeof($this->reports) > 1)
+    	if(sizeof($this->reports) > 0)
     	{
     		$count=0;
     		$sum=0;
