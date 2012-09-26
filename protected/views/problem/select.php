@@ -15,7 +15,7 @@ function research()
 		if(id>0)urlh+="/id/"+id;
 		else {alert("not a validate ID");return;}
 	}
-	if($.trim($(\'#prob_title\').val())!="")urlh+="/title/"+escape($.trim($(\'#prob_title\').val()));
+	if($.trim($(\'#prob_title\').val())!="")urlh+="/title/"+($.trim($(\'#prob_title\').val()));
 	//alert(urlh);
 	$(\'#problem-grid > div.keys\').attr(\'title\',urlh);
 	$.fn.yiiGridView.update(\'problem-grid\');
