@@ -94,7 +94,10 @@ class ExperimentReportController extends CMController
 				//echo $_POST['ExperimentReport']['score'].'xxxxxx';
 				$model->score=$_POST['ExperimentReport']['score'];
 				$model->comment=$_POST['ExperimentReport']['comment'];
-				$model->save();
+				if($model->save()){
+					echo "ok".$model->score;
+					Yii::app()->end();//Ajax
+				}
 			}
 		}
 		$this->renderPartial('viewAjax',array(

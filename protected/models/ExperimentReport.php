@@ -88,8 +88,9 @@ class ExperimentReport extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('experiment_id, report, conclusion', 'required'),
-			array('experiment_id, score,status', 'numerical', 'integerOnly'=>true),
+			array('experiment_id,status', 'numerical', 'integerOnly'=>true),
 			array('comment', 'length', 'max'=>500),
+			array('score', 'numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 			//array('updated','default',
 	        //      'value'=>new CDbExpression('UNIX_TIMESTAMP()'),
 	        //      'setOnEmpty'=>false,'on'=>'update'),	        

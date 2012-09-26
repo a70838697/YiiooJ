@@ -119,12 +119,17 @@ $(document).ready(function() {
 			if(jQuery("#score-form"))jQuery("#score-form").remove();
 			if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
 			if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
-			$("#reportcontent").html(data);
-			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
-		
-			jQuery("#tabReport").tabs("select", 1);
+			if(data.indexOf("ok")!=0)
+			{			
+				$("#reportcontent").html(data); //noupdate
+				MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
+				jQuery("#tabReport").tabs("select", 1);
+			}
+			else
+			{
+				if(jQuery("#viewreport"))$("#viewreport").dialog("close");
+			}
 			reloadGrid();
-			if(jQuery("#viewreport"))$("#viewreport").dialog("close");
 		});
 		return false;
 	});
