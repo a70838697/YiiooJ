@@ -122,6 +122,7 @@ $(document).ready(function() {
 			if(data.indexOf("ok")!=0)
 			{			
 				$("#reportcontent").html(data); //noupdate
+				if(jQuery("#scoredialog"))jQuery("#scoredialog").dialog("open");
 				MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
 				jQuery("#tabReport").tabs("select", 1);
 			}
