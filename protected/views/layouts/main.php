@@ -37,7 +37,8 @@
 			$items=array(
 					array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
 					// array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All courses"), 'visible'=>true),
-					array('url'=>array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('main',"My current classes"), 'visible'=>UUserIdentity::canHaveCourses()),
+					array('url'=>array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('t',"My present classrooms"), 'visible'=>UUserIdentity::canHaveCourses()),
+					array('url'=>array('/classRoom/index/term/1'), 'label'=>Yii::t('t',"Available classrooms"), 'visible'=>UUserIdentity::isStudent()),
 					array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())),
 					array('url'=>array('/comments'), 'label'=>Yii::t('main',"Comments"), 'visible'=>(UUserIdentity::isAdmin())),
 					array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
