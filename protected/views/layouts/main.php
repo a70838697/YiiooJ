@@ -60,8 +60,8 @@
 			$this->widget('zii.widgets.CMenu',array(
 					'items'=>$items,
 		)); ?>
-		</div><?php
-		$this->widget('zii.widgets.CBreadcrumbs', array(
+		</div><?php //zii.widgets.CBreadcrumbs
+		$this->widget('application.extensions.exbreadcrumbs.EXBreadcrumbs', array(
 				'links'=>$this->breadcrumbs,
 		));
 		echo $content; ?>
