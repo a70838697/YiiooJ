@@ -22,7 +22,7 @@ $this->toolbar= array(
 				'icon-position'=>'left',
 				'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
 				'visible'=>true,
-				'url'=>array('update'.$fill, 'id'=>$model->id),
+				'url'=>array('update'.$fill, 'id'=>$model->id,"class_room_id"=>$this->getClassroomId(),"course_id"=>$this->getCourseId()),
 		),
 );
 ?>

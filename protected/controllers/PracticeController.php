@@ -17,11 +17,11 @@ class PracticeController extends Controller
 		Yii::app()->clientScript->registerCoreScript('jquery');
 		$this->registerJs('webroot.js_plugins.jstree','/jquery.jstree.js');
 		$this->registerCssAndJs('webroot.js_plugins.fancybox',
-				'/jquery.fancybox-1.3.4.js',
-				'/jquery.fancybox-1.3.4.css');
+			'/jquery.fancybox-1.3.4.js',
+			'/jquery.fancybox-1.3.4.css');
 		$this->registerCssAndJs('webroot.js_plugins.jqui1812',
-				'/js/jquery-ui-1.8.12.custom.min.js',
-				'/css/dark-hive/jquery-ui-1.8.12.custom.css');
+			'/js/jquery-ui-1.8.12.custom.min.js',
+			'/css/dark-hive/jquery-ui-1.8.12.custom.css');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js_plugins/json2/json2.js');
 		Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/client_val_form.css','screen');
 	}
@@ -31,21 +31,21 @@ class PracticeController extends Controller
 		Yii::app()->clientScript->registerScriptFile($publishedFolder . $jsfile, CClientScript::POS_HEAD);
 		Yii::app()->clientScript->registerCssFile($publishedFolder . $cssfile);
 	}
-	
+
 	public static function registerCss($folder, $cssfile) {
 		$sourceFolder = YiiBase::getPathOfAlias($folder);
 		$publishedFolder = Yii::app()->assetManager->publish($sourceFolder);
 		Yii::app()->clientScript->registerCssFile($publishedFolder .'/'. $cssfile);
 		return $publishedFolder .'/'. $cssfile;
 	}
-	
+
 	public static function registerJs($folder, $jsfile) {
 		$sourceFolder = YiiBase::getPathOfAlias($folder);
 		$publishedFolder = Yii::app()->assetManager->publish($sourceFolder);
 		Yii::app()->clientScript->registerScriptFile($publishedFolder .'/'.  $jsfile);
 		return $publishedFolder .'/'. $jsfile;
 	}
-	
+
 	/**
 	 * @return array action filters
 	 */
@@ -92,15 +92,15 @@ class PracticeController extends Controller
 		if($quiz!==null){
 			$quiz=(int)$quiz;
 			$quiz_model= Quiz::model()->findByPk((int)$quiz);
-	
+
 			if($quiz_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
-	
-				
+
+
 		$model=$this->loadModel($id);
 		if($model->chapter)
-			$this->course=$model->chapter->course;		
+			$this->course=$model->chapter->course;
 		$this->render('view',array(
 			'model'=>$model,
 			'quiz'=>$quiz,
@@ -114,8 +114,8 @@ class PracticeController extends Controller
 	public function actionCreate($id=null)
 	{
 		$model=new Practice;
-		
-		
+
+
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -146,7 +146,7 @@ class PracticeController extends Controller
 					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
 				}
 			}
-		}		
+		}
 		$this->render('create',array(
 			'model'=>$model,
 			'chapters'=>$treeArray
@@ -190,7 +190,7 @@ class PracticeController extends Controller
 					$treeArray[$node->id]=str_repeat('&nbsp;',2*($node->level-1)).CHtml::encode($node->name);
 				}
 			}
-		}		
+		}
 		$this->render('create',array(
 			'model'=>$model,
 			'chapters'=>$treeArray
@@ -222,7 +222,17 @@ class PracticeController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Practice');
+		$course=$this->getCourse();
+		$dataProvider=new CActiveDataProvider('Practice', array(
+			'criteria'=>array(
+				'condition'=>'chapter.root='. ($course->chapter_id),
+				'order'=>'created DESC',
+				'with'=>array('chapter'),
+			),
+			'pagination'=>array(
+				'pageSize'=>20,
+			),
+		));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

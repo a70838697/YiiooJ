@@ -17,7 +17,7 @@ $this->toolbar= array(
 				'icon-position'=>'left',
 				'icon'=>'document', // This a CSS class starting with ".ui-icon-"
 				'visible'=>UUserIdentity::isAdmin()||UUserIdentity::isTeacher()||$model->user_id==yii::app()->user->id,
-				'url'=>array('view', 'id'=>$model->id),
+				'url'=>array('view', 'id'=>$model->id,"class_room_id"=>$this->getClassroomId(),"course_id"=>$this->getCourseId()),
 				'linkOptions'=>array('onclick'=>'return confirm("Are you want to discard your updates");'),
 		),
 );

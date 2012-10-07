@@ -131,6 +131,7 @@ class MultipleChoiceController extends CMController
 	public function actionCreate($id=null)
 	{
 		$model=new MultipleChoice;
+		$model->question_type=ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE;
 		$choiceOptionManager=new ChoiceOptionManager();
 
 		if( ((int)$id)==0 && $this->getCourse())$id=$this->getCourse()->chapter_id;
@@ -428,7 +429,12 @@ class MultipleChoiceController extends CMController
 		$nodeRoot=Chapter::model()->findByPk($id);
 		$criteria=new CDbCriteria(array(
 	    ));
+		if(Yii::app()->request->getQuery('type',null)!==null)
+		{
+			$criteria->compare("question_type", (int)Yii::app()->request->getQuery('type',null));
+		}
 		$criteria->with=array("chapter");
+		$criteria->compare("chapter.root", $id);
 		$criteria->addBetweenCondition("chapter.lft", $nodeRoot->lft,$nodeRoot->rgt);
 		$criteria->order=("chapter.lft");
 		$dataProvider=new EActiveDataProvider('MultipleChoice',

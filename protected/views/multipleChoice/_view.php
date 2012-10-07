@@ -15,12 +15,15 @@ $answer_ids=preg_split('/,/',$data->answer);
 </table>
 <div>
 <?php
-echo CHtml::link(Yii::t('main',"View"),array('/multipleChoice/view/'.$data->id));
-echo "|".CHtml::link(Yii::t('main',"Update"),array('/multipleChoice/update/'.$data->id));
+$fill=($data->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE||
+$data->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE
+)?"":"Fill";
+echo CHtml::link(Yii::t('main',"View"),array('/multipleChoice/view/'.$data->id,"class_room_id"=>$this->getClassroomId(),"course_id"=>$this->getCourseId()));
+echo "|".CHtml::link(Yii::t('main',"Update"),array('/multipleChoice/update'.$fill.'/'.$data->id,"class_room_id"=>$this->getClassroomId(),"course_id"=>$this->getCourseId()));
 ?>
 <?php if($data->chapter){?>
  Chapter:<?php echo $data->chapter->name; ?>(
-<?php echo CHtml::link("View multiple choice problems of the chapter",array('/multipleChoice/list/'.$data->chapter_id));?> )
+<?php echo CHtml::link("View exercise items of the chapter",array('/multipleChoice/list/'.$data->chapter_id,"class_room_id"=>$this->getClassroomId(),"course_id"=>$this->getCourseId()));?> )
 <?php }?>
 
 </div>

@@ -78,6 +78,11 @@ class Controller extends CController
 		if($this->course===null)$this->initInfo();
 		return ($this->course===null)?0:$this->course->id;
 	}
+	public function getClassRoom()
+	{
+		if($this->class_room_id===null)$this->initInfo();
+		return $this->classRoom;
+	}	
 	public function getClassRoomId()
 	{
 		if($this->class_room_id===null)$this->initInfo();
