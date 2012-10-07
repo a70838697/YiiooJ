@@ -155,6 +155,7 @@ return array(
 	'components'=>array(
 		'session'=>array(
 			'class' => 'CDbHttpSession',
+			'autoCreateSessionTable'=>false,
 			'timeout'=>7200,
 		),
 		

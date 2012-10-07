@@ -88,6 +88,11 @@ class ExerciseProblemController extends Controller
 		{
 			$model=$this->loadModelByAttr(Yii::app()->request->getQuery('exercise',0),Yii::app()->request->getQuery('problem',0));
 		}
+		if(Yii::app()->user->isGuest)
+		{
+			throw new CHttpException(404,'Please relogin.');
+			return false;
+		}
 		//$this->checkAccess(array('model'=>$model));
 		
 		//$submition=$this->canAccess(array('model'=>$model),'Create','Submition')?$this->newSubmition($model->problem):null;
