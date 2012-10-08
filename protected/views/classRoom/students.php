@@ -134,7 +134,7 @@ function showDialogue()
 {
 		$("#selectstudent").load("'.CHtml::normalizeUrl(array('group/selectStudent/'.$model->user_group_id)) .'",{},function(){'.
 			"
-			jQuery('#group-grid').yiiGridView({'ajaxUpdate':['1','group-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':2,'pageVar':'SchoolInfo_page'});
+			jQuery('#group-grid').yiiGridView({'ajaxUpdate':['1','group-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':2,'enableHistory':false,'updateSelector':'{page}, {sort}','pageVar':'SchoolInfo_page'});
 			".
 		'});
 	$("#submitiondialog").dialog("open");
