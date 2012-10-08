@@ -169,7 +169,7 @@ echo CHtml::script('
 	{
 		$("#selectproblem").load("'.CHtml::normalizeUrl(array('examination/select/'.(isset($_POST['parent_id'])?$_POST['parent_id']:$model->root))) .'/type/"+$("#Examination_type_id").val(),{},function(){'.
 		"
-		jQuery('#problem-grid').yiiGridView({'ajaxUpdate':['1','problem-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'pageVar':'Problem_page'});
+		jQuery('#problem-grid').yiiGridView({'ajaxUpdate':['1','problem-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','pageVar':'MultipleChoice_page'});
 		$.fancybox.resize();
 		".
 		'});
