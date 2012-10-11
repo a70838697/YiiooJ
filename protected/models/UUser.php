@@ -29,7 +29,7 @@ class UUser extends User
 
 	// class User
 	public function getFullName() {
-		return $this->username;
+		return $this->info?($this->info->lastname.$this->info->firstname):$this->username;
 	}
 	
 	public function getSuggest($q) {

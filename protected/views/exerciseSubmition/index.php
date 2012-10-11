@@ -87,8 +87,14 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 			'name'=>'Author',
 			'type'=>'raw',
 			'visible'=>((Yii::app()->user->isGuest) || Yii::app()->request->getQuery('mine',null)===null),
-			'value'=>'$data->user?CHtml::link(CHtml::encode($data->user->username),array("user/user/view","id"=>$data->user_id)):""',
+			'value'=>'$data->user?CHtml::link(CHtml::encode($data->user->fullName),array("user/user/view","id"=>$data->user_id)):""',
 		),
+		array(
+				'header'=>'Studnet ID',
+				'type'=>'raw',
+				'visible'=>((Yii::app()->user->isGuest) || Yii::app()->request->getQuery('mine',null)===null),
+				'value'=>'$data->user->schoolInfo?CHtml::link(CHtml::encode($data->user->schoolInfo->identitynumber),array("schoolInfo/view","id"=>$data->user_id)):""',
+		),		
 		array(
 			'name'=>'Status',
 			'type'=>'raw',
