@@ -15,7 +15,7 @@ class FormDialog extends CJuiWidget
 		}
 		if (!isset($this->options['onSuccess']))
 			$this->options['onSuccess']='js:function(data, e){alert("Success")}';
-		UChtml::addYiiGridViewScriptsForAjax();
+		UCHtml::addYiiGridViewScriptsForAjax();
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('application.extensions.formDialog.formDialog').'.js'));
 		$options= CJavaScript::encode($this->options);
 		Yii::app()->clientScript->registerScript('FormDialog'.$this->link, "$('{$this->link}').formDialog({$options})");
