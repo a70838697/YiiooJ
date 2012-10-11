@@ -25,7 +25,7 @@ $this->toolbar= array(
 		'label'=>Yii::t('t','Add a programming problem'),
 		'icon-position'=>'left',
 		'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-		'url'=>array('addExerciseProblem','id'=>$model->id),
+		'url'=>array('exerciseProblem/addProblemToExperiment','id'=>$model->id),
 		'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
 		'linkOptions'=>array('class'=>'create')
 	),
@@ -66,6 +66,7 @@ $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.c
 		'modal'=>true,
 	)
 ));
+
 $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.update',
 		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
 				'dialogClass'=>'rbam-dialog',
@@ -76,7 +77,6 @@ $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.u
 				'modal'=>true,
 		)
 ));
-
 $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
 $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -130,14 +130,14 @@ if($model->exercise!==null){
 		$arraycolums[]=array(
 				'class'=>'CButtonColumn',
 				'template'=> '{view}{update}{delete}',
-				'viewButtonUrl' => 'array("ExerciseProblem/view",
+				'viewButtonUrl' => 'array("exerciseProblem/view",
 				"id"=>$data->id)',
 			'buttons'=>array(
-				'update' =>array('url'=>'Yii::app()->createUrl("ExerciseProblem/update",array("id"=>$data->id))',
+				'update' =>array('url'=>'Yii::app()->createUrl("exerciseProblem/update",array("id"=>$data->id))',
 					'options'=>array('class'=>'update'),
 					),
 			),
-				'deleteButtonUrl' => 'array("ExerciseProblem/delete",
+				'deleteButtonUrl' => 'array("exerciseProblem/delete",
 				"id"=>$data->id)',				
 			);
 	
@@ -159,6 +159,8 @@ if($model->exercise!==null){
 				'header' => Yii::t('t','Memo'),
 			);
 	$this->widget('zii.widgets.grid.CGridView', array(
+		//here might be a bug
+		'afterAjaxUpdate'=>'js:function(id,data){$("a.update").formDialog({"onSuccess":function(data, e){alert(data.message);window.location.reload();},"close":function(){if($.clearScripts)$.clearScripts();$(this).detach()},"title":"'.Yii::t("t","Update a programming problem").'","minWidth":800,"height":710,"modal":true,"id":"yw1"});}',
 		'dataProvider' => $dataProvider,
 		'columns' => $arraycolums,
 	));

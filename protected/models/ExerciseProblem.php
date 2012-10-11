@@ -87,8 +87,8 @@ class ExerciseProblem extends CActiveRecord
 			'exercise_id' => 'Exercise',
 			'sequence' => 'Sequence',
 		
-			'title' => 'Displayed Title',
-			'problem_id' => 'Problem',
+			'title' => 'Problem title',
+			'problem_id' => 'Problem ID',
 			'memo' => 'Memo',
 			'created' => 'Created',
 		);

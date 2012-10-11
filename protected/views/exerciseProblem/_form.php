@@ -5,36 +5,45 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
+<table>
+<tr><td >
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
 	<?php echo $form->errorSummary($model); ?>
-
-	<div class="row">
+</td><td>
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
+</td></tr>
+	
+<tr><td>
+<div class="row">
 		<?php echo $form->labelEx($model,'problem_id'); ?>
-		<?php echo $form->textField($model,'problem_id'); ?>
+		<?php echo $form->textField($model,'problem_id',array('size'=>10,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'problem_id'); ?>
 	</div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'sequence'); ?>
-		<?php echo $form->textField($model,'sequence',array('size'=>60,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'sequence'); ?>
-	</div>
-	
-	<div class="row">
+</td><td>
+<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
-
+</td></tr>
+	
+<tr><td>
 	<div class="row">
+		<?php echo $form->labelEx($model,'sequence'); ?>
+		<?php echo $form->textField($model,'sequence',array('size'=>10,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'sequence'); ?>
+	</div>
+</td><td>
+<div class="row">
 		<?php echo $form->labelEx($model,'memo'); ?>
 		<?php echo $form->textField($model,'memo',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'memo'); ?>
 	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-	</div>
+</td></tr>
+	
+</table>
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 <hr/>

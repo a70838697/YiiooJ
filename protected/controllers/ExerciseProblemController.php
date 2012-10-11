@@ -28,7 +28,7 @@ class ExerciseProblemController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','addProblemToExperiment'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -75,7 +75,81 @@ class ExerciseProblemController extends Controller
 			}
 		}
 		return $submition;
-	}	
+	}
+	
+	
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionAddProblemToExperiment($id)
+	{
+		$experiment=Experiment::model()->findByPk((int)$id);
+		if($experiment===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		$this->classRoom=$experiment->classRoom;
+		if($this->classRoom->denyStudent())$this->denyAccess();
+	
+		$model=new ExerciseProblem;
+		$model->exercise_id=$experiment->exercise_id;
+	
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+		if(isset($_POST['ExerciseProblem']))
+		{
+			if($experiment->exercise_id==0)
+			{
+				$exercise=new Exercise;
+				$exercise->type_id = Exercise::EXERCISE_TYPE_COURSE;
+				$exercise->belong_to_id=$experiment->id;
+				if($exercise->save())
+				{
+					$experiment->exercise_id=$exercise->id;
+					$experiment->save();
+				}
+			}
+			$model->attributes=$_POST['ExerciseProblem'];
+			$problem = Problem::model()->findByPk((int)$model->problem_id);
+			if($problem==null || !$this->canAccess(array('model'=>$problem),'view','problem'))
+			{
+				$model->addError('problem_id','Not a validate problem id.');
+			}
+			if(ExerciseProblem::model()->find('exercise_id='.$experiment->exercise_id.' and problem_id ='.(int)$model->problem_id)!=null)
+			{
+				$model->addError('problem_id','This problem already exists.');
+			}
+			if($model->title==null||strlen(trim($model->title))==0)
+			{
+				$model->title=$problem->title;
+			}
+			if( (!$model->hasErrors()) && $model->save())
+			{
+				if (Yii::app()->request->isAjaxRequest)
+				{
+					echo CJSON::encode(array(
+							'status'=>'success',
+							'message'=>Yii::t('t',"Success!")
+					));
+					exit;
+				}
+				else
+					$this->redirect(array('view','id'=>$model->id));
+			}
+		}
+	
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			echo CJSON::encode(array(
+					'status'=>'failure',
+					'form'=>$this->renderPartial('_form', array('model'=>$model), true)));
+			exit;
+		}
+		else
+			$this->render('create',array('model'=>$model,));
+	}
+	
+	
+	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed

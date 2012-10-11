@@ -28,7 +28,7 @@ class ExperimentController extends CMController
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','createProblem','addExerciseProblem'),
+				'actions'=>array('index','view','createProblem'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -45,77 +45,6 @@ class ExperimentController extends CMController
 		);
 	}
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionAddExerciseProblem($id)
-	{
-		$experiment=$this->loadModel($id);
-		$this->classRoom=$experiment->classRoom;
-		if($this->classRoom->denyStudent())$this->denyAccess();
-	
-		$exercise_problem=new ExerciseProblem;
-		$exercise_problem->exercise_id=$experiment->exercise_id;
-		
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		if(isset($_POST['ExerciseProblem']))
-		{
-			if($experiment->exercise_id==0)
-			{
-				$exercise=new Exercise;
-				$exercise->type_id = Exercise::EXERCISE_TYPE_COURSE;
-				$exercise->belong_to_id=$experiment->id;
-				if($exercise->save())
-				{
-					$experiment->exercise_id=$exercise->id;
-					$experiment->save();
-				}
-			}
-			$exercise_problem->attributes=$_POST['ExerciseProblem'];
-			$problem = Problem::model()->findByPk((int)$exercise_problem->problem_id);
-			if($problem==null || !$this->canAccess(array('model'=>$problem),'view','problem'))
-			{
-				$exercise_problem->addError('problem_id','Not a validate problem id.');
-			}
-			if(ExerciseProblem::model()->find('exercise_id='.$experiment->exercise_id.' and problem_id ='.(int)$exercise_problem->problem_id)!=null)
-			{
-				$exercise_problem->addError('problem_id','This problem already exists.');
-			}
-			if($exercise_problem->title==null||strlen(trim($exercise_problem->title))==0)
-			{
-				$exercise_problem->title=$problem->title;
-			}
-			if( (!$exercise_problem->hasErrors()) && $exercise_problem->save())
-			{
-				if (Yii::app()->request->isAjaxRequest)
-				{
-					echo CJSON::encode(array(
-							'status'=>'success',
-							'message'=>Yii::t('t',"Success!")
-					));
-					exit;
-					
-	
-				}
-				else
-					$this->redirect(array('exerciseProblem/view','id'=>$exercise_problem->id));
-			}
-		}
-	
-		if (Yii::app()->request->isAjaxRequest)
-		{
-			echo CJSON::encode(array(
-					'status'=>'failure',
-					'form'=>$this->renderPartial('/exerciseProblem/_form', array('model'=>$exercise_problem), true)));
-			exit;
-		}
-		else
-			$this->render('exerciseProblem/create',array('model'=>$exercise_problem,));
-	}
-
-	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -190,6 +119,8 @@ class ExperimentController extends CMController
 		}
 		return $exercise_problem;
 	}
+	
+	
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
