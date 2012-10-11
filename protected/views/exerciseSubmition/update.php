@@ -10,7 +10,7 @@ if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 	{
 		$this->breadcrumbs[$exercise_problem->sequence.'.'.$exercise_problem->title]=array('/exerciseProblem/'.$exercise_problem->id);	
 	}
-	$this->breadcrumbs['submitions']='';
+	$this->breadcrumbs['submitions']=null;
 	
 }
 

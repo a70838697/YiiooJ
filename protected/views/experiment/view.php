@@ -11,54 +11,74 @@ $report=null;
 if(UUserIdentity::isStudent())
 {
 	$report=ExperimentReport::model()->find(array(
-			'condition'=>'experiment_id=:experimentID and user_id='.Yii::app()->user->id,
-			'params'=>array(':experimentID'=>$model->id),
+		'condition'=>'experiment_id=:experimentID and user_id='.Yii::app()->user->id,
+		'params'=>array(':experimentID'=>$model->id),
 	));
 	if( $report==null)$cansubmit=!$model->isTimeOut();
 	else {
 		$cansubmit=($report->status==ExperimentReport::STATUS_ALLOW_EDIT ) ||($report->status==ExperimentReport::STATUS_ALLOW_LATE_EDIT);
 	}
-	
+
 }
 $this->toolbar= array(
-        array(
-            'label'=>Yii::t('course','Add a problem'),
-            'icon-position'=>'left',
-            'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>'#',
-	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
-        	'linkOptions'=>array('onclick'=>'return showDialogue();',)
-        ),
-        array(
-            'label'=>Yii::t('course','Update experiment'),
-            'icon-position'=>'left',
-	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
-            'url'=>array('update', 'id'=>$model->id),
-        ), 
-        array(
-            'label'=>Yii::t('course','List reports'),
-            'icon-position'=>'left',
-	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
-            'url'=>array('reports', 'id'=>$model->id),
-        ),
-        array(
-            'label'=>Yii::t('course',($report==null)?'Write a report':"Update your report"),
-            'icon-position'=>'left',
-	        'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
-            'url'=>($report==null)?array('/experimentReport/write', 'id'=>$model->id):array('/experimentReport/update', 'id'=>$report->id),
-        ), 
-    	array(
-    		'label'=>'View my report',
-    		'icon-position'=>'left',
-    		'visible'=>($report!=null),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
-    		'url'=>array('/experimentReport/view', 'id'=>($report==null)?1:$report->id),
-    	),
-    		
-      
-    );
+	array(
+		'label'=>Yii::t('t','Add a programming problem'),
+		'icon-position'=>'left',
+		'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
+		'url'=>array('addExerciseProblem','id'=>$model->id),
+		'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
+		'linkOptions'=>array('class'=>'create')
+	),
+	array(
+		'label'=>Yii::t('course','Update experiment'),
+		'icon-position'=>'left',
+		'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+		'url'=>array('update', 'id'=>$model->id),
+	),
+	array(
+		'label'=>Yii::t('course','List reports'),
+		'icon-position'=>'left',
+		'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+		'url'=>array('reports', 'id'=>$model->id),
+	),
+	array(
+		'label'=>Yii::t('course',($report==null)?'Write a report':"Update your report"),
+		'icon-position'=>'left',
+		'visible'=>$cansubmit,//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+		'url'=>($report==null)?array('/experimentReport/write', 'id'=>$model->id):array('/experimentReport/update', 'id'=>$report->id),
+	),
+	array(
+		'label'=>'View my report',
+		'icon-position'=>'left',
+		'visible'=>($report!=null),//!Yii::app()->user->isGuest && $this->canAccess(array('model'=>$model),'update'),
+		'url'=>array('/experimentReport/view', 'id'=>($report==null)?1:$report->id),
+	),
+
+
+);
+$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.create',
+	'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
+		'dialogClass'=>'rbam-dialog',
+		'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
+		'title'=>Yii::t('t', 'Add a programming problem'),
+		'minWidth'=>800,
+		'height'=>710,
+		'modal'=>true,
+	)
+));
+$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.update',
+		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
+				'dialogClass'=>'rbam-dialog',
+				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
+				'title'=>Yii::t('t', 'Update a programming problem'),
+				'minWidth'=>800,
+				'height'=>710,
+				'modal'=>true,
+		)
+));
 
 $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
- $this->widget('zii.widgets.CDetailView', array(
+$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'sequence',
@@ -66,89 +86,85 @@ $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
 		array(
 			'name'=>'class_room',
 			'type'=>'raw',
-            'value'=>CHtml::link(CHtml::encode($model->classRoom->title),
-                                 array('classRoom/view','id'=>$model->class_room_id)),		
+			'value'=>CHtml::link(CHtml::encode($model->classRoom->title),
+				array('classRoom/view','id'=>$model->class_room_id)),
 		),
 		array(
 			'name'=>'experiment_type_id',
 			'type'=>'raw',
-            'value'=>$gMessages[$model->experiment_type_id],		
+			'value'=>$gMessages[$model->experiment_type_id],
 		),
 		array(
 			'name'=>'due_time',
 			'type'=>'raw',
-            'value'=>date_format(date_create($model->due_time),'Y年m月d日  H:i'),		
+			'value'=>date_format(date_create($model->due_time),'Y年m月d日  H:i'),
 		),
 		array(
 			'label'=>'Begin~End',
 			'type'=>'raw',
-            'value'=>$model->begin.'~'.$model->end,		
+			'value'=>$model->begin.'~'.$model->end,
 		),
 		array(
 			'name'=>'aim',
 			'type'=>'raw',
-            'value'=>"<div>".$model->aim."</div>",		
+			'value'=>"<div>".$model->aim."</div>",
 		),
 		array(
 			'name'=>'description',
 			'type'=>'raw',
-            'value'=>"<div>".$model->description."</div>",		
+			'value'=>"<div>".$model->description."</div>",
 		),
 	),
-)); ?>
-<?php if(!(Yii::app()->user->isGuest)){?>
-<div id="exercise">
-	<?php if($model->exercise!==null && count($model->exercise->exercise_problems)>=1): ?>
-		<?php $this->renderPartial('/exerciseProblem/_exercise_problems',array(
-			'exercise'=>$model->exercise,
-			'exerciseProblems'=>$model->exercise->exercise_problems,
-		)); ?>
-	<?php endif; ?>
-
-
-</div><!-- exercise_problem -->
-<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('exercise_problemSubmitted')): ?>
-		<div class="flash-success">
-			<?php echo Yii::app()->user->getFlash('exercise_problemSubmitted'); ?>
-		</div>
-	<?php endif; ?>
-
-<?php 
-if ($exercise_problem!==null): 
-echo CHtml::script('
-function showDialogue()
-{
-	$("#submitiondialog").dialog("open");
-	//this.blur();
-	return false;	
-}
-');
-	
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-    'id'=>'submitiondialog',
-    'options'=>array(
-		'dialogClass'=>'rbam-dialog',
-        'title'=>'Add a problem',
-        'autoOpen'=>$exercise_problem->hasErrors(),
-		'minWidth'=>800,
-		'height'=>710,
-		'modal'=>true,
-    ),
 ));
-?>
-		<?php $this->renderPartial('/exerciseProblem/_form',array(
-			'model'=>$exercise_problem,
-		)); ?>
-
-<?php 
-$this->endWidget('zii.widgets.jui.CJuiDialog');
-endif;
-?>
-
-<?php
+if($model->exercise!==null){
+	echo "<h3>".Yii::t('t',"Programming problems")."</h3>";
+	$criteria = new CDbCriteria;
+	//$criteria->select ("sequence","problem.title");
+	$criteria->compare('exercise_id',$model->exercise_id);
+	$criteria->order='sequence ASC';
+	$dataProvider=new CActiveDataProvider('ExerciseProblem',array(
+		'criteria' => $criteria));
+	$arraycolums=array();
+	if(UUserIdentity::isTeacher()||UUserIdentity::isAdmin())
+	{
+		$arraycolums[]=array(
+				'class'=>'CButtonColumn',
+				'template'=> '{view}{update}{delete}',
+				'viewButtonUrl' => 'array("ExerciseProblem/view",
+				"id"=>$data->id)',
+			'buttons'=>array(
+				'update' =>array('url'=>'Yii::app()->createUrl("ExerciseProblem/update",array("id"=>$data->id))',
+					'options'=>array('class'=>'update'),
+					),
+			),
+				'deleteButtonUrl' => 'array("ExerciseProblem/delete",
+				"id"=>$data->id)',				
+			);
+	
+	}
+	$arraycolums[]=array(
+				'name' => 'sequence',
+				'header' => Yii::t('t','Sequence'),
+				'type' => 'raw',
+				'value' => 'CHtml::encode($data["sequence"])'
+			);
+	$arraycolums[]=array(
+				'name' => 'title',
+				'header' => Yii::t('t','Problem title'),
+				'type' => 'raw',
+				'value' => ' CHtml::link(nl2br(CHtml::encode($data->problem->title)),$data->getUrl(null))',
+			);
+	$arraycolums[]=array(
+				'name' => 'memo',
+				'header' => Yii::t('t','Memo'),
+			);
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'dataProvider' => $dataProvider,
+		'columns' => $arraycolums,
+	));
+}
 
 $this->widget('comments.widgets.ECommentsListWidget', array(
-    'model' => $model,
+	'model' => $model,
 ));
 ?>

@@ -1,6 +1,14 @@
 <?php
 class UCHtml
 {
+	public static function addYiiGridViewScriptsForAjax(){
+		Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('system.web.widgets.pagers.pager').'.css'));
+		Yii::app()->clientScript->registerCssFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/gridview/styles.css');
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/gridview/jquery.yiigridview.js');
+		$cs=Yii::app()->getClientScript();
+		$cs->registerCoreScript('bbq');
+		$cs->registerCoreScript('yii');
+	}
     /**
     * Makes the given URL relative to the /image directory
     */

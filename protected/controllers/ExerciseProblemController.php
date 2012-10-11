@@ -152,13 +152,29 @@ class ExerciseProblemController extends Controller
 		if(isset($_POST['ExerciseProblem']))
 		{
 			$model->attributes=$_POST['ExerciseProblem'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+				if (Yii::app()->request->isAjaxRequest)
+				{
+					echo CJSON::encode(array(
+							'status'=>'success',
+							'message'=>Yii::t('t',"Success!")
+						)
+					);
+					exit;
+				}
+				else
+					$this->redirect(array('view','id'=>$model->id));
+			}
 		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			echo CJSON::encode(array(
+					'status'=>'failure',
+					'form'=>$this->renderPartial('_form', array('model'=>$model), true)));
+			exit;
+		}
+		else
+			$this->render('update',array('model'=>$model,));
 	}
 
 	/**

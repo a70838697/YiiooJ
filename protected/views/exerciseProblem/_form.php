@@ -39,15 +39,8 @@
 </div><!-- form -->
 <hr/>
 <div id='selectproblem'></div>
-<?php Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('system.web.widgets.pagers.pager').'.css'));?>
-<?php Yii::app()->clientScript->registerCssFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/gridview/styles.css');?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('zii.widgets.assets')).'/gridview/jquery.yiigridview.js');?>
-
 <?php 
-
-$cs=Yii::app()->getClientScript();
-$cs->registerCoreScript('bbq');
-$cs->registerCoreScript('yii');
+UCHtml::addYiiGridViewScriptsForAjax();
 echo CHtml::script('
 $(".select_id").live("click", 
 function ()
@@ -61,6 +54,14 @@ function ()
 	return false;
 }
 );
+function clearScripts()
+{
+	$("#problem-grid").remove();
+	$("#selectproblem").remove();
+	$("#'.CHtml::activeId($model,'problem_id').'").remove();
+	 $("#'.CHtml::activeId($model,'title').'").remove();
+}
+	
 $("#selectproblem").load("'.CHtml::normalizeUrl(array('courseProblem/select/public')) .'",{},function(){'.
 "
 jQuery('#problem-grid').yiiGridView({'ajaxUpdate':['1','problem-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','pageVar':'Problem_page'});

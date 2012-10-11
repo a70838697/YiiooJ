@@ -4,6 +4,11 @@ Search by:   <b>Category:</b> <select id='pro_type' onchange='research();'><opti
 &nbsp;&nbsp; <b>Problem Title:</b> <input  id='prob_title' maxLength='20'  size ='10'  onchange='research();' /> &nbsp;&nbsp;<input type=button onclick='research();' value="Search" />
 <br/><font size="3">Click the green ID to select a problem Or <?php echo CHtml::link("Create a problem", array('/'.$this->prefix.'Problem/create'))?> </font>
 <?php
+for($loop=0;$loop<=30;$loop++)
+{
+	$w= new CWidget();
+	$w->getId();
+}
 echo CHtml::script(
 '
 function research()
