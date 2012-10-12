@@ -91,8 +91,8 @@ $tabs=array(
 );
 if(strlen($problem->input)>0) $tabs[$attrs['input']]='<div>'.($problem->input).'</div>';
 if(strlen($problem->output)>0) $tabs[$attrs['output']]='<div>'.($problem->output).'</div>';
-if(strlen($problem->input_sample)>0) $tabs[$attrs['input_sample']]='<pre style="border: 1px solid blue">'.($problem->input_sample)."\r\n".'</pre>';
-if(strlen($problem->output_sample)>0) $tabs[$attrs['output_sample']]='<pre style="border: 1px solid blue">'.($problem->output_sample)."\r\n".'</pre>';
+if(strlen($problem->input_sample)>0) $tabs[$attrs['input_sample']]='<pre style="border: 1px solid blue;font-family: \'Courier New\', Courier, monospace;">'.($problem->input_sample)."\r\n".'</pre>';
+if(strlen($problem->output_sample)>0) $tabs[$attrs['output_sample']]='<pre style="border: 1px solid blue;font-family: \'Courier New\', Courier, monospace;">'.($problem->output_sample)."\r\n".'</pre>';
 if(strlen(trim($problem->hint))>0) $tabs[$attrs['hint']]='<div>'.($problem->hint).'</div>';
 
 $this->widget('zii.widgets.jui.CJuiTabs', array(

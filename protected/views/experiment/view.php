@@ -152,7 +152,7 @@ if($model->exercise!==null){
 				'name' => 'title',
 				'header' => Yii::t('t','Problem title'),
 				'type' => 'raw',
-				'value' => ' CHtml::link(nl2br(CHtml::encode($data->problem->title)),$data->getUrl(null))',
+				'value' => ' CHtml::link(nl2br(CHtml::encode($data->title)),$data->getUrl(null))',
 			);
 	$arraycolums[]=array(
 				'name' => 'memo',
