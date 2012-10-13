@@ -1,6 +1,6 @@
 <?php
 
-class ProblemController extends ZController
+class ProblemController extends Controller
 {
 	
 	/**

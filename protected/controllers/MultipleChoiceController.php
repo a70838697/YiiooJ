@@ -75,6 +75,7 @@ class MultipleChoiceController extends CMController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 	
+		$model->question_type= ULookup::EXAMINATION_PROBLEM_TYPE_QUESTION;
 	
 		if(isset($_POST['MultipleChoice']))
 		{

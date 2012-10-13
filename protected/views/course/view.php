@@ -19,13 +19,6 @@ $this->toolbar=array(
             'icon'=>'document',
         	'url'=>array('/course/classRooms/'.$model->id,'class_room_id'=>$this->getClassRoomId()),
         ),
-        array(
-            'label'=>Yii::t('course','View teachers'),
-        	'icon-position'=>'left',
-        	'visible'=>true,//(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
-            'icon'=>'document',
-        	'url'=>array('/course/users/'.$model->id,'class_room_id'=>$this->getClassRoomId()),
-        ),
     	array(
             'label'=>Yii::t('course','Course content'),
     		'icon-position'=>'left',

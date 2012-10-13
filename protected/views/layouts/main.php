@@ -34,14 +34,16 @@
 
 		<div id="mainmenu">
 			<?php
+			$this->getClassRoom();
 			$items=array(
 					array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
+					array('url'=>$this->course!=null?array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId):array('/course/index/mine'), 'label'=>Yii::t('t',"Courses"). ($this->course!=null?":".$this->course->title:""),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_course\'}'), 'visible'=>(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())),
 					// array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All courses"), 'visible'=>true),
-					array('label'=>$this->classRoom!=null?CHtml::encode($this->classRoom->title):"",'linkOptions'=>array('style'=>'color:#B404AE;'),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom_class\'}'),'url'=>array('/classRoom/view','id'=>$this->classRoomId),'visible'=>UUserIdentity::canHaveCourses() && $this->classRoom!==null),
-					array('url'=>array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('t',"Classrooms"),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'), 'visible'=>UUserIdentity::canHaveCourses()),
-					array('url'=>array('/course/index/mine'), 'label'=>Yii::t('main',"My courses"), 'visible'=>(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())),
+					array('url'=>$this->classRoom!=null?array('/classRoom/view','id'=>$this->classRoomId):array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('t',"Classrooms"). ($this->classRoom!=null?":".$this->classRoom->title."(".$this->classRoom->begin.")":""),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'), 'visible'=>UUserIdentity::canHaveCourses()),
+					//array('label'=>$this->classRoom!=null?CHtml::encode($this->classRoom->title):"",'linkOptions'=>array('style'=>'color:#B404AE;'),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'),'url'=>array('/classRoom/view','id'=>$this->classRoomId),'visible'=>UUserIdentity::canHaveCourses() && $this->classRoom!==null),
 					array('url'=>array('/comments'), 'label'=>Yii::t('main',"Comments"), 'visible'=>(UUserIdentity::isAdmin())),
 					array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
+					array('url'=>array('/user/admin'), 'label'=>Yii::t('t',"User management"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 					array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 					array('url'=>array('/organization/index'), 'label'=>Yii::t('main',"Organization"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
 					array('url'=>Yii::app()->getModule('user')->loginUrl, 'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_login\'}'), 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
@@ -70,60 +72,114 @@
 <div id="box_menu_classroom_class" class="mbmenu boxMenu">
 	<table style="border:0;" >
 	<tr>
-		<?php if($this->classRoom!==null){ ?>
-	<td>
-		<?php
-		if(UUserIdentity::canHaveCourses())
-		{
-			echo CHtml::link(Yii::t('t',"Experiments"),array('/classRoom/experiments','id'=>$this->classRoomId)) ;
-			echo CHtml::link(Yii::t('t',"Quizzes"),array('/classRoom/quizzes','id'=>$this->classRoomId)) ;
-			echo CHtml::link(Yii::t('t',"Practices"),array('/practice/index','class_room_id'=>$this->classRoomId)) ;
-			if(((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())){
-				echo CHtml::link(Yii::t('t',"Experiments reports"),array('/classRoom/reports','id'=>$this->classRoomId)) ;
-				echo CHtml::link(Yii::t('t',"Students"),array('/classRoom/students','id'=>$this->classRoomId)) ;
-			}
-			echo CHtml::link(Yii::t('t',"Classroom information"),array('/classRoom/view','id'=>$this->classRoomId)) ;
-		}
-		?>
-		</td>
-		<td>
-		<?php }
-		if(UUserIdentity::canHaveCourses())
-		{
-			echo CHtml::link(Yii::t('t',"Course introduction"),array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
-			if(isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0))
-				echo CHtml::link(Yii::t('t',"Course content"),array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->classRoomId)) ;
-			echo CHtml::link(Yii::t('t',"Opened classrooms"),array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
-		}
-		?>
-		</td>
+
 		</tr>
 	</table>
 </div>
 <div id="box_menu_classroom" class="mbmenu boxMenu">
 	<table style="border:0;" >
 	<tr>
-		<td>
+		<?php if($this->classRoom!==null){ ?>
+	<td>
 		<?php
 		if(UUserIdentity::canHaveCourses())
 		{
-			echo CHtml::link(Yii::t('t',"My present classrooms"),array('/classRoom/index/mine/1/term/1')) ;
-			echo CHtml::link(Yii::t('t',"My classrooms"),array('/classRoom/index/mine/1')) ;
+			echo "<div style='color:black'>".CHtml::encode($this->classRoom->title)."</div>";
+			echo CHtml::link(Yii::t('t',"Experiments"),array('/classRoom/experiments','id'=>$this->classRoomId)) ;
+			if(((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())){
+				echo CHtml::link(Yii::t('t',"Experiment reports"),array('/classRoom/reports','id'=>$this->classRoomId)) ;
+				echo CHtml::link(Yii::t('t',"Students"),array('/classRoom/students','id'=>$this->classRoomId)) ;
+			}
+			if(UUserIdentity::isTeacher()||UUserIdentity::isAdmin())
+			{
+				echo CHtml::link(Yii::t('t',"Add an experiment"),array('/Experiment/create','id'=>$this->classRoomId)) ;
+			}
 		}
 		?>
 		</td>
-		<td>
+	<td>
 		<?php
 		if(UUserIdentity::canHaveCourses())
 		{
-			echo CHtml::link(Yii::t('t',"Available classrooms"),array('/classRoom/index/term/1')) ;
-			echo CHtml::link(Yii::t('t',"All classrooms"),array('/classRoom/index/')) ;
+			echo "<div style='color:black'>".CHtml::encode($this->classRoom->title)."</div>";
+			echo CHtml::link(Yii::t('t',"Quizzes"),array('/classRoom/quizzes','id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('t',"Classroom information"),array('/classRoom/view','id'=>$this->classRoomId)) ;
 		}
+		?>
+	</td>
+		<?php
+	}
+		if(UUserIdentity::isStudent()&&$this->course!=null)
+		{
+			echo "<td>";
+			echo "<div style='color:black'>".CHtml::encode($this->course->title)."</div>";
+			if(isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0))
+				echo CHtml::link(Yii::t('t',"Course content"),array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('t',"Practices"),array('/practice/index','class_room_id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('t',"Opened classrooms"),array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('t',"Course introduction"),array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
+			echo "</td>";
+		}
+		if(UUserIdentity::canHaveCourses())
+		{
+			echo "<td>";
+			echo CHtml::link(Yii::t('t',"My present classrooms"),array('/classRoom/index/mine/1/term/1')) ;
+			echo CHtml::link(Yii::t('t',"Available classrooms"),array('/classRoom/index/term/1')) ;
+			echo CHtml::link(Yii::t('t',"My classrooms"),array('/classRoom/index/mine/1')) ;
+			echo CHtml::link(Yii::t('t',"All classrooms"),array('/classRoom/index/')) ;
+			echo "</td>";
+		}
+		?>
+		</tr>
+	</table>
+</div>
+<?php
+if((UUserIdentity::isAdmin()||UUserIdentity::isTeacher())){
+?>
+<div id="box_menu_course" class="mbmenu boxMenu">
+	<table style="border:0;" >
+	<tr>
+<?php
+if($this->course!=null){
+		echo "<td>";
+		echo "<div style='color:black'>".CHtml::encode($this->course->title)."</div>";
+		echo CHtml::link(Yii::t('t',"Course introduction"),array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
+		if(isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0))
+			echo CHtml::link(Yii::t('t',"Course content"),array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t',"Opened classrooms"),array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t',"Add a classroom"),array('/classRoom/create','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId)) ;
+		echo "</td>";
+		echo "<td>";
+		echo "<div style='color:black'>".CHtml::encode($this->course->title)."</div>";
+		echo CHtml::link(Yii::t('t','Multiple choices single answer questions'),array('/multipleChoice/list/0/type/1','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t','Multiple choices many answers questions'),array('/multipleChoice/list/0/type/2','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t','Answer questions'),array('/multipleChoice/list/0/type/6','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t',"Practices"),array('/practice/index','class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t','Programming problems'),array('/courseProblem/index','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo "</td>";
+		echo "<td>";
+		echo "<div style='color:black'>".CHtml::encode($this->course->title)."</div>";
+		echo CHtml::link(Yii::t('t','Create a multiple choices question'),array('/multipleChoice/create/0','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t','Create an answer question'),array('/multipleChoice/createFill/0','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t',"Create a practice"),array('/practice/create','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		
+		echo CHtml::link(Yii::t('t','Create a programming problem'),array('/courseProblem/create','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
+		echo "</td>";		
+}
+?>	
+		<td>
+		<?php
+		echo CHtml::link(Yii::t('t',"My courses"),array('/course/index/mine/1')) ;
+		echo CHtml::link(Yii::t('t',"Create a course"),array('/course/create')) ;
+		echo CHtml::link(Yii::t('t',"All courses"),array('/course/index/')) ;
 		?>
 		</td>
 		</tr>
 	</table>
 </div>
+<?php
+}
+?>
 <div id="box_menu_login" class="mbmenu boxMenu">
 	<table style="border:0;" >
 	<tr>

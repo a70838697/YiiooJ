@@ -26,13 +26,6 @@ $this->menu=array(
 </table>
 <?php
 $this->toolbar=array(
-        /*array(
-            'label'=>Yii::t('course','View experiments'),
-        	'icon-position'=>'left',
-        	'visible'=>!Yii::app()->user->isGuest,
-            'icon'=>'document',
-        	'url'=>array('/classRoom/experiments/'.$model->id),
-        ),*/
         array(
             'label'=>Yii::t('course','View students'),
         	'icon-position'=>'left',
@@ -40,15 +33,22 @@ $this->toolbar=array(
             'icon'=>'document',
         	'url'=>array('/classRoom/students/'.$model->id),
         ),
-    	array(
-            'label'=>Yii::t('course','View reports'),
+        array(
+            'label'=>Yii::t('course','View experiments'),
+        	'icon-position'=>'left',
+        	'visible'=>!Yii::app()->user->isGuest,
+            'icon'=>'document',
+        	'url'=>array('/classRoom/experiments/'.$model->id),
+        ),
+		array(
+            'label'=>Yii::t('t','Experiment reports'),
             'icon-position'=>'left',
         	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
             'icon'=>'document',
         	'url'=>array('/classRoom/reports/'.$model->id),
         ),
     	array(
-            'label'=>Yii::t('course','Update class'),
+            'label'=>Yii::t('t','Update classroom'),
     		'icon-position'=>'left',
 	        'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
             'url'=>array('update', 'id'=>$model->id),

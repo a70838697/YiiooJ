@@ -52,10 +52,11 @@ class Controller extends CController
 	public $class_room_id=null;
 	private function initInfo()
 	{
-		$this->class_room_id=0;
-	
-		if(isset($_GET['class_room_id']))$this->class_room_id=(int)$_GET['class_room_id'];
-		if($this->classRoom!==null)$this->class_room_id=$this->classRoom->id;
+		if($this->class_room_id==0)
+		{
+			if(isset($_GET['class_room_id']))$this->class_room_id=(int)$_GET['class_room_id'];
+			if($this->classRoom!==null)$this->class_room_id=$this->classRoom->id;
+		}
 		if($this->class_room_id>0 && $this->classRoom===null)
 		{
 			$this->classRoom=ClassRoom::model()->findByPk($this->class_room_id);

@@ -14,7 +14,7 @@
 * RBAM Controller class
 * @package		RBAM
 */
-class RbamController extends CController {
+class RbamController extends Controller {
 	const SPACE_IN_ID = '-_-';
 	const GRID_SELECT_NONE = 0;
 	const GRID_SELECT_ONE = 1;

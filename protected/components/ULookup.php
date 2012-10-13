@@ -71,7 +71,7 @@ class ULookup
 		self::EXAMINATION_PROBLEM_TYPE_PROGRAMMING=>'Programming problem',
 	);
 	public static $EXAMINATION_PROBLEM_TYPE_COMMON_MESSAGES1=array(
-			self::EXAMINATION_PROBLEM_TYPE_FILL=>'Fill empty',
+			//self::EXAMINATION_PROBLEM_TYPE_FILL=>'Fill empty',
 			self::EXAMINATION_PROBLEM_TYPE_QUESTION=>'Question',
 	);	
 	public static $EXAMINATION_PROBLEM_TYPE_COMMON_MESSAGES2=array(

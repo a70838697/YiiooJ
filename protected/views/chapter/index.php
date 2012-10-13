@@ -18,13 +18,6 @@ $this->toolbar=array(
 				'visible'=>true,
 				'linkOptions'=>array('id'=>'reload'),
 		),
-		array(
-				'label'=>Yii::t('course','New multiple choice question'),
-				'url'=>array('/multipleChoice/create','id'=>'xxxxxxyy','class_room_id'=>$this->getClassRoomId()),
-				'linkOptions'=>array('onclick'=>'return gohere(this.href);'),
-				'visible'=>UUserIdentity::isTeacher()|| UUserIdentity::isAdmin(),
-		),
-
 );
 ?>
 <table>

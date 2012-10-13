@@ -162,6 +162,7 @@ class ExerciseProblemController extends Controller
 		{
 			$model=$this->loadModelByAttr(Yii::app()->request->getQuery('exercise',0),Yii::app()->request->getQuery('problem',0));
 		}
+		$this->classRoom=$model->exercise->experiment->classRoom;
 		if(Yii::app()->user->isGuest)
 		{
 			throw new CHttpException(404,'Please relogin.');

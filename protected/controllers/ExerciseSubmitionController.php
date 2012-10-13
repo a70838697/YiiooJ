@@ -119,7 +119,8 @@ class ExerciseSubmitionController extends Controller
 		
 		$this->checkAccess(array('model'=>$model),'update','Submition');
 		$exercise_problem=ExerciseProblem::model()->find('exercise_id='.$model->exercise_id.' and problem_id ='.$model->problem_id );
-		if($exercise_problem==null)$this->denyAccess();		
+		if($exercise_problem==null)$this->denyAccess();	
+		
 		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -180,6 +181,7 @@ class ExerciseSubmitionController extends Controller
 		$exercise_id=(int)Yii::app()->request->getQuery('exercise',null);
 		$exercise= Exercise::model()->find('id='.$exercise_id);
 		if($exercise==null)$this->denyAccess();	
+		$this->classRoom=$exercise->experiment->classRoom;
 		
 		$scopes=array('list');
 		if(Yii::app()->request->getQuery('refresh',null)!==null)$scopes[]='recent';
