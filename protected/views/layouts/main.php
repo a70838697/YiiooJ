@@ -42,10 +42,7 @@
 					array('url'=>$this->classRoom!=null?array('/classRoom/view','id'=>$this->classRoomId):array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('t',"Classrooms"). ($this->classRoom!=null?":".$this->classRoom->title."(".$this->classRoom->begin.")":""),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'), 'visible'=>UUserIdentity::canHaveCourses()),
 					//array('label'=>$this->classRoom!=null?CHtml::encode($this->classRoom->title):"",'linkOptions'=>array('style'=>'color:#B404AE;'),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'),'url'=>array('/classRoom/view','id'=>$this->classRoomId),'visible'=>UUserIdentity::canHaveCourses() && $this->classRoom!==null),
 					array('url'=>array('/comments'), 'label'=>Yii::t('main',"Comments"), 'visible'=>(UUserIdentity::isAdmin())),
-					array('url'=>array('/rbam'), 'label'=>Yii::t('main',"RBAM"), 'visible'=>(!Yii::app()->user->isGuest)&&(Yii::app()->user->id==1)),
-					array('url'=>array('/user/admin'), 'label'=>Yii::t('t',"User management"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
-					array('url'=>array('/schoolInfo/admin'), 'label'=>Yii::t('main',"Colledge users"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
-					array('url'=>array('/organization/index'), 'label'=>Yii::t('main',"Organization"), 'visible'=>(!Yii::app()->user->isGuest)&&(UUserIdentity::isAdmin())),
+					array('url'=>array('#'), 'label'=>Yii::t('t',"Administration"),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_admin\'}'), 'visible'=>UUserIdentity::isAdmin()),
 					array('url'=>Yii::app()->getModule('user')->loginUrl, 'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_login\'}'), 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
 					//array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
 					array('url' => Yii::app()->getModule('message')->inboxUrl,
@@ -69,13 +66,21 @@
 		
 /******************************************menu items***********************************/
 ?>
-<div id="box_menu_classroom_class" class="mbmenu boxMenu">
+<?php if(UUserIdentity::isAdmin()){ ?>
+<div id="box_menu_admin" class="mbmenu boxMenu">
 	<table style="border:0;" >
-	<tr>
-
-		</tr>
+	<tr><td>
+		<?php
+			echo CHtml::link(Yii::t('t',"User management"),array('/user/admin','id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('main',"Colledge users"),array('/organization/index','id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('main',"Organization"),array('/schoolInfo/admin','id'=>$this->classRoomId)) ;
+			if(Yii::app()->user->id==1)
+				echo CHtml::link(Yii::t('main',"RBAM"),array('/rbam','id'=>$this->classRoomId)) ;
+		?>
+	</td></tr>
 	</table>
 </div>
+<?php }?>
 <div id="box_menu_classroom" class="mbmenu boxMenu">
 	<table style="border:0;" >
 	<tr>

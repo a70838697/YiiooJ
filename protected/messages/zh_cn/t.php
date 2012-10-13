@@ -36,6 +36,7 @@ return array (
 	
 	"Offer a course"=>"开设课程",
 
+	"Administration"=>'管理',
 	//Experiment
 	//view
 	"Add a programming problem"=>"添加编程题",
