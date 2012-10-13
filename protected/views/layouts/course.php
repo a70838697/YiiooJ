@@ -25,46 +25,11 @@
 										array('label'=>Yii::t('course','My current classes'), 'url'=>array('/classRoom/index/mine/1/current')),
 								),
 						),
-						array('label'=>Yii::t('main','Class home'), 'url'=>array('/classRoom/view','id'=>$this->getClassRoomId()),
-								'visible'=>($this->getClassRoomId()>0),
-								'items'=>array(
-										array('label'=>Yii::t('course','Class information'), 'url'=>array('/classRoom/view','id'=>$this->getClassRoomId()),'visible'=>($this->getClassRoomId()>0)),
-								),
-						),
-						array('url'=>array('/classRoom/experiments','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"Experiments"),
-								'visible'=>($this->getClassRoomId()>0),
-								'items'=>array(
-										array('url'=>array('/classRoom/experiments','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"View experiments"),'visible'=>($this->getClassRoomId()>0)),
-										array('label'=>Yii::t('course','View reports'), 'url'=>array('/classRoom/reports','id'=>$this->getClassRoomId()),'visible'=>($this->getClassRoomId()>0)&&((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())),
-								),
-						),
-						array('url'=>array('/classRoom/quizzes','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"Quizzes"),
-								'visible'=>($this->getClassRoomId()>0),
-								'items'=>array(
-										array('url'=>array('/classRoom/quizzes','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"Quizzes"),'visible'=>($this->getClassRoomId()>0)),
-								),
-						),
-						array('url'=>array('/classRoom/students','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"View students"),
-								'visible'=>($this->getClassRoomId()>0),
-								'items'=>array(
-										array('url'=>array('/classRoom/students','id'=>$this->getClassRoomId()), 'label'=>Yii::t('course',"View students"),'visible'=>($this->getClassRoomId()>0))
-								),
-						),
-						array('label'=>Yii::t('course','Course'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),
-								'visible'=>$this->getCourseId()>0,
-								'items'=>array(
-										array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
-										array('label'=>Yii::t('course',"Course content"), 'url'=>array('/chapter/view','id'=>isset($this->getCourse()->chapter_id)?$this->getCourse()->chapter_id:"1",'class_room_id'=>$this->getClassRoomId()), 'visible'=>isset($this->getCourse()->chapter_id) && ($this->getCourse()->chapter_id>0)),
-										array('label'=>Yii::t('course','View teachers'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
-										array('label'=>Yii::t('course','View classrooms'), 'url'=>array('/course/classRooms','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
-								),
-						),
 						array('label'=>Yii::t('course','Problem library'), 'url'=>array('#'),
 								'visible'=>(UUserIdentity::isTeacher()||UUserIdentity::isAdmin()) && $this->getCourseId()>0,
 								'items'=>array(
 										array('label'=>Yii::t('course','New programming problem'), 'url'=>array('/courseProblem/create','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','Programming problems'), 'url'=>array('/courseProblem/index','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
-										array('label'=>Yii::t('course','Practices'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/practice/index','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','Multiple choice questions'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/list/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','New multiple choice question'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/create/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
 										array('label'=>Yii::t('course','New empty fill question'),'visible'=>UUserIdentity::isAdmin(), 'url'=>array('/multipleChoice/createFill/0','course_id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId())),
@@ -87,7 +52,7 @@
 		?>
 	<div id="myslidemenu" class="jqueryslidemenu">
 		<?php
-		$this->widget('zii.widgets.CMenu',$this->contentMenu);
+		//$this->widget('zii.widgets.CMenu',$this->contentMenu);
 		?>
 		<br
 			style="clear: left; height: 0; font-size: 1px; line-height: 0px; overflow: hidden;" />

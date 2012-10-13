@@ -16,3 +16,6 @@
 [submodule "js_plugins/mathjax"]
 	path = js_plugins/mathjax
 	url = git://github.com/mathjax/MathJax.git
+[submodule "protected/extensions/mb/jquery.mb.menu"]
+	path = protected/extensions/mb/jquery.mb.menu
+	url = git://github.com/pupunzi/jquery.mb.menu.git

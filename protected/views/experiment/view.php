@@ -56,27 +56,6 @@ $this->toolbar= array(
 
 
 );
-$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.create',
-	'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
-		'dialogClass'=>'rbam-dialog',
-		'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
-		'title'=>Yii::t('t', 'Add a programming problem'),
-		'minWidth'=>800,
-		'height'=>710,
-		'modal'=>true,
-	)
-));
-
-$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.update',
-		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
-				'dialogClass'=>'rbam-dialog',
-				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
-				'title'=>Yii::t('t', 'Update a programming problem'),
-				'minWidth'=>800,
-				'height'=>710,
-				'modal'=>true,
-		)
-));
 $gMessages=(UClassRoomLookup::getEXPERIMENT_TYPE_MESSAGES());
 $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -168,5 +147,27 @@ if($model->exercise!==null){
 
 $this->widget('comments.widgets.ECommentsListWidget', array(
 	'model' => $model,
+));
+
+$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.create',
+		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
+				'dialogClass'=>'rbam-dialog',
+				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
+				'title'=>Yii::t('t', 'Add a programming problem'),
+				'minWidth'=>800,
+				'height'=>710,
+				'modal'=>true,
+		)
+));
+
+$this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.update',
+		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
+				'dialogClass'=>'rbam-dialog',
+				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
+				'title'=>Yii::t('t', 'Update a programming problem'),
+				'minWidth'=>800,
+				'height'=>710,
+				'modal'=>true,
+		)
 ));
 ?>

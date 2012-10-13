@@ -1,60 +1,21 @@
 <?php
-$this->breadcrumbs=array(
-		((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?
-		(Yii::app()->request->getQuery('term',null)!==null?Yii::t('course','My current classes'):Yii::t('course','My classes'))
-		:(Yii::app()->request->getQuery('term',null)!==null?Yii::t('course','All current classes'):Yii::t('course','All classes'))
-);
+$this->breadcrumbs=array();
+if(!Yii::app()->user->isGuest)
+{
+	if(Yii::app()->request->getQuery('mine',null)!==null||Yii::app()->request->getQuery('term',null)!==null)
+	{
+		$this->breadcrumbs[Yii::t('t','All classrooms')]=array('/classRoom/index');
+	}
+	$this->breadcrumbs[((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?
+		(Yii::app()->request->getQuery('term',null)!==null?Yii::t('t','My present classrooms'):Yii::t('t','My classrooms'))
+		:(Yii::app()->request->getQuery('term',null)!==null?Yii::t('t','Available classrooms'):Yii::t('t','All classrooms'))]=null;
+}
 
-$this->menu=array(
-		array('label'=>'Create Course', 'url'=>array('create')),
-		array('label'=>'Manage Course', 'url'=>array('admin')),
-);
-?>
-<?php
-$this->toolbar=array(
-		array(
-				'label'=>Yii::t('course','My current classes'),
-				'icon-position'=>'left',
-				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-				'url'=>array('/classRoom/index/mine/1/term/1'),
-				'visible'=>(!Yii::app()->user->isGuest) && (Yii::app()->request->getQuery('mine',null)===null || Yii::app()->request->getQuery('term',null)===null),
-		),
-		array(
-				'label'=>Yii::t('course','My classes'),
-				'icon-position'=>'left',
-				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-				'url'=>array('/classRoom/index/mine'),
-				'visible'=>(!Yii::app()->user->isGuest) && (Yii::app()->request->getQuery('mine',null)===null || Yii::app()->request->getQuery('term',null)!==null),
-		),
-		array(
-				'label'=>Yii::t('course','All current classes'),
-				'icon-position'=>'left',
-				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-				'url'=>array('/classRoom/index/term'),
-				'visible'=>(!Yii::app()->user->isGuest) && (Yii::app()->request->getQuery('mine',null)!==null || Yii::app()->request->getQuery('term',null)===null),
-		),
-		array(
-				'label'=>Yii::t('course','All classes'),
-				'icon-position'=>'left',
-				'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-				'url'=>array('/classRoom/index'),
-				'visible'=>(!Yii::app()->user->isGuest) && (Yii::app()->request->getQuery('mine',null)!==null || Yii::app()->request->getQuery('term',null)!==null),
-		),
-		array(
-				'label'=>Yii::t('course','Create a class'),
-				'icon-position'=>'left',
-				'icon'=>'document',
-				'url'=>array('/classRoom/create','id'=>$this->getCourseId()),
-				'visible'=>false//UUserIdentity::isTeacher()||UUserIdentity::isAdmin()
-		),
-);
-?>
-
-<?php $this->widget('zii.widgets.CListView', array(
+$this->widget('zii.widgets.CListView', array(
 		'dataProvider'=>$dataProvider,
 		'itemView'=>'_view',
-)); ?>
-<?php
+)); 
+
 echo CHtml::script('
 		$(".apply").live("click",
 		function ()

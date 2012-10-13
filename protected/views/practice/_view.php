@@ -32,7 +32,7 @@
 	
 	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->name), array('view', 'id'=>$data->id)); 
-	echo ' | '.CHtml::link("Assign task",array("quiz/create",'class_room_id'=>$this->getClassRoomId(),'practice_id'=>$data->id)) ?>
+	if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher()) echo ' | '.CHtml::link("Assign task",array("quiz/create",'class_room_id'=>$this->getClassRoomId(),'practice_id'=>$data->id)) ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('memo')); ?>:</b>

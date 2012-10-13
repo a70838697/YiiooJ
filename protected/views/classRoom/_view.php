@@ -26,16 +26,17 @@
 	if(UUserIdentity::isStudent()){
 		if($data->myMemberShip==null && $data->application_option!=ClassRoom::STUDENT_APPLICATION_OPTION_DENY) echo '<input class="apply" tag="'.$data->id.'" type=button value="Apply"/>';
 		else if($data->myMemberShip->status==GroupUser::USER_STATUS_APPLIED) echo '<input type=button class="capply" tag="'.$data->id.'" value="Cancel"/>';
-		else if($data->myMemberShip->status==GroupUser::USER_STATUS_ACCEPTED) echo 'I am one of ';
+		else if($data->myMemberShip->status==GroupUser::USER_STATUS_ACCEPTED) echo Yii::t('t','Selected classroom').".";
 		
 		/*
 		if($data->studentCount==1) echo '1 student';
 		else echo $data->studentCount.' students';
 				 */
 
+		echo "Total:";
 		if($data->studentGroup==null) echo '0 students';
 		else if($data->studentGroup->userCount==1) echo '1 student';
-		else echo $data->studentGroup->userCount.' student';
+		else echo $data->studentGroup->userCount.' students';
 		//var_dump($data->studentGroup->userCount);
 	}
 	 ?></td>
