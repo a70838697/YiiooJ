@@ -47,7 +47,7 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		if(UUserIdentity::canHaveCourses()){
-			$this->redirect(array('classroom/index/mine/1/term/1'));
+			$this->redirect(array('classRoom/index/mine/1/term/1'));
 		}
 		$this->render('index');
 	}
