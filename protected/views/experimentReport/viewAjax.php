@@ -35,7 +35,7 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 	'id'=>'xyb1',
     'items' => array(
         array(
-            'label'=>Yii::t('main','Edit'),
+            'label'=>Yii::t('main','Update'),
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
 	        'linkOptions'=>array('target'=>'_blank;',),

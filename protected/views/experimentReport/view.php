@@ -21,14 +21,14 @@ $canedit=$model->canEdit();
 if(UUserIdentity::isAdmin()||Yii::app()->user->id==$model->user_id||(UUserIdentity::isTeacher()&&Yii::app()->user->id==$model->experiment->classRoom->user_id))
 $this->toolbar= array(
         array(
-            'label'=>'Edit',
+            'label'=>Yii::t('main','Update'),
             'icon-position'=>'left',
             'icon'=>'plus', // This a CSS class starting with ".ui-icon-"
             'visible'=>$canedit,
         	'url'=>array('update', 'id'=>$model->id),
         ),
         array(
-            'label'=>'Submit',
+            'label'=>Yii::t('main','Submit'),
             'icon-position'=>'left',
             'visible'=>$model->canSubmit(),
 	        'linkOptions'=>array('onclick'=>'return submitr();',),
@@ -36,7 +36,7 @@ $this->toolbar= array(
             'url'=>array('view', 'id'=>$model->id,'submited'=>'1'),
         ),
         array(
-            'label'=>'Score',
+            'label'=>Yii::t('course','Score'),
             'icon-position'=>'left',
             'visible'=>$model->canScore(),
 	        'linkOptions'=>array('onclick'=>'return showDialogue();',),
@@ -44,7 +44,7 @@ $this->toolbar= array(
             'url'=>array('view', 'id'=>$model->id),
         ),
 		array(
-            'label'=>'Extend deadline',
+            'label'=>Yii::t('course','Extend deadline'),
             'icon-position'=>'left',
             'visible'=>$model->canExtend() ,
 	        'linkOptions'=>array('onclick'=>'return extend();',),
@@ -52,7 +52,7 @@ $this->toolbar= array(
             'url'=>array('view', 'id'=>$model->id,'extended'=>'1'),
         ),
     	array(
-            'label'=>'Print',
+            'label'=>Yii::t('main','Print'),
     		'visible'=>true,
             'icon-position'=>'left',
 	        'linkOptions'=>array('target'=>'_blank;',),
