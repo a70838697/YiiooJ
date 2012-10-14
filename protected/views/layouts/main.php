@@ -159,7 +159,7 @@ if($this->course!=null){
 		echo CHtml::link(Yii::t('t','Multiple choices single answer questions'),array('/multipleChoice/list/0/type/1','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
 		echo CHtml::link(Yii::t('t','Multiple choices many answers questions'),array('/multipleChoice/list/0/type/2','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
 		echo CHtml::link(Yii::t('t','Answer questions'),array('/multipleChoice/list/0/type/6','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
-		echo CHtml::link(Yii::t('t',"Practices"),array('/practice/index','class_room_id'=>$this->classRoomId)) ;
+		echo CHtml::link(Yii::t('t',"Practices"),array('/practice/index','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
 		echo CHtml::link(Yii::t('t','Programming problems'),array('/courseProblem/index','course_id'=>$this->courseId,'class_room_id'=>$this->classRoomId)) ;
 		echo "</td>";
 		echo "<td>";
