@@ -85,29 +85,31 @@
 	<table style="border:0;" >
 	<tr>
 		<?php if($this->classRoom!==null){ ?>
-	<td>
 		<?php
-		if(UUserIdentity::canHaveCourses())
+		if(UUserIdentity::canHaveCourses() && $this->classRoom->hasExperiment)
 		{
+			echo "<td>";
 			echo "<div style='color:black'>".CHtml::encode($this->classRoom->title)."</div>";
 			echo CHtml::link(Yii::t('t',"Experiments"),array('/classRoom/experiments','id'=>$this->classRoomId)) ;
 			if(((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())){
 				echo CHtml::link(Yii::t('t',"Experiment reports"),array('/classRoom/reports','id'=>$this->classRoomId)) ;
-				echo CHtml::link(Yii::t('t',"Students"),array('/classRoom/students','id'=>$this->classRoomId)) ;
 			}
 			if(UUserIdentity::isTeacher()||UUserIdentity::isAdmin())
 			{
 				echo CHtml::link(Yii::t('t',"Add an experiment"),array('/Experiment/create','id'=>$this->classRoomId)) ;
 			}
+			echo "</td>";
 		}
 		?>
-		</td>
 	<td>
 		<?php
 		if(UUserIdentity::canHaveCourses())
 		{
 			echo "<div style='color:black'>".CHtml::encode($this->classRoom->title)."</div>";
-			echo CHtml::link(Yii::t('t',"Quizzes"),array('/classRoom/quizzes','id'=>$this->classRoomId)) ;
+			if($this->classRoom->hasExercise)echo CHtml::link(Yii::t('t',"Quizzes"),array('/classRoom/quizzes','id'=>$this->classRoomId)) ;
+			if(((UUserIdentity::isTeacher()&& $this->classRoom->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin())){
+				echo CHtml::link(Yii::t('t',"Students"),array('/classRoom/students','id'=>$this->classRoomId)) ;
+			}
 			echo CHtml::link(Yii::t('t',"Classroom information"),array('/classRoom/view','id'=>$this->classRoomId)) ;
 		}
 		?>

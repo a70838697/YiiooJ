@@ -90,6 +90,25 @@
 	</div>
 	
 	<div class="row">
+		<?php echo $form->labelEx($model,'hasExperiment'); ?>
+		<?php echo $form->checkBox($model,'hasExperiment'); ?>
+		<?php echo $form->error($model,'hasExperiment'); ?>
+	</div>	
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'showScore'); ?>
+		<?php echo $form->checkBox($model,'showScore'); ?>
+		<?php echo $form->error($model,'showScore'); ?>
+	</div>	
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'hasExercise'); ?>
+		<?php echo $form->checkBox($model,'hasExercise'); ?>
+		<?php echo $form->error($model,'hasExercise'); ?>
+	</div>	
+	
+	
+	<div class="row">
 		<?php echo $form->labelEx($model,'memo'); ?>
 		<?php echo $form->textField($model,'memo',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'memo'); ?>

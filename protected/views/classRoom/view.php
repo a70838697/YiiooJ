@@ -22,6 +22,12 @@ $this->menu=array(
 	<?php echo CHtml::encode($model->due_time); ?></center></td>
 	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('location')); ?>:</b>
 	<?php echo CHtml::encode($model->location); ?></td>
+	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('hasExperiment')); ?>:</b>
+	<?php echo $model->hasExperiment?"Have":"None"; ?></td>
+	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('hasExercise')); ?>:</b>
+	<?php echo $model->hasExercise?"Have":"None"; ?></td>
+	<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('showScore')); ?>:</b>
+	<?php echo $model->showScore?"Show":"Hidden"; ?></td>
 	</tr>
 </table>
 <?php

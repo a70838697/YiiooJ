@@ -13,6 +13,7 @@
  * @property integer $visibility
  * @property string $chapter_id
  * @property integer $created
+ * @property integer $flags
  */
 class Course extends CActiveRecord
 {

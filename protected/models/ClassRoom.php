@@ -14,6 +14,7 @@
  * @property integer $user_id
  * @property integer $begin
  * @property integer $application_option
+ * @property integer $flags
  * @property integer $end
  * @property integer $visibility
  * @property integer $created
@@ -23,6 +24,41 @@ class ClassRoom extends CActiveRecord
 	const STUDENT_APPLICATION_OPTION_APPROVE=0;
 	const STUDENT_APPLICATION_OPTION_ALLOW=1;
 	const STUDENT_APPLICATION_OPTION_DENY=9;
+	
+	
+	const CLASSROOM_OPTION_FLAG_EXPERIMENT=1;
+	const CLASSROOM_OPTION_FLAG_EXERCISE=2;
+	const CLASSROOM_OPTION_FLAG_SHOW_SCORE=4;
+	
+	private function setFlagStat($bit,$set){
+		if($set)$this->flags |=$bit;
+		else $this->flags &= (~$bit);
+	}
+	public function getHasExperiment()
+	{
+		return  ($this->flags & self::CLASSROOM_OPTION_FLAG_EXPERIMENT)>0;
+	}
+	public function setHasExperiment($value)
+	{
+		$this->setFlagStat(self::CLASSROOM_OPTION_FLAG_EXPERIMENT,$value);
+	}
+	public function getHasExercise()
+	{
+		return  ($this->flags & self::CLASSROOM_OPTION_FLAG_EXERCISE)>0;
+	}
+	public function setHasExercise($value)
+	{
+		$this->setFlagStat(self::CLASSROOM_OPTION_FLAG_EXERCISE,$value);
+	}
+	public function getShowScore()
+	{
+		return  ($this->flags & self::CLASSROOM_OPTION_FLAG_SHOW_SCORE)>0;
+	}
+	public function setShowScore($value)
+	{
+		$this->setFlagStat(self::CLASSROOM_OPTION_FLAG_SHOW_SCORE,$value);
+	}
+		
 	public static function getApplicationOptionMessage()
 	{
 		$a=array();
@@ -84,17 +120,21 @@ class ClassRoom extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, user_id, begin, end', 'required'),
+			array('hasExercise, hasExperiment, showScore', 'boolean'),
 			array('visibility,application_option', 'numerical', 'integerOnly'=>true),
 			array('begin', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
 			array('end', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
 			array('title', 'length', 'max'=>60),
-			array('memo', 'length', 'max'=>100),			
+			array('memo', 'length', 'max'=>100),	
             array('sequence', 'length', 'max'=>20),
             array('description', 'length', 'min'=>0),
             array('location', 'length', 'max'=>32),
             array('due_time', 'length', 'min'=>0),
 			array('environment', 'length', 'max'=>256),
 			array('application_option', 'length', 'max'=>30),
+			array('flags','default',
+				'value'=>self::CLASSROOM_OPTION_FLAG_SHOW_SCORE+self::CLASSROOM_OPTION_FLAG_EXPERIMENT,
+				'setOnEmpty'=>true,'on'=>'insert'),
 			array('user_id','default',
 				'value'=>Yii::app()->user->id,
 				'setOnEmpty'=>false,'on'=>'insert'),				
@@ -147,6 +187,9 @@ class ClassRoom extends CActiveRecord
 			'memo' => 'Memo',
 			'visibility' => 'Visibile',
 			'created' => 'Created',
+			'showScore'=>'Show score',
+			'hasExperiment'=>'Experiment',
+			'hasExercise'=>'Exercise',
 		);
 	}
 	public function scopes()
@@ -155,7 +198,7 @@ class ClassRoom extends CActiveRecord
     	return array(
             'recentlist'=>array(
             	'order'=>"{$alias}.created DESC",
-		        'select'=>array("{$alias}.id","{$alias}.user_id","{$alias}.title","{$alias}.visibility","{$alias}.created","{$alias}.end","{$alias}.due_time","{$alias}.begin","{$alias}.memo","{$alias}.sequence","{$alias}.location","{$alias}.environment"),
+		        'select'=>array("{$alias}.id","{$alias}.user_id","{$alias}.title","{$alias}.flags","{$alias}.visibility","{$alias}.created","{$alias}.end","{$alias}.due_time","{$alias}.begin","{$alias}.memo","{$alias}.sequence","{$alias}.location","{$alias}.environment"),
         		'with'=>UUserIdentity::isStudent()? array('user:username','myMemberShip','studentGroup.userCount'):array('user:username','studentGroup.userCount'))
     			,
         	'mine'=>array(

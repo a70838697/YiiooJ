@@ -16,6 +16,7 @@
  * @property string $end
  * @property string $created
  * @property integer $exercise_id
+ * @property integer $flags
  */
 class Experiment extends CActiveRecord
 {
