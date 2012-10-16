@@ -7,6 +7,10 @@ $this->breadcrumbs=array(
 
 $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
 echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
+echo CHtml::scriptFile(Yii::app()->baseUrl.'/js_plugins/plugins/jquery.lazyload.min.js')."\r\n";
+CHtml::script(
+	'$("img").lazyload();'
+	);
 
 $this->widget('application.components.widgets.MathJax',array());
 /*

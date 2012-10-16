@@ -17,7 +17,6 @@ echo UCHtml::cssFile('form.css')."\r\n";
 $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('comments') . '/assets');
 echo CHtml::cssFile($assets . '/comments.css?'.time())."\r\n";
 echo CHtml::scriptFile($assets . '/comments.js?'.time())."\r\n";
-echo CHtml::scriptFile(Yii::app()->baseUrl.'/js_plugins/plugins/jquery.lazyload.min.js')."\r\n";
 
 
 echo CHtml::cssFile($cs->getCoreScriptUrl().'/jui/css/base/jquery-ui.css')."\r\n";
@@ -231,7 +230,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <script type="text/javascript">
 /*<![CDATA[*/
 jQuery(function($) {
-$("img").lazyload();
 jQuery('#comment1').commentsList({'dialogTitle':'Add comment','deleteConfirmString':'Delete this comment?','approveConfirmString':'Approve this comment?','postButton':'Add comment','cancelButton':'Cancel'});
 jQuery('#tabReport').tabs({'collapsible':true});
 jQuery('#scoredialog').dialog({'dialogClass':'rbam-dialog','title':'Give a score','autoOpen':false,'minWidth':800,'height':360,'modal':true});
