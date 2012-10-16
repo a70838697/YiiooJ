@@ -144,13 +144,12 @@ function reloadReport(url,dialog_status)
 	if(jQuery("#ExperimentReport_comment"))jQuery("#ExperimentReport_comment").remove();
 	if(jQuery("#tabReport"))jQuery("#tabReport").tabs("destroy").remove();
 	
-	$("#reportcontent").html("");
 	if(dialog_status=="open")
 		$("#viewreport").dialog("open");
-	$("#reportcontent").load(url,function(){
+	$.get(url,function(data,status){
+			$("#reportcontent").html(data);
 			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
 	});
-		
 	return false;
 }
 function resubmitReport(link){
