@@ -13,11 +13,11 @@ echo UCHtml::cssFile('main.css')."\r\n";
 echo UCHtml::cssFile('form.css')."\r\n";
 
 //echo CHtml::scriptFile($cs->getCoreScriptUrl().'/jquery.js')."\r\n";
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js_plugins/plugins/jquery.lazyload.min.js');
 
 $assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('comments') . '/assets');
 echo CHtml::cssFile($assets . '/comments.css?'.time())."\r\n";
 echo CHtml::scriptFile($assets . '/comments.js?'.time())."\r\n";
+echo CHtml::scriptFile(Yii::app()->baseUrl.'/js_plugins/plugins/jquery.lazyload.min.js')."\r\n";
 
 
 echo CHtml::cssFile($cs->getCoreScriptUrl().'/jui/css/base/jquery-ui.css')."\r\n";
