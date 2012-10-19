@@ -84,7 +84,7 @@ class EMarkitupWidget extends CInputWidget
 		$cs->registerScriptFile($this->settingsUrl.'/'.$this->settings.'/set.js');
 
 		$options=CJavaScript::encode($this->options);
-		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#$id').markItUp(mySettings,$options);");
+		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#$id').markItUp(".$this->settings."Settings,$options);");
 
 		$cs->registerCssFile($this->themeUrl.'/'.$this->theme.'/style.css');
 		$cs->registerCssFile($this->settingsUrl.'/'.$this->settings.'/style.css');
