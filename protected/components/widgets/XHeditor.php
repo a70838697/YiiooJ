@@ -45,6 +45,10 @@ class XHeditor extends CWidget
 	/*
 	 * The options for the widget.
 	 */
+	private $version="1.1.14";
+	/*
+	 * The options for the widget.
+	 */
 	public $config = array();
 	
 	/*
@@ -177,7 +181,7 @@ class XHeditor extends CWidget
 		
 		// register css and js to be rendered
 		//Yii::app()->clientScript->registerCss($config['id'],'#'.$config['id'].' {width:'.$config['width'].';height:'.$config['height'].';}');
-		Yii::app()->clientScript->registerScriptFile($this->_baseUrl . '/xheditor-'. $this->language .'.min.js');
+		Yii::app()->clientScript->registerScriptFile($this->_baseUrl . '/xheditor-'.$this->version."-". $this->language .'.min.js');
 		Yii::app()->clientScript->registerScript($config['id'],'$("#'.$config['id'].'").xheditor('.CJavaScript::encode($config).');');
 	}
 	

@@ -6,7 +6,7 @@
  * @site http://xheditor.com/
  * @licence LGPL(http://xheditor.com/license/lgpl.txt)
  *
- * @Version: 1.1.13 (build 120304)
+ * @Version: 1.1.14 (build 120701)
  */
 (function($,undefined){
 if(window.xheditor)return false;//防止JS重复加载
@@ -86,7 +86,7 @@ var htmlImg='<div><label for="xheImgUrl">图片文件: </label><input type="text
 var htmlFlash='<div><label for="xheFlashUrl">动画文件: </label><input type="text" id="xheFlashUrl" value="http://" class="xheText" /></div><div><label for="xheFlashWidth">宽　　度: </label><input type="text" id="xheFlashWidth" style="width:40px;" value="480" /> <label for="xheFlashHeight">高　　度: </label><input type="text" id="xheFlashHeight" style="width:40px;" value="400" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';
 var htmlMedia='<div><label for="xheMediaUrl">媒体文件: </label><input type="text" id="xheMediaUrl" value="http://" class="xheText" /></div><div><label for="xheMediaWidth">宽　　度: </label><input type="text" id="xheMediaWidth" style="width:40px;" value="480" /> <label for="xheMediaHeight">高　　度: </label><input type="text" id="xheMediaHeight" style="width:40px;" value="400" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';
 var htmlTable='<div><label for="xheTableRows">行　　数: </label><input type="text" id="xheTableRows" style="width:40px;" value="3" /> <label for="xheTableColumns">列　　数: </label><input type="text" id="xheTableColumns" style="width:40px;" value="2" /></div><div><label for="xheTableHeaders">标题单元: </label><select id="xheTableHeaders"><option selected="selected" value="">无</option><option value="row">第一行</option><option value="col">第一列</option><option value="both">第一行和第一列</option></select></div><div><label for="xheTableWidth">宽　　度: </label><input type="text" id="xheTableWidth" style="width:40px;" value="200" /> <label for="xheTableHeight">高　　度: </label><input type="text" id="xheTableHeight" style="width:40px;" value="" /></div><div><label for="xheTableBorder">边框大小: </label><input type="text" id="xheTableBorder" style="width:40px;" value="1" /></div><div><label for="xheTableCellSpacing">表格间距: </label><input type="text" id="xheTableCellSpacing" style="width:40px;" value="1" /> <label for="xheTableCellPadding">表格填充: </label><input type="text" id="xheTableCellPadding" style="width:40px;" value="1" /></div><div><label for="xheTableAlign">对齐方式: </label><select id="xheTableAlign"><option selected="selected" value="">默认</option><option value="left">左对齐</option><option value="center">居中</option><option value="right">右对齐</option></select></div><div><label for="xheTableCaption">表格标题: </label><input type="text" id="xheTableCaption" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';
-var htmlAbout='<div style="font:12px Arial;width:245px;word-wrap:break-word;word-break:break-all;outline:none;" role="dialog" tabindex="-1"><p><span style="font-size:20px;color:#1997DF;">xhEditor</span><br />v1.1.13 (build 120304)</p><p>xhEditor是基于jQuery开发的跨平台轻量可视化XHTML编辑器，基于<a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL</a>开源协议发布。</p><p>Copyright &copy; <a href="http://xheditor.com/" target="_blank">xhEditor.com</a>. All rights reserved.</p></div>';
+var htmlAbout='<div style="font:12px Arial;width:245px;word-wrap:break-word;word-break:break-all;outline:none;" role="dialog" tabindex="-1"><p><span style="font-size:20px;color:#1997DF;">xhEditor</span><br />v1.1.14 (build 120701)</p><p>xhEditor是基于jQuery开发的跨平台轻量可视化XHTML编辑器，基于<a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">LGPL</a>开源协议发布。</p><p>Copyright &copy; <a href="http://xheditor.com/" target="_blank">xhEditor.com</a>. All rights reserved.</p></div>';
 var itemEmots={'default':{name:'默认',width:24,height:24,line:7,list:{'smile':'微笑','tongue':'吐舌头','titter':'偷笑','laugh':'大笑','sad':'难过','wronged':'委屈','fastcry':'快哭了','cry':'哭','wail':'大哭','mad':'生气','knock':'敲打','curse':'骂人','crazy':'抓狂','angry':'发火','ohmy':'惊讶','awkward':'尴尬','panic':'惊恐','shy':'害羞','cute':'可怜','envy':'羡慕','proud':'得意','struggle':'奋斗','quiet':'安静','shutup':'闭嘴','doubt':'疑问','despise':'鄙视','sleep':'睡觉','bye':'再见'}}};
 var arrTools={Cut:{t:'剪切 (Ctrl+X)'},Copy:{t:'复制 (Ctrl+C)'},Paste:{t:'粘贴 (Ctrl+V)'},Pastetext:{t:'粘贴文本',h:isIE?0:1},Blocktag:{t:'段落标签',h:1},Fontface:{t:'字体',h:1},FontSize:{t:'字体大小',h:1},Bold:{t:'加粗 (Ctrl+B)',s:'Ctrl+B'},Italic:{t:'斜体 (Ctrl+I)',s:'Ctrl+I'},Underline:{t:'下划线 (Ctrl+U)',s:'Ctrl+U'},Strikethrough:{t:'删除线'},FontColor:{t:'字体颜色',h:1},BackColor:{t:'背景颜色',h:1},SelectAll:{t:'全选 (Ctrl+A)'},Removeformat:{t:'删除文字格式'},Align:{t:'对齐',h:1},List:{t:'列表',h:1},Outdent:{t:'减少缩进'},Indent:{t:'增加缩进'},Link:{t:'超链接 (Ctrl+L)',s:'Ctrl+L',h:1},Unlink:{t:'取消超链接'},Anchor:{t:'锚点',h:1},Img:{t:'图片',h:1},Flash:{t:'Flash动画',h:1},Media:{t:'多媒体文件',h:1},Hr:{t:'插入水平线'},Emot:{t:'表情',s:'ctrl+e',h:1},Table:{t:'表格',h:1},Source:{t:'源代码'},Preview:{t:'预览'},Print:{t:'打印 (Ctrl+P)',s:'Ctrl+P'},Fullscreen:{t:'全屏编辑 (Esc)',s:'Esc'},About:{t:'关于 xhEditor'}};
 var toolsThemes={
@@ -685,7 +685,12 @@ var xheditor=function(textarea,options)
 					if(c)
 					{
 						var rgb;
-						if(rgb=c[1].match(/\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i)){c[1]='#';for(var i=1;i<=3;i++)c[1]+=(rgb[i]-0).toString(16);}
+						if(rgb=c[1].match(/\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i)){
+							c[1]='#';
+							for(var i=1;i<=3;i++){
+								c[1]+=('0'+(rgb[i]-0).toString(16)).slice(-2);
+							}
+						}
 						c[1]=c[1].replace(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i,'#$1$1$2$2$3$3');
 						attrs+=' color="'+c[1]+'"';
 					}
@@ -804,45 +809,123 @@ var xheditor=function(textarea,options)
 	this.cleanWord=function(sHtml)
 	{
 		var cleanPaste=settings.cleanPaste;
-		if(cleanPaste>0&&cleanPaste<3&&sHtml.match(/mso(-|normal)|WordDocument|<table\s+[^>]*?x:str/i))
+		if(cleanPaste>0&&cleanPaste<3&&/mso(-|normal)|WordDocument|<table\s+[^>]*?x:str|\s+class\s*=\s*"?xl[67]\d"/i.test(sHtml))
 		{
 			//区块标签清理
 			sHtml = sHtml.replace(/<!--[\s\S]*?-->|<!(--)?\[[\s\S]+?\](--)?>|<style(\s+[^>]*?)?>[\s\S]*?<\/style>/ig, '');
 			
 			sHtml = sHtml.replace(/\r?\n/ig, '');
-
+			
+			//保留Word图片占位
+			if(isIE){
+				sHtml = sHtml.replace(/<v:shapetype(\s+[^>]*)?>[\s\S]*<\/v:shapetype>/ig,'');
+				
+				sHtml = sHtml.replace(/<v:shape(\s+[^>]+)?>[\s\S]*?<v:imagedata(\s+[^>]+)?>\s*<\/v:imagedata>[\s\S]*?<\/v:shape>/ig,function(all,attr1,attr2){
+					var match;
+					match = attr2.match(/\s+src\s*=\s*("[^"]+"|'[^']+'|[^>\s]+)/i);
+					if(match){
+						match = match[1].match(/^(["']?)(.*)\1/)[2];
+						var sImg ='<img src="'+editorRoot+'xheditor_skin/blank.gif'+'" _xhe_temp="true" class="wordImage"';
+						match = attr1.match(/\s+style\s*=\s*("[^"]+"|'[^']+'|[^>\s]+)/i);
+						if(match){
+							match = match[1].match(/^(["']?)(.*)\1/)[2];
+							sImg += ' style="' + match + '"';
+						}
+						sImg += ' />';
+						return sImg;
+					}
+					return '';
+				});
+			}
+			else{
+				sHtml = sHtml.replace(/<img( [^<>]*(v:shapes|msohtmlclip)[^<>]*)\/?>/ig,function(all,attr){
+					var match,str = '<img src="'+editorRoot+'xheditor_skin/blank.gif'+'" _xhe_temp="true" class="wordImage"';
+					match = attr.match(/ width\s*=\s*"([^"]+)"/i);
+					if(match)str += ' width="'+match[1]+'"';
+					match = attr.match(/ height\s*=\s*"([^"]+)"/i);
+					if(match)str += ' height="'+match[1]+'"';
+					return str + ' />';
+				});
+			}
+			
 			sHtml=sHtml.replace(/(<(\/?)([\w\-:]+))((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?>)/g,function(all,left,end,tag,attr,right){
 				tag=tag.toLowerCase();
-				if((tag.match(/^(link|img)$/)&&attr.match(/file:\/\//i))||tag.match(/:/)||(tag==='span'&&cleanPaste===2))return '';
+				if((tag.match(/^(link)$/)&&attr.match(/file:\/\//i))||tag.match(/:/)||(tag==='span'&&cleanPaste===2))return '';
 				if(!end){
 					attr=attr.replace(/\s([\w\-:]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^>\s]+))?/ig,function(all,n,v){
 						n=n.toLowerCase();
+						if(/:/.test(n))return '';
 						v=v.match(/^(["']?)(.*)\1/)[2];
-						if(n.match(/:/))return '';
-						else if(n.match(/^(class|lang|language|span)$/))return '';
-						else if(tag==='td'&&(n==='height'||(n==='width'&&!attr.match(/\scolspan="\d+"/i))))return '';
-						else if(n==='style'){
-							if(cleanPaste===2)return '';
-							v=v.replace(/"|&quot;/ig,"'").replace(/\s*([^:]+)\s*:\s*(.*?)(;|$)/ig,function(all,n,v){
-								return /^(color|background)$/i.test(n)?(n+':'+v+';'):'';
-							}).replace(/^\s+|\s+$/g,'');
-							return v?(' '+n+'="'+v+'"'):'';
+						if(cleanPaste===1){//简单清理
+							switch(tag){
+								case 'p':
+									if(n === 'style'){
+										v=v.replace(/"|&quot;/ig,"'").replace(/\s*([^:]+)\s*:\s*(.*?)(;|$)/ig,function(all,n,v){
+											return /^(text-align)$/i.test(n)?(n+':'+v+';'):'';
+										}).replace(/^\s+|\s+$/g,'');
+										return v?(' '+n+'="'+v+'"'):'';
+									}
+									break;
+								case 'span':
+									if(n === 'style'){
+										v=v.replace(/"|&quot;/ig,"'").replace(/\s*([^:]+)\s*:\s*(.*?)(;|$)/ig,function(all,n,v){
+											return /^(color|background|font-size|font-family)$/i.test(n)?(n+':'+v+';'):'';
+										}).replace(/^\s+|\s+$/g,'');
+										return v?(' '+n+'="'+v+'"'):'';
+									}
+									break;
+								case 'table':
+									if(n.match(/^(cellspacing|cellpadding|border|width)$/i))return all;
+									break;
+								case 'td':
+									if(n.match(/^(rowspan|colspan)$/i))return all;
+									if(n === 'style'){
+										v=v.replace(/"|&quot;/ig,"'").replace(/\s*([^:]+)\s*:\s*(.*?)(;|$)/ig,function(all,n,v){
+											return /^(width|height)$/i.test(n)?(n+':'+v+';'):'';
+										}).replace(/^\s+|\s+$/g,'');
+										return v?(' '+n+'="'+v+'"'):'';
+									}
+									break;
+								case 'a':
+									if(n.match(/^(href)$/i))return all;
+									break;
+								case 'font':
+								case 'img':
+									return all;
+									break;
+							}
 						}
-						return all;
-					})
-					//删除空span标签
-					if(tag==='span'&&/^\s*$/.test(attr))return '';
+						else if(cleanPaste===2){
+							switch(tag){
+								case 'td':
+									if(n.match(/^(rowspan|colspan)$/i))return all;
+									break;
+								case 'img':
+									return all;
+							}
+						}
+						return '';
+					});
 				}
 				return left+attr+right;
 			});
 			//空内容的标签
-			for(var i=0;i<3;i++)sHtml = sHtml.replace( /<([^\s>]+)(\s+[^>]*)?>\s*<\/\1>/g,function(all,tag){
-				if(tag.match(/^a$/i))return all;
-				else return '';
-			});
+			for(var i=0;i<3;i++)sHtml = sHtml.replace( /<([^\s>]+)(\s+[^>]*)?>\s*<\/\1>/g,'');
+			//无属性的无意义标签
+			function cleanEmptyTag(all,tag,content){
+				return content;
+			}
+			for(var i=0;i<3;i++)sHtml = sHtml.replace(/<(span|a)>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?<\/\1>)*?)<\/\1>/ig,cleanEmptyTag);//第3层
+			for(var i=0;i<3;i++)sHtml = sHtml.replace(/<(span|a)>(((?!<\1(\s+[^>]*?)?>)[\s\S]|<\1(\s+[^>]*?)?>((?!<\1(\s+[^>]*?)?>)[\s\S])*?<\/\1>)*?)<\/\1>/ig,cleanEmptyTag);//第2层
+			for(var i=0;i<3;i++)sHtml = sHtml.replace(/<(span|a)>(((?!<\1(\s+[^>]*?)?>)[\s\S])*?)<\/\1>/ig,cleanEmptyTag);//最里层
 			//合并多个font
-			for(var i=0;i<3;i++)sHtml=sHtml.replace(/<font(\s+[^>]+)><font(\s+[^>]+)>/ig,function(all,attr1,attr2){		
+			for(var i=0;i<3;i++)sHtml = sHtml.replace(/<font(\s+[^>]+)><font(\s+[^>]+)>/ig,function(all,attr1,attr2){		
 				return '<font'+attr1+attr2+'>';
+			});
+			//清除表格间隙里的空格等特殊字符
+			sHtml=sHtml.replace(/(<(\/?)(tr|td)(?:\s+[^>]+)?>)[^<>]+/ig,function(all,left,end,tag){
+				if(!end&&/^td$/i.test(tag))return all;
+				else return left;
 			});
 		}
 		return sHtml;
@@ -2037,7 +2120,7 @@ var xheditor=function(textarea,options)
 		if(localUrlTest&&remoteImgSaveUrl){
 			var arrRemoteImgs=[],count=0;
 			sHtml=sHtml.replace(/(<img)((?:\s+[^>]*?)?(?:\s+src="\s*([^"]+)\s*")(?: [^>]*)?)(\/?>)/ig,function(all,left,attr,url,right){
-				if(/^(https?|data:image)/i.test(url)&&!localUrlTest.test(url)){
+				if(/^(https?|data:image)/i.test(url) && !/_xhe_temp/.test(attr) && !localUrlTest.test(url)){
 					arrRemoteImgs[count]=url;
 					attr=attr.replace(/\s+(width|height)="[^"]*"/ig,'').replace(/\s+src="[^"]*"/ig,' src="'+skinPath+'img/waiting.gif" remoteimg="'+(count++)+'"');
 				}

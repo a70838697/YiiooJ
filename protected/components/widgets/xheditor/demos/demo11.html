@@ -24,7 +24,7 @@ function loadJS(url,callback,charset)
 }
 function initEditor()
 {
-	loadJS('../xheditor-1.1.13-zh-cn.min.js',function(){$('#elm1').xheditor({shortcuts:{'ctrl+enter':submitForm}});$('#btnInit').hide();});
+	loadJS('../xheditor-1.1.14-zh-cn.min.js',function(){$('#elm1').xheditor({shortcuts:{'ctrl+enter':submitForm}});$('#btnInit').hide();});
 }
 function submitForm(){$('#frmDemo').submit();}
 </script>
@@ -50,7 +50,7 @@ function submitForm(){$('#frmDemo').submit();}
 <form id="frmDemo" method="post" action="show.php">
 	<h3>xhEditor demo11 : 异步加载</h3>
 	<textarea id="elm1" name="elm1" rows="12" cols="80" style="width: 80%">
-&lt;p&gt;当前实例调用的Javascript源代码为：&lt;/p&gt;&lt;pre&gt;loadJS('../xheditor-1.1.13-zh-cn.min.js',function(){$('#elm1').xheditor();});&lt;br /&gt;&lt;/pre&gt;
+&lt;p&gt;当前实例调用的Javascript源代码为：&lt;/p&gt;&lt;pre&gt;loadJS('../xheditor-1.1.14-zh-cn.min.js',function(){$('#elm1').xheditor();});&lt;br /&gt;&lt;/pre&gt;
 	</textarea>
 	<br/><br />
 	<input type="button" id="btnInit" value="加载js文件并初始化编辑器" onclick="initEditor()" />
