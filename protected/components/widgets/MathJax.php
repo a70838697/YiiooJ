@@ -12,7 +12,7 @@ Usage:
 
 <?php
 
-$this->widget('application.components.widgets.XHeditor',array(
+$this->widget('application.extensions.ultraeditor.XHeditor',array(
 	'contentValue'=>'Enter your text here', // default value displayed in textarea/wysiwyg editor field
 ));
 ?>

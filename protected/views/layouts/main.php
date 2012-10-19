@@ -72,8 +72,8 @@
 	<tr><td>
 		<?php
 			echo CHtml::link(Yii::t('t',"User management"),array('/user/admin','id'=>$this->classRoomId)) ;
-			echo CHtml::link(Yii::t('main',"Colledge users"),array('/organization/index','id'=>$this->classRoomId)) ;
-			echo CHtml::link(Yii::t('main',"Organization"),array('/schoolInfo/admin','id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('main',"Colledge users"),array('/schoolInfo/admin','id'=>$this->classRoomId)) ;
+			echo CHtml::link(Yii::t('main',"Organization"),array('/organization/index','id'=>$this->classRoomId)) ;
 			if(Yii::app()->user->id==1)
 				echo CHtml::link(Yii::t('main',"RBAM"),array('/rbam','id'=>$this->classRoomId)) ;
 		?>

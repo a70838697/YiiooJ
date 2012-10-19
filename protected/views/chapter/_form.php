@@ -118,11 +118,17 @@ $form=$this->beginWidget('CActiveForm', array(
     <div><small></small> </div>
      <?php   echo $form->error($model,'name');  ?>    </div>
 
+     <select id=selv>
+     <option value="markitup.wiki">Wiki</option>
+     <option value="markitup.markdown">Markdown</option>
+     <option value="xheditor">HTML</option>
+     </select>
+     
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
 		The chapter uses a Markdown Extra format, please refer to <a href="http://michelf.com/projects/php-markdown/extra/" target="_blank">http://michelf.com/projects/php-markdown/extra/</a>.</br>
 		You can also use Math formula, such as $x^2$, please ref to <a href="http://www.mediawiki.org/wiki/Extension:MathJax" target="_blank">MathJax </a> and <a href="http://www.codecogs.com/latex/eqneditor.php"  target="_blank">Demo</a>。
-			<?php $this->widget('ext.jmarkitup.EMarkitupWidget', array(
+			<?php $this->widget('ext.ultraeditor.jmarkitup.EMarkitupWidget', array(
 					// you can either use it for model attribute
 					'model' => $model,
 					'attribute' => 'description',
@@ -132,7 +138,21 @@ $form=$this->beginWidget('CActiveForm', array(
 							'previewParserPath'=>
 							Yii::app()->urlManager->createUrl('site/previewMarkdown')
 					)					
-			))?>
+			));
+			$this->widget('ext.ultraeditor.EditorSelector', array(
+					// you can either use it for model attribute
+					'link' => '#selv',
+					'editor' => '#Chapter_description',
+						
+					'options'=>array(
+							'markitup.wiki'=>array('options'=>array('previewParserPath'=>
+									Yii::app()->urlManager->createUrl('site/previewMarkdown'),
+								)),
+							'markitup.markdown'=>'markdownSettings',
+							'xheditor'=>'',
+					)
+			));
+			?>
 		<?php //echo $form->textArea($model,'description',array('rows'=>10, 'cols'=>50)); ?>
              <span  id="success-Chapter_description"  class="hid input-notification-success  success png_bg"></span>
            <div><small></small> </div>

@@ -6,8 +6,9 @@ $this->breadcrumbs=array(
 	Yii::t('course','Students')
 );
 
-$assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
-echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
+Yii::import("application.extensions.ultraeditor.XHeditor");
+$mWgt=new XHeditor();
+$mWgt->init();
 
 $this->widget('application.components.widgets.MathJax',array());
 ?>

@@ -5,8 +5,10 @@ $this->breadcrumbs=array(
 	Yii::t('course','View reports')
 );
 
-$assets = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.components.widgets').'/xheditor');
-echo CHtml::scriptFile($assets .'/xheditor-en.min.js')."\r\n";
+Yii::import("application.extensions.ultraeditor.XHeditor");
+$mWgt=new XHeditor();
+$mWgt->init();
+
 echo CHtml::scriptFile(Yii::app()->baseUrl.'/js_plugins/plugins/jquery.lazyload.min.js')."\r\n";
 echo CHtml::script(
 	'$("img").lazyload();'

@@ -183,31 +183,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	<div class="row">
 		<?php echo $form->labelEx($model,'comment'); ?>
 <?php
-$arr_attrs=array(
-	    	'model'=>$model,
-	    	'modelAttribute'=>'comment',
-	    	'config'=>array(
-	    		'tools'=>'full', // mini, simple, fill or from XHeditor::$_tools
-	    		//see XHeditor::$_configurableAttributes for more
-	    	),
-			'htmlOptions'=>array(
-				'rows'=>6,
-	    		'style'=>isset($style)?$style:'',
-		    	'cols'=>84,
-			),    	
-			
-	   );
 $config=array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/'.$model->experiment->class_room_id),'upImgExt'=>"jpg,jpeg,gif,png",);
-if(isset($config))
-{
-	$arr_attrs['config']=array_merge($arr_attrs['config'],$config);
-}
-	   
-	   if(isset($id))
-{
-	$arr_attrs['config']['id']=$id;
-}	    
-	    $this->widget('application.components.widgets.XHeditor',$arr_attrs);
+echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'comment','config'=>$config,'rows'=>6),true); 
 ?>		
 		<?php echo $form->error($model,'comment'); ?>
 	</div>
