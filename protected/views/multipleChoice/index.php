@@ -43,7 +43,8 @@ $this->toolbar= array(
         ),
 );
 }
-$this->widget('application.components.widgets.MathJax',array());
+if($this->getCourse()->hasMathFormula)
+	$this->widget('application.components.widgets.MathJax',array());
 ?>
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

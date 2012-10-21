@@ -170,4 +170,6 @@ $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.u
 				'modal'=>true,
 		)
 ));
+if($model->classRoom->hasMathFormula)$this->widget('application.components.widgets.MathJax',array());
+?>
 ?>

@@ -14,7 +14,8 @@ echo CHtml::script(
 	'$("img").lazyload();'
 	);
 
-$this->widget('application.components.widgets.MathJax',array());
+if($model->hasMathFormula)
+	$this->widget('application.components.widgets.MathJax',array());
 /*
 $this->menu=array(
 	array('label'=>'List Course', 'url'=>array('index')),
@@ -149,8 +150,8 @@ function reloadReport(url,dialog_status)
 	if(dialog_status=="open")
 		$("#viewreport").dialog("open");
 	$.get(url,function(data,status){
-			$("#reportcontent").html(data);
-			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
+			$("#reportcontent").html(data);'.(($model->hasMathFormula)?'
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);':'').'
 	});
 	return false;
 }

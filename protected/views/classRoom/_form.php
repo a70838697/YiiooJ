@@ -100,6 +100,11 @@
 		<?php echo $form->checkBox($model,'showScore'); ?>
 		<?php echo $form->error($model,'showScore'); ?>
 	</div>	
+	<div class="row">
+		<?php echo $form->labelEx($model,'hasMathFormula'); ?>
+		<?php echo $form->checkBox($model,'hasMathFormula'); ?>
+		<?php echo $form->error($model,'hasMathFormula'); ?>
+	</div>	
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'hasExercise'); ?>

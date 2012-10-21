@@ -14,7 +14,8 @@ $this->menu=array(
 	array('label'=>'Delete ExperimentReport', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>'Manage ExperimentReport', 'url'=>array('admin')),
 );
-$this->widget('application.components.widgets.MathJax',array());
+if($model->experiment->classRoom->hasMathFormula)
+	$this->widget('application.components.widgets.MathJax',array());
 
 $canscore=$model->canScore();
 $canedit=$model->canEdit();

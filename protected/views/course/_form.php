@@ -34,6 +34,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'hasMathFormula'); ?>
+		<?php echo $form->checkBox($model,'hasMathFormula'); ?>
+		<?php echo $form->error($model,'hasMathFormula'); ?>
+	</div>	
+	
+	<div class="row">
 		<?php echo $form->labelEx($model,'visibility'); ?>
 		<?php echo $form->dropDownList($model,'visibility',UCourseLookup::getCourseStatusMessages()); ?>		
 		<?php echo $form->error($model,'visibility'); ?>

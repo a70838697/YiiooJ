@@ -29,6 +29,7 @@ class ClassRoom extends CActiveRecord
 	const CLASSROOM_OPTION_FLAG_EXPERIMENT=1;
 	const CLASSROOM_OPTION_FLAG_EXERCISE=2;
 	const CLASSROOM_OPTION_FLAG_SHOW_SCORE=4;
+	const CLASSROOM_OPTION_HAS_MATH_FORMULA=8;
 	
 	private function setFlagStat($bit,$set){
 		if($set)$this->flags |=$bit;
@@ -42,6 +43,14 @@ class ClassRoom extends CActiveRecord
 	{
 		$this->setFlagStat(self::CLASSROOM_OPTION_FLAG_EXPERIMENT,$value);
 	}
+	public function getHasMathFormula()
+	{
+		return  ($this->flags & self::CLASSROOM_OPTION_HAS_MATH_FORMULA)>0;
+	}
+	public function setHasMathFormula($value)
+	{
+		$this->setFlagStat(self::CLASSROOM_OPTION_HAS_MATH_FORMULA,$value);
+	}	
 	public function getHasExercise()
 	{
 		return  ($this->flags & self::CLASSROOM_OPTION_FLAG_EXERCISE)>0;
@@ -120,7 +129,7 @@ class ClassRoom extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, user_id, begin, end', 'required'),
-			array('hasExercise, hasExperiment, showScore', 'boolean'),
+			array('hasExercise, hasExperiment, showScore,hasMathFormula', 'boolean'),
 			array('visibility,application_option', 'numerical', 'integerOnly'=>true),
 			array('begin', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
 			array('end', 'type', 'type'=>'date','dateFormat'=>'yyyy-MM-dd'),
@@ -190,6 +199,8 @@ class ClassRoom extends CActiveRecord
 			'showScore'=>'Show score',
 			'hasExperiment'=>'Experiment',
 			'hasExercise'=>'Exercise',
+			'hasMathFormula'=>'Support Latex math formula',
+			
 		);
 	}
 	public function scopes()

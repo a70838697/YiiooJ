@@ -6,20 +6,17 @@
 </h1>
 <div id="chapter_content">
 	<?php
-	//Yii::import('application.extensions.SimpleWiki.ImWiki');
-	//$wiki=new ImWiki($model->description);
-	//echo $wiki->get_html();
-	$parser=new CMarkdownParser;
-	$parsedText = $parser->safeTransform($model->description);
-	echo $parsedText;
+	Yii::import('ext.ultraeditor.EditorSelector');
+	echo EditorSelector::convert($model->content_type,$model->description);
 	?>
 </div>
 <?php
-echo CHtml::script('
-MathJax.Hub.Queue(
-	["resetEquationNumbers",MathJax.InputJax.TeX],
-	["PreProcess",MathJax.Hub],
-	["Reprocess",MathJax.Hub]
-);
+if($model->course->hasMathFormula)
+	echo CHtml::script('
+	MathJax.Hub.Queue(
+		["resetEquationNumbers",MathJax.InputJax.TeX],
+		["PreProcess",MathJax.Hub],
+		["Reprocess",MathJax.Hub]
+	);
 	');
 ?>

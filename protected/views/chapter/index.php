@@ -1,6 +1,7 @@
 <?php
 Yii::import("application.extensions.ultraeditor.EditorSelector");
 $mWgt=new EditorSelector();
+$mWgt->markitup_theme="yiiwiki";
 $mWgt->init();
 
 $this->breadcrumbs=array(
@@ -9,7 +10,8 @@ $this->breadcrumbs=array(
 if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
 $this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
 
-$this->widget('application.components.widgets.MathJax',array());
+if($this->getCourse()->hasMathFormula)
+	$this->widget('application.components.widgets.MathJax',array());
 
 $course_url= ($model?("/".$model->id):"");
 $this->toolbar=array(

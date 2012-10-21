@@ -5,7 +5,7 @@
  * @created on: 2010-11-29 16:24
  * @modified on: 2010-11-29 16:24
 */
-Yii::import('application.extensions.SimpleWiki.*');
+Yii::import('application.extensions.ultraeditor.SimpleWiki.*');
 
 class ImWiki extends SimpleWiki
 {

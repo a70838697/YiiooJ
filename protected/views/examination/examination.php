@@ -202,11 +202,11 @@
 	}
 	?>
 	<?php
-	echo CHtml::script('
-		MathJax.Hub.Queue(
-		["resetEquationNumbers",MathJax.InputJax.TeX],
-		["PreProcess",MathJax.Hub],
-		["Reprocess",MathJax.Hub]
-	);
+		echo CHtml::script('
+		if(typeof(MathJax)=="undefine")	MathJax.Hub.Queue(
+			["resetEquationNumbers",MathJax.InputJax.TeX],
+			["PreProcess",MathJax.Hub],
+			["Reprocess",MathJax.Hub]
+		);
 		');
 	?>

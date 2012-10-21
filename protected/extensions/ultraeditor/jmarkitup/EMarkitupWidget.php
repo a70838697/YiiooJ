@@ -66,16 +66,13 @@ class EMarkitupWidget extends CInputWidget
 	public function run()
 	{
 		list($this->name,$this->id)=$this->resolveNameId();
-
-		$id=$this->id;
-		$options=CJavaScript::encode($this->options);
-		$cs=Yii::app()->getClientScript();
-		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#$id').markItUp(".$this->settings."Settings,$options);");
-
 		if($this->hasModel())
 			echo CHtml::activeTextArea($this->model,$this->attribute,$this->htmlOptions);
 		else
 			echo CHtml::textArea($this->name,$this->value,$this->htmlOptions);
+		$id=$this->id;
+		$options=CJavaScript::encode($this->options);
+		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#$id').markItUp(mySettings,$options);");
 	}
 	/**
 	 * Register CSS and Scripts.
@@ -86,7 +83,6 @@ class EMarkitupWidget extends CInputWidget
 		$cs->registerCoreScript('jquery');
 		$cs->registerScriptFile($this->scriptUrl.'/'.$this->scriptFile);
 		$cs->registerScriptFile($this->settingsUrl.'/'.$this->settings.'/set.js');
-
 
 		$cs->registerCssFile($this->themeUrl.'/'.$this->theme.'/style.css');
 		$cs->registerCssFile($this->settingsUrl.'/'.$this->settings.'/style.css');

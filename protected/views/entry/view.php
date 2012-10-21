@@ -17,7 +17,7 @@ $this->menu=array(
 <div class="view">
 	<div>
 	<?php
-	Yii::import('application.extensions.SimpleWiki.ImWiki');
+	Yii::import('ext.ultraeditor.SimpleWiki.ImWiki');
 	
 	$wiki=new ImWiki($model->content);
 	 echo $wiki->get_html(); ?>

@@ -6,7 +6,7 @@
 
 	<div>
 	<?php
-	Yii::import('application.extensions.SimpleWiki.ImWiki');
+	Yii::import('ext.ultraeditor.SimpleWiki.ImWiki');
 	
 	$wiki=new ImWiki($data->content);
 	 echo $wiki->get_html(); ?>

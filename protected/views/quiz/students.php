@@ -10,7 +10,8 @@ Yii::import("application.extensions.ultraeditor.XHeditor");
 $mWgt=new XHeditor();
 $mWgt->init();
 
-$this->widget('application.components.widgets.MathJax',array());
+if($model->classRoom->hasMathFormula)
+	$this->widget('application.components.widgets.MathJax',array());
 ?>
 <?php
 $columns=array(
@@ -122,8 +123,8 @@ function reloadReport(url,dialog_status)
 		
 	$("#reportcontent").load(url,function(){
 		if(dialog_status=="open")
-			$("#viewreport").dialog("open");
-			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);
+			$("#viewreport").dialog("open");'.($model->classRoom->hasMathFormula?'
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub,"tabReport"]);':'').'
 	});
 		
 	return false;

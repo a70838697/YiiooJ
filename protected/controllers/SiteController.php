@@ -27,16 +27,11 @@ class SiteController extends Controller
 	 *
 	 * The code to parse is supplied via the $_POST['data'] parameter
 	 */
-	public function actionPreviewMarkdown()
+	public function actionFormat()
 	{
-		$parser=new CMarkdownParser;
-		//$pattern = '/\\[\\[Attachment:(\d+)|(.*)\\]\\]/i';
-		//$replacement = '${1}1,$3';
-		
-		//preg_replace($pattern, $replacement, $string);
-		
-		$parsedText = $parser->safeTransform($_POST['data']);
-		echo $parsedText;
+		$type=Yii::app()->request->getQuery('type','unknown');
+		Yii::import('ext.ultraeditor.EditorSelector');
+		echo EditorSelector::convert($type,$_POST['data']);
 	}
 	/**
 	 * This is the default 'index' action that is invoked

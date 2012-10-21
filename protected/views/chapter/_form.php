@@ -140,7 +140,7 @@ $form=$this->beginWidget('CActiveForm', array(
 					'settings'=>'markdown',
 					'options'=>array(
 							'previewParserPath'=>
-							Yii::app()->urlManager->createUrl('site/previewMarkdown')
+							Yii::app()->urlManager->createUrl('site/format/markdown2html')
 					)
 			));
 			*/
@@ -151,10 +151,10 @@ $form=$this->beginWidget('CActiveForm', array(
 						
 					'options'=>array(
 							ULookup::CONTENT_TYPE_WIKI=>array('settings'=>array('previewParserPath'=>
-									Yii::app()->urlManager->createUrl('site/previewWiki'),
+									Yii::app()->urlManager->createUrl('site/format/wiki2html'),
 								)),
 							ULookup::CONTENT_TYPE_MARKDOWN=>array('settings'=>array('previewParserPath'=>
-									Yii::app()->urlManager->createUrl('site/previewMarkdown'),
+									Yii::app()->urlManager->createUrl('site/format/markdown2html'),
 								)),
 							ULookup::CONTENT_TYPE_HTML=>array('settings'=>array(
 								'html5Upload'=>false,
@@ -278,7 +278,7 @@ function insertFile(fileName,responseJSON)
 <script type="text/javascript">
 /*<![CDATA[*/
 function initControl(){
-	$('#Chapter_content_type').editorselection('#Chapter_description',{'1':{'settings':{'previewParserPath':'/joj/site/previewWiki'}},'2':{'settings':{'previewParserPath':'/joj/site/previewMarkdown'}},'4':{'settings':{'html5Upload':false,'tools':'full','upLinkUrl':'/joj/upload/create/type/report/classRoom/0','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/joj/upload/create/type/report/classRoom/0','upImgExt':'jpg,jpeg,gif,png','id':'Chapter_description','name':'Chapter[description]'}}})
+	$('#Chapter_content_type').editorselection('#Chapter_description',{'1':{'settings':{'previewParserPath':'/joj/site/format/type/wiki2html'}},'2':{'settings':{'previewParserPath':'/joj/site/format/type/markdown2html'}},'4':{'settings':{'html5Upload':false,'tools':'full','upLinkUrl':'/joj/upload/create/type/report/classRoom/0','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/joj/upload/create/type/report/classRoom/0','upImgExt':'jpg,jpeg,gif,png','id':'Chapter_description','name':'Chapter[description]'}}})
 };
 /*]]>*/
 </script>
