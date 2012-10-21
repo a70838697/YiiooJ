@@ -18,6 +18,10 @@
  * @property integer $end
  * @property integer $visibility
  * @property integer $created
+ * @property boolean $hasMathFormula
+ * @property boolean $hasExperiment
+ * @property boolean $hasExercise
+ * @property boolean $showScore
  */
 class ClassRoom extends CActiveRecord
 {

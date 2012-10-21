@@ -226,6 +226,7 @@ class CourseController extends CMController
 			Yii::app()->end();
 		}
 		$classRoom->sequence=$course->sequence;
+		$classRoom->hasMathFormula=$course->hasMathFormula;
 		$classRoom->title=$course->title;
 		if(isset($_POST['ClassRoom']))
 		{

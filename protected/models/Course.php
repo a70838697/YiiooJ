@@ -14,6 +14,7 @@
  * @property string $chapter_id
  * @property integer $created
  * @property integer $flags
+ * @property boolean $hasMathFormula
  */
 class Course extends CActiveRecord
 {
