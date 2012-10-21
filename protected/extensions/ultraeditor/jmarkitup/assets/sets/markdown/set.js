@@ -30,6 +30,11 @@ markdownSettings = {
 		}},
 		{separator:'---------------' },
 		{name:'Picture', key:'P', replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
+		{div:' ' , className:'markItPictureAdd',id:'fileUploader',text:'Up'},
+		// Added by CF Mitrah
+		//{name:'Upload Photo',className:'markItPictureAdd', key:'M' 	},
+		//{name:'Browse',className:'markItBriefcase', key:'F',beforeInsert: function(markItUp) { InlineUpload.display(markItUp,false) } 	},
+		
 		{name:'Link', key:'L', openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
 		{separator:'---------------'},	
 		{name:'Quotes', openWith:'> '},

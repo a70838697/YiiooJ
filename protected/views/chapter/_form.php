@@ -26,7 +26,8 @@ ajax validation -in this case you'll have to write the validation code in the co
 			</div>
 
 <div class="form">
-<?php   $formId='chapter-form';
+<?php
+$formId='chapter-form';
  $ajaxUrl=($model->isNewRecord)?
               ( ( !(isset($_POST['create_root']) && ($_POST['create_root']=='true'))  )?CController::createUrl('chapter/create'):CController::createUrl('chapter/createRoot')):
                CController::createUrl('chapter/update');
@@ -118,17 +119,20 @@ $form=$this->beginWidget('CActiveForm', array(
     <div><small></small> </div>
      <?php   echo $form->error($model,'name');  ?>    </div>
 
-     <select id=selv>
-     <option value="markitup.wiki">Wiki</option>
-     <option value="markitup.markdown">Markdown</option>
-     <option value="xheditor">HTML</option>
-     </select>
+	<div class="row">
+		<?php echo $form->labelEx($model,'content_type'); ?>
+		<?php echo $form->dropDownList($model,'content_type',ULookup::$CONTENT_TYPE_MESSAGES); ?>		
+		<?php echo $form->error($model,'content_type'); ?>
+	</div>
      
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
 		The chapter uses a Markdown Extra format, please refer to <a href="http://michelf.com/projects/php-markdown/extra/" target="_blank">http://michelf.com/projects/php-markdown/extra/</a>.</br>
-		You can also use Math formula, such as $x^2$, please ref to <a href="http://www.mediawiki.org/wiki/Extension:MathJax" target="_blank">MathJax </a> and <a href="http://www.codecogs.com/latex/eqneditor.php"  target="_blank">Demo</a>。
-			<?php $this->widget('ext.ultraeditor.jmarkitup.EMarkitupWidget', array(
+		You can also use Math formula, such as $x^2$, please ref to <a href="http://www.mediawiki.org/wiki/Extension:MathJax" target="_blank">MathJax </a> and <a href="http://www.codecogs.com/latex/eqneditor.php"  target="_blank">Demo</a>。<br/>
+		<?php
+		echo $form->textArea($model,'description',array('rows'=>12, 'cols'=>110));
+		
+	/*		$this->widget('ext.ultraeditor.jmarkitup.EMarkitupWidget', array(
 					// you can either use it for model attribute
 					'model' => $model,
 					'attribute' => 'description',
@@ -137,19 +141,31 @@ $form=$this->beginWidget('CActiveForm', array(
 					'options'=>array(
 							'previewParserPath'=>
 							Yii::app()->urlManager->createUrl('site/previewMarkdown')
-					)					
+					)
 			));
+			*/
 			$this->widget('ext.ultraeditor.EditorSelector', array(
 					// you can either use it for model attribute
-					'link' => '#selv',
+					'link' => '#Chapter_content_type',
 					'editor' => '#Chapter_description',
 						
 					'options'=>array(
-							'markitup.wiki'=>array('options'=>array('previewParserPath'=>
+							ULookup::CONTENT_TYPE_WIKI=>array('settings'=>array('previewParserPath'=>
+									Yii::app()->urlManager->createUrl('site/previewWiki'),
+								)),
+							ULookup::CONTENT_TYPE_MARKDOWN=>array('settings'=>array('previewParserPath'=>
 									Yii::app()->urlManager->createUrl('site/previewMarkdown'),
 								)),
-							'markitup.markdown'=>'markdownSettings',
-							'xheditor'=>'',
+							ULookup::CONTENT_TYPE_HTML=>array('settings'=>array(
+								'html5Upload'=>false,
+								'tools'=>'full',
+								'upLinkUrl'=>'/joj/upload/create/type/report/classRoom/0',
+								'upLinkExt'=>'zip,rar,txt,sql,ppt,pptx,doc,docx',
+								'upImgUrl'=>'/joj/upload/create/type/report/classRoom/0',
+								'upImgExt'=>'jpg,jpeg,gif,png',	
+								'id'=>'Chapter_description',
+								'name'=>'Chapter[description]'
+								)),
 					)
 			));
 			?>
@@ -172,11 +188,12 @@ $form=$this->beginWidget('CActiveForm', array(
  <?php   echo  CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save',array('class' => 'button align-right')); ?>	</div>
  </td>
  <td>
- <? $this->widget('ext.EAjaxUpload.EAjaxUpload',
+ <? /*$this->widget('ext.EAjaxUpload.EAjaxUploadBasic',
 array(
         'id'=>'uploadFile',
         'config'=>array(
-               'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+        		'button'=>'js:jQuery("#fileUploader")[0]',
+        		'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
                'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
                'sizeLimit'=>10*1024*1024,// maximum file size in bytes
                'minSizeLimit'=>10,// minimum file size in bytes
@@ -190,7 +207,7 @@ array(
                //                 ),
                //'showMessage'=>"js:function(message){ alert(message); }"
               )
-)); ?>
+)); */?>
  </td>
  </tr>
  </table>
@@ -201,7 +218,9 @@ array(
 <?php echo 
 CHtml::script(
 '
-jQuery.fn.extend({
+
+	
+	jQuery.fn.extend({
 insertAtCaret: function(myValue){
   return this.each(function(i) {
     if (document.selection) {
@@ -256,4 +275,10 @@ function insertFile(fileName,responseJSON)
 
 </script>
 
-
+<script type="text/javascript">
+/*<![CDATA[*/
+function initControl(){
+	$('#Chapter_content_type').editorselection('#Chapter_description',{'1':{'settings':{'previewParserPath':'/joj/site/previewWiki'}},'2':{'settings':{'previewParserPath':'/joj/site/previewMarkdown'}},'4':{'settings':{'html5Upload':false,'tools':'full','upLinkUrl':'/joj/upload/create/type/report/classRoom/0','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/joj/upload/create/type/report/classRoom/0','upImgExt':'jpg,jpeg,gif,png','id':'Chapter_description','name':'Chapter[description]'}}})
+};
+/*]]>*/
+</script>

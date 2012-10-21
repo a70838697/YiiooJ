@@ -213,7 +213,8 @@ class ChapterController extends CMController
 		$this->renderPartial('_form', array('model'=>$model,
 				'parent_id'=>!empty($_POST['parent_id'])?$_POST['parent_id']:0
 		),
-				false, true);
+				false, false);
+		Yii::app()->end();
 
 	}
 
@@ -222,7 +223,7 @@ class ChapterController extends CMController
 		//don't reload these scripts or they will mess up the page
 		//yiiactiveform.js still needs to be loaded that's why we don't use
 		// Yii::app()->clientScript->scriptMap['*.js'] = false;
-		$cs=Yii::app()->clientScript;
+		/*$cs=Yii::app()->clientScript;
 		$cs->scriptMap=array(
 				'jquery.min.js'=>false,
 				'jquery.js'=>false,
@@ -232,13 +233,14 @@ class ChapterController extends CMController
 				'json2.js'=>false,
 
 		);
+		*/
 
 		$model=$this->loadModel($_POST['id']);
 
 		$this->renderPartial('view', array(
 				'model'=>$model,
 		),
-				false, true);
+				false, false);
 
 	}
 	public function actionReturnChapter(){

@@ -1,4 +1,8 @@
 <?php
+Yii::import("application.extensions.ultraeditor.EditorSelector");
+$mWgt=new EditorSelector();
+$mWgt->init();
+
 $this->breadcrumbs=array(
 		Yii::t('main','Courses')=>array('/course/index')
 );
@@ -97,6 +101,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 										"onClosed":    function(){
 										} //onclosed function
 									})//fancybox
+									initControl();									
 								} //success
 							});//ajax
 						}//action function
@@ -270,7 +275,8 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                              "onClosed":    function(){
                                                                        } //onclosed function
                         })//fancybox
-
+						initControl();									
+                        
                     } //success
                 });//ajax
 

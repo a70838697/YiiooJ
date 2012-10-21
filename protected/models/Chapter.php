@@ -4,10 +4,11 @@
  * This is the Nested Set  model class for table "chapter".
  *
  * The followings are the available columns in table 'chapter':
- * @property string $id
- * @property string $root
- * @property string $lft
- * @property string $rgt
+ * @property integer $id
+ * @property integer $root
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $content_type
  * @property integer $level
  * @property string $name
  * @property string $description
@@ -56,12 +57,15 @@ class Chapter extends CActiveRecord
 		// NOTE2: Remove ALL rules associated with the nested Behavior:
 		//rgt,lft,root,level,id.
 		return array(
-				array('name', 'required'),
-				array('description', 'length', 'min'=>0),
-				array('name', 'length', 'max'=>128),
-				// The following rule is used by search().
-				// Please remove those attributes that should not be searched.
-				array('name, description', 'safe', 'on'=>'search'),
+			array('name', 'required'),
+			array('description', 'length', 'min'=>0),
+			array('content_type','default',
+				'value'=>ULookup::CONTENT_TYPE_HTML,
+				'setOnEmpty'=>true,'on'=>'insert'),
+			array('name', 'length', 'max'=>128),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('name, description', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,9 +77,9 @@ class Chapter extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-				'course' => array(self::HAS_ONE, 'Course', 'chapter_id'),
-				'chapters' => array(self::HAS_MANY, 'Chapter', 'root'),
-				'book' => array(self::BELONGS_TO, 'Chapter', 'root'),
+			'course' => array(self::HAS_ONE, 'Course', 'chapter_id'),
+			'chapters' => array(self::HAS_MANY, 'Chapter', 'root'),
+			'book' => array(self::BELONGS_TO, 'Chapter', 'root'),
 		);
 	}
 
@@ -85,13 +89,14 @@ class Chapter extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-				'id' => 'ID',
-				'root' => 'Root',
-				'lft' => 'Lft',
-				'rgt' => 'Rgt',
-				'level' => 'Level',
-				'name' => 'Name',
-				'description' => 'Description',
+			'id' => 'ID',
+			'root' => 'Root',
+			'lft' => 'Lft',
+			'rgt' => 'Rgt',
+			'level' => 'Level',
+			'content_type'=>'Content type',
+			'name' => 'Name',
+			'description' => 'Description',
 		);
 	}
 
@@ -115,20 +120,20 @@ class Chapter extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
-				'criteria'=>$criteria,
+			'criteria'=>$criteria,
 		));
 	}
 
 	public function behaviors()
 	{
 		return array(
-				'NestedSetBehavior'=>array(
-						'class'=>'ext.nestedBehavior.NestedSetBehavior',
-						'leftAttribute'=>'lft',
-						'rightAttribute'=>'rgt',
-						'levelAttribute'=>'level',
-						'hasManyRoots'=>true
-				)
+			'NestedSetBehavior'=>array(
+				'class'=>'ext.nestedBehavior.NestedSetBehavior',
+				'leftAttribute'=>'lft',
+				'rightAttribute'=>'rgt',
+				'levelAttribute'=>'level',
+				'hasManyRoots'=>true
+			)
 		);
 	}
 

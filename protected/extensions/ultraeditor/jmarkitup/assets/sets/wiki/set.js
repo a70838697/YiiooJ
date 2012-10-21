@@ -24,6 +24,17 @@ wikiSettings = {
 		{separator:'---------------' },
 		{name:'Bulleted list', openWith:'(!(* |!|*)!)'}, 
 		{name:'Numeric list', openWith:'(!(# |!|#)!)'}, 
+		{separator:'---------------' },
+		{name:'Picture',className:'markItUpButton11',  key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'}, 
+		// Added by CF Mitrah
+		{name:'Upload Photo',className:'markItPictureAdd', key:'M' 	},
+		//{name:'Browse',className:'markItBriefcase', key:'F',beforeInsert: function(markItUp) { InlineUpload.display(markItUp,false) } 	},
+		{name:'Link', className:'markItUpButton12', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...' },
+		{name:'Url', className:'markItUpButton13', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...' },
+		{separator:'---------------' },
+		{name:'Quotes',className:'markItUpButton14',  openWith:'(!(> |!|>)!)', placeHolder:''},
+		{name:'Code',className:'markItUpButton15',  openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}, 
+		{separator:'---------------' },
 		{name:'Table generator', 
 			className:'tablegenerator', 
 			placeholder:"Your text here...",
@@ -46,14 +57,6 @@ wikiSettings = {
 				return html;
 			}
 		},		
-		{separator:'---------------' },
-		{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'}, 
-		{name:'Link', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...' },
-		{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...' },
-		{separator:'---------------' },
-		{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
-		{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}, 
-		{separator:'---------------' },
 		{name:'Preview', call:'preview', className:'preview'}
 	]
 }
