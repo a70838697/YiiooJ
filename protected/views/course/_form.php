@@ -41,7 +41,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'website_title'); ?>
-		<?php echo $form->checkBox($model,'website_title'); ?>
+		<?php echo $form->textField($model,'website_title',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'website_title'); ?>
 	</div>	
 	
