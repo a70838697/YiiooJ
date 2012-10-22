@@ -1,19 +1,12 @@
 <?php
-	$this->breadcrumbs=array(
-		'My classes'=>array('/classRoom/index/mine/1'),
-		$model->experiment->classRoom->title=>array('/classRoom/'.$model->experiment->classRoom->id),
-		'Experiments'=>array('/classRoom/experiments','id'=>$model->experiment->classRoom->id),	
-		$model->experiment->title=>array('/experiment/'.$model->experiment->id),
-		"Experiment Report",
-	);
-
-$this->menu=array(
-	array('label'=>'List ExperimentReport', 'url'=>array('index')),
-	array('label'=>'Create ExperimentReport', 'url'=>array('create')),
-	array('label'=>'Update ExperimentReport', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete ExperimentReport', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage ExperimentReport', 'url'=>array('admin')),
+$this->homelink=CHtml::link(CHtml::encode($model->experiment->classRoom->course->title),array('/course/view','id'=>$model->experiment->classRoom->course_id,'class_room_id'=>$model->experiment->classRoom->id), array('class'=>'home'));
+$this->breadcrumbs=array(
+		CHtml::encode($model->experiment->classRoom->title)."(".$model->experiment->classRoom->begin.")"=>array('classRoom/view','id'=>$model->experiment->class_room_id),
+		Yii::t("t",'Experiments')=>array('classRoom/experiments','id'=>$model->experiment->class_room_id),
+		CHtml::encode($model->experiment->title)=>array('/experiment/'.$model->experiment->id),
+		Yii::t("t","Experiment report"),
 );
+
 if($model->experiment->classRoom->hasMathFormula)
 	$this->widget('application.components.widgets.MathJax',array());
 
