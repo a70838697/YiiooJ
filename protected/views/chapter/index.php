@@ -4,11 +4,10 @@ $mWgt=new EditorSelector();
 $mWgt->markitup_theme="yiiwiki";
 $mWgt->init();
 
+$this->homelink=CHtml::link(CHtml::encode($this->course->title),array('/course/view','id'=>$this->courseId,'class_room_id'=>$this->classRoomId), array('class'=>'home'));
 $this->breadcrumbs=array(
-		Yii::t('main','Courses')=>array('/course/index')
+		Yii::t('course','Course content'),
 );
-if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
-$this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
 
 if($this->getCourse()->hasMathFormula)
 	$this->widget('application.components.widgets.MathJax',array());
