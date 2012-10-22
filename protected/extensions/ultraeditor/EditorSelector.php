@@ -52,6 +52,7 @@ class EditorSelector extends CWidget
 		$mWgt->settings='wiki';
 		$mWgt->init();
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('application.extensions.ultraeditor.ultraeditor').'.js'));
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish(Yii::getPathOfAlias('application.extensions.ultraeditor.wiky').'.js'));
 	}
 	public function run()
 	{

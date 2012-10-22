@@ -27,42 +27,51 @@
 	$.fn.editorselection=function(sel,options){
 		var editor=$(this);
 		var selector=null;
-		var val='4';
+		var type='4';
+		var oldtype='';
 		if(parseInt(sel)+''==sel)
 		{
-			val=sel;
+			type=sel;
 		}
 		else
 		{
-			val=$(sel).val();
+			type=$(sel).val();
 			selector=$(sel);
 		}
 
 		function bindEditor()
 		{
-			if(val=='1'){//markitup.wiki
-				editor.markItUp(wikiSettings,options[val].settings);
-				var FileUploader_uploadFile = new qq.FileUploaderBasic({'debug':false,'multiple':false,'button':jQuery("#fileUploader")[0],'action':options[val].action,'allowedExtensions':['jpg','jpeg','png','gif','txt','rar','zip','ppt','chm','pdf','doc','7z'],'sizeLimit':10485760,'minSizeLimit':10,'onComplete':function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}},'params':{'PHPSESSID':options[val].PHPSESSID,'YII_CSRF_TOKEN':options[val].YII_CSRF_TOKEN}}); 
+			if(type=='1'){//markitup.wiki
+				if(oldtype=='4')
+				{
+					editor.val(Wiky.toWiki(oldval));
+				}
+				editor.markItUp(wikiSettings,options[type].settings);
+				var FileUploader_uploadFile = new qq.FileUploaderBasic({'debug':false,'multiple':false,'button':jQuery("#fileUploader")[0],'action':options[type].action,'allowedExtensions':['jpg','jpeg','png','gif','txt','rar','zip','ppt','chm','pdf','doc','7z'],'sizeLimit':10485760,'minSizeLimit':10,'onComplete':function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}},'params':{'PHPSESSID':options[type].PHPSESSID,'YII_CSRF_TOKEN':options[type].YII_CSRF_TOKEN}}); 
 			}
-			if(val=='2'){//markitup.markdown
-				editor.markItUp(markdownSettings,options[val].settings);
-				var FileUploader_uploadFile = new qq.FileUploaderBasic({'debug':false,'multiple':false,'button':jQuery("#fileUploader")[0],'action':options[val].action,'allowedExtensions':['jpg','jpeg','png','gif','txt','rar','zip','ppt','chm','pdf','doc','7z'],'sizeLimit':10485760,'minSizeLimit':10,'onComplete':function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}},'params':{'PHPSESSID':options[val].PHPSESSID,'YII_CSRF_TOKEN':options[val].YII_CSRF_TOKEN}}); 
+			if(type=='2'){//markitup.markdown
+				editor.markItUp(markdownSettings,options[type].settings);
+				var FileUploader_uploadFile = new qq.FileUploaderBasic({'debug':false,'multiple':false,'button':jQuery("#fileUploader")[0],'action':options[type].action,'allowedExtensions':['jpg','jpeg','png','gif','txt','rar','zip','ppt','chm','pdf','doc','7z'],'sizeLimit':10485760,'minSizeLimit':10,'onComplete':function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}},'params':{'PHPSESSID':options[type].PHPSESSID,'YII_CSRF_TOKEN':options[type].YII_CSRF_TOKEN}}); 
 			}
-			if(val=='4')//html.xheditor
+			if(type=='4')//html.xheditor
 			{
-				editor.xheditor(options[val].settings);
+				if(oldtype=='1')
+				{
+					editor.val(Wiky.toHtml(editor.val()));
+				}
+				editor.xheditor(options[type].settings);
 			}
 		}
 
 		function insertFile(fileName,responseJSON)
 		{
-			if(val=='2'){
+			if(type=='2'){
 				if(responseJSON.ext=="jpg"||responseJSON.ext=="jpeg"||responseJSON.ext=="png"||responseJSON.ext=="gif")
 					editor.insertAtCaret('!['+fileName+']'+'('+responseJSON.url+')');
 				else
 					editor.insertAtCaret('!['+fileName+']'+'('+responseJSON.url+')');
 			}
-			if(val=='1'){
+			if(type=='1'){
 				if(responseJSON.ext=="jpg"||responseJSON.ext=="jpeg"||responseJSON.ext=="png"||responseJSON.ext=="gif")
 					editor.insertAtCaret('{{'+fileName+'|'+responseJSON.url+'}}');
 				else
@@ -74,12 +83,16 @@
 		
 		if(selector!=null)
 		selector.change(function(e){
-			if(val=='1'||val=='2'){
+			oldtype=type;
+			if(type=='1'||type=='2'){
 				editor.markItUpRemove();
 			}
-			if(val=='4')
+			if(type=='4')
+			{
 				editor.xheditor(false); 
-			val=$(this).val();
+				oldval=editor.val();
+			}
+			type=$(this).val();
 			bindEditor();
 		});
 	}
