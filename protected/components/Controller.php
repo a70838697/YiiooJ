@@ -21,6 +21,7 @@ class Controller extends CController
 	 * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
 	 * for more details on how to specify this property.
 	 */
+	public $homelink=null;
 	public $breadcrumbs=array();
 	public function denyAccess(){
 		throw new CHttpException(404,'The requested operation can not be done.');		
@@ -92,6 +93,7 @@ class Controller extends CController
 	
 	public function init()
 	{
+		$this->homelink=CHtml::link(Yii::t('zii','Home'),(Yii::app()->homeUrl), array('class'=>'home'));
 		if(isset($_REQUEST['lang'])&&$_REQUEST['lang']!="")
 		{
 			Yii::app()->language=$_REQUEST['lang'];

@@ -11,7 +11,7 @@
 	?>
 </div>
 <?php
-if($model->course->hasMathFormula)
+if($model->book->course->hasMathFormula)
 	echo CHtml::script('
 	MathJax.Hub.Queue(
 		["resetEquationNumbers",MathJax.InputJax.TeX],

@@ -26,8 +26,10 @@ wikiSettings = {
 		{name:'Numeric list', openWith:'(!(# |!|#)!)'}, 
 		{separator:'---------------' },
 		{name:'Picture',className:'markItUpButton11',  key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'}, 
+		//added by casper
+		{name:'Upload File',div:' ' , className:'markItPictureAdd',id:'fileUploader',text:'Up'},
 		// Added by CF Mitrah
-		{name:'Upload Photo',className:'markItPictureAdd', key:'M' 	},
+		//{name:'Upload Photo',className:'markItPictureAdd', key:'M' 	},
 		//{name:'Browse',className:'markItBriefcase', key:'F',beforeInsert: function(markItUp) { InlineUpload.display(markItUp,false) } 	},
 		{name:'Link', className:'markItUpButton12', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...' },
 		{name:'Url', className:'markItUpButton13', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...' },

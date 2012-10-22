@@ -1,18 +1,9 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->classRoom->course->title),array('/course/view','id'=>$model->classRoom->course_id,'class_room_id'=>$model->classRoom->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
-	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
-	$model->title,
+	CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('classRoom/view','id'=>$model->class_room_id),
+	Yii::t("t",'Experiments')=>array('classRoom/experiments','id'=>$model->class_room_id),
+	CHtml::encode($model->title)=>array('view','id'=>$model->id),
+	Yii::t("t",'Update')
 );
-$this->menu=array(
-	array('label'=>'List Experiment', 'url'=>array('index')),
-	array('label'=>'Create Experiment', 'url'=>array('create')),
-	array('label'=>'View Experiment', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Experiment', 'url'=>array('admin')),
-);
-?>
-
-<h2>Update Experiment <?php echo CHtml::encode( $model->title); ?></h2>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+echo $this->renderPartial('_form', array('model'=>$model));

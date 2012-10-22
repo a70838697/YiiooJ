@@ -13,15 +13,15 @@ class ULookup
 		self::RECORD_STATUS_PUBLIC=>'Public',
 		self::RECORD_STATUS_PRIVATE=>'Private',
 	);
-	
+
 	const CONTENT_TYPE_WIKI=1;
 	const CONTENT_TYPE_MARKDOWN=2;
 	const CONTENT_TYPE_HTML=4;
 	public static $CONTENT_TYPE_MESSAGES=array(
-			self::CONTENT_TYPE_HTML=>'HTML',
-			self::CONTENT_TYPE_WIKI=>'Wiki',
-			self::CONTENT_TYPE_MARKDOWN=>'Markdown',
-	);	
+		self::CONTENT_TYPE_WIKI=>'Wiki',
+		self::CONTENT_TYPE_MARKDOWN=>'Markdown',
+		self::CONTENT_TYPE_HTML=>'HTML',
+	);
 
 	public static $PROBLEM_MEMORY_LIMITS=array(
 		2097152=>'2M',

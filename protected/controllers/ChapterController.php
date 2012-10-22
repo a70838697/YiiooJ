@@ -213,7 +213,7 @@ class ChapterController extends CMController
 		$this->renderPartial('_form', array('model'=>$model,
 				'parent_id'=>!empty($_POST['parent_id'])?$_POST['parent_id']:0
 		),
-				false, false);
+				false, true);
 		Yii::app()->end();
 
 	}

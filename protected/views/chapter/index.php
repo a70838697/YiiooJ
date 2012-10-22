@@ -92,6 +92,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
 									$("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
 								},
 								success: function(data){
+									if($("#Chapter_description"))$("#Chapter_description").remove();
 									$.fancybox(data,
 									{
 										"transitionIn"	:	"elastic",
@@ -266,7 +267,7 @@ $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>")
                                                        $("#<?php echo Chapter::ADMIN_TREE_CONTAINER_ID;?>").removeClass("ajax-sending");
                                                              },
                           success: function(data){
-
+						if($("#Chapter_description"))$("#Chapter_description").remove();
                         $.fancybox(data,
                         {    "transitionIn"	:	"elastic",
                             "transitionOut"    :      "elastic",
@@ -420,4 +421,25 @@ $("#reload").click(function () {
 });
 
 </script>
+<?php 
+	 $this->widget('ext.EAjaxUpload.EAjaxUploadBasic',
+		array(
+				'id'=>'uploadFile',
+				'config'=>array(
+						'button'=>'js:jQuery("#fileUploader")[0]',
+						'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+						'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
+						'sizeLimit'=>10*1024*1024,// maximum file size in bytes
+						'minSizeLimit'=>10,// minimum file size in bytes
+						'onComplete'=>'js:function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}}',
+						//'messages'=>array(
+						//                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
+						//                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
+						//                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
+						//                  'emptyError'=>"{file} is empty, please select files again without it.",
+						//                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
+						//                 ),
+						//'showMessage'=>"js:function(message){ alert(message); }"
+				)
+)); 
 

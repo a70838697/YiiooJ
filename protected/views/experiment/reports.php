@@ -1,10 +1,10 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->classRoom->course->title),array('/course/view','id'=>$model->classRoom->course_id,'class_room_id'=>$model->classRoom->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
-	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
-	$model->title=>array('/experiment/view','id'=>$model->id),
-	Yii::t('course','Reports')
+	CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('view','id'=>$model->class_room_id),
+	Yii::t("t",'Experiments')=>array('classRoom/experiments','id'=>$model->class_room_id),
+	CHtml::encode($model->title)=>array('view','id'=>$model->id),
+	Yii::t("t","Experiment reports"),
 );
 $this->toolbar= array(
 	array(

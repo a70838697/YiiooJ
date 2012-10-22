@@ -1,19 +1,42 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->course->title),array('/course/view','id'=>$model->course_id,'class_room_id'=>$model->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	'My Courses'=>array('/classRoom/index/mine/1'),
-	$model->title=>array('view','id'=>$model->id),
-	'Experiments'
+	CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('view','id'=>$model->id),
+	Yii::t("t",'Experiments')
 );
 
-$this->menu=array(
-	array('label'=>'List Course', 'url'=>array('index')),
-	array('label'=>'Create Course', 'url'=>array('create')),
-	array('label'=>'Update Course', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Course', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Course', 'url'=>array('admin')),
+$this->toolbar= array(
+	array(
+		'label'=>Yii::t('t','Add an experiment'),
+		'icon-position'=>'left',
+		'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
+		'url'=>array('/experiment/create/'.$model->id),
+		'visible'=>(UUserIdentity::isTeacher()) ||UUserIdentity::isAdmin(),
+	),
+	array(
+		'label'=>Yii::t('course','View students'),
+		'icon-position'=>'left',
+		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+		'icon'=>'document',
+		'url'=>array('/classRoom/students/'.$model->id),
+	),
+	array(
+		'label'=>Yii::t('course','View reports'),
+		'icon-position'=>'left',
+		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+		'icon'=>'document',
+		'url'=>array('/classRoom/reports/'.$model->id),
+	),
+	/*
+	 array(
+	 	'label'=>Yii::t('course','Class information'),
+	 	'icon-position'=>'left',
+	 	'icon'=>'document',
+	 	'url'=>array('/classRoom/view/'.$model->id.''),
+	 ),*/
 );
+
 ?>
-
 <center><font size='6'><?php echo CHtml::encode($model->title);?></font></center>
 <table>
 	<tr>
@@ -25,40 +48,6 @@ $this->menu=array(
 	<?php echo CHtml::encode($model->location); ?></td>
 	</tr>
 </table>
-<?php
-$this->toolbar= array(
-       array(
-            'label'=>Yii::t('course','Add an experiment'),
-            'icon-position'=>'left',
-            'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
-            'url'=>'#',
-	        'visible'=>$experiment!==null,
-        	'linkOptions'=>array('onclick'=>'return showDialogue();',)
-        ),
-        array(
-            'label'=>Yii::t('course','View students'),
-            'icon-position'=>'left',
-        	'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
-            'icon'=>'document',
-        	'url'=>array('/classRoom/students/'.$model->id),
-        ),
-    	array(
-    		'label'=>Yii::t('course','View reports'),
-    		'icon-position'=>'left',
-    		'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
-    		'icon'=>'document',
-    		'url'=>array('/classRoom/reports/'.$model->id),
-    	),
-		/*
-    	array(
-            'label'=>Yii::t('course','Class information'),
-            'icon-position'=>'left',
-            'icon'=>'document',
-        	'url'=>array('/classRoom/view/'.$model->id.''),
-        ),*/
-    );
-
-?>
 
 <?php if(!(Yii::app()->user->isGuest)){?>
 <div id="experiments">

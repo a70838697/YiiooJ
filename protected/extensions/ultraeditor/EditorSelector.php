@@ -75,7 +75,7 @@ class EditorSelector extends CWidget
 		}
 		
 		$options= CJavaScript::encode($this->options);
-		Yii::app()->clientScript->registerScript('editorselection'.$this->link, "$('{$this->link}').editorselection('{$this->editor}',{$options})");
+		Yii::app()->clientScript->registerScript('editorselection'.$this->editor, "$('{$this->editor}').editorselection('{$this->link}',{$options})");
 	}
 	
 }

@@ -1,8 +1,9 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->course->title),array('/course/view','id'=>$model->course_id,'class_room_id'=>$model->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
-	$model->title=>array('view','id'=>$model->id),
-	Yii::t('course','View reports')
+		CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('view','id'=>$model->id),
+		Yii::t("t",'Experiments')=>array('experiments','id'=>$model->id),
+		Yii::t('course','View reports')
 );
 
 Yii::import("application.extensions.ultraeditor.XHeditor");

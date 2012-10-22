@@ -49,4 +49,9 @@ return array (
 	
 	//Classroom
 	'Update classroom'=>'修改课堂信息',
+	
+	
+	
+	//Classroom
+	'Update'=>'修改',	
 );

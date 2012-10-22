@@ -1,7 +1,8 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->title),array('/course/view','id'=>$model->id,'class_room_id'=>$this->getClassRoomId()), array('class'=>'home'));
 $this->breadcrumbs=array(
-		Yii::t('course','My courses')=>array('/course/index/mine/1'),
-		$model->title=>array('/course/view','id'=>$model->id),
+		//Yii::t('course','My courses')=>array('/course/index/mine/1'),
+		//$model->title=>array('/course/view','id'=>$model->id),
 		Yii::t('course','classrooms')
 );
 
@@ -47,7 +48,7 @@ array(
 				'label'=>Yii::t('course','Update course'),
 				'icon-position'=>'left',
 				'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
-				'url'=>array('update', 'id'=>$model->id),
+				'url'=>array('update', 'id'=>$model->id,'class_room_id'=>$this->getClassRoomId()),
 		),
 
 );

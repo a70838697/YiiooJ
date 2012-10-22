@@ -59,7 +59,8 @@
 				'items'=>$items,
 		));
 			?></div><?php //zii.widgets.CBreadcrumbs
-		$this->widget('application.extensions.exbreadcrumbs.EXBreadcrumbs', array(
+		$this->widget('ext.exbreadcrumbs.EXBreadcrumbs', array(
+			'homeLink'=>$this->homelink,
 				'links'=>$this->breadcrumbs,
 		));
 		echo $content;

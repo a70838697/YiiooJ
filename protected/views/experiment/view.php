@@ -1,9 +1,9 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->classRoom->course->title),array('/course/view','id'=>$model->classRoom->course_id,'class_room_id'=>$model->classRoom->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	Yii::t('course','My classes')=>array('/classRoom/index/mine/1'),
-	$model->classRoom->title=>array('/classRoom/view','id'=>$model->class_room_id),
-	Yii::t('course','Experiments')=>array('/classRoom/experiments','id'=>$model->class_room_id),
-	$model->title,
+	CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('view','id'=>$model->class_room_id),
+	Yii::t("t",'Experiments')=>array('classRoom/experiments','id'=>$model->class_room_id),
+	CHtml::encode($model->title),
 );
 
 $cansubmit=false;
@@ -170,4 +170,24 @@ $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.u
 				'modal'=>true,
 		)
 ));
+ $this->widget('ext.EAjaxUpload.EAjaxUploadBasic',
+		array(
+				'id'=>'uploadFile',
+				'config'=>array(
+						'button'=>'js:jQuery("#fileUploader")[0]',
+						'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+						'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
+						'sizeLimit'=>10*1024*1024,// maximum file size in bytes
+						'minSizeLimit'=>10,// minimum file size in bytes
+						'onComplete'=>'js:function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}}',
+						//'messages'=>array(
+						//                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
+						//                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
+						//                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
+						//                  'emptyError'=>"{file} is empty, please select files again without it.",
+						//                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
+						//                 ),
+						//'showMessage'=>"js:function(message){ alert(message); }"
+				)
+)); 
 if($model->classRoom->hasMathFormula)$this->widget('application.components.widgets.MathJax',array());

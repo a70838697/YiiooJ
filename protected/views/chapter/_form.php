@@ -144,31 +144,40 @@ $form=$this->beginWidget('CActiveForm', array(
 					)
 			));
 			*/
-			$this->widget('ext.ultraeditor.EditorSelector', array(
-					// you can either use it for model attribute
-					'link' => '#Chapter_content_type',
-					'editor' => '#Chapter_description',
-						
-					'options'=>array(
-							ULookup::CONTENT_TYPE_WIKI=>array('settings'=>array('previewParserPath'=>
-									Yii::app()->urlManager->createUrl('site/format/wiki2html'),
-								)),
-							ULookup::CONTENT_TYPE_MARKDOWN=>array('settings'=>array('previewParserPath'=>
-									Yii::app()->urlManager->createUrl('site/format/markdown2html'),
-								)),
-							ULookup::CONTENT_TYPE_HTML=>array('settings'=>array(
-								'html5Upload'=>false,
-								'tools'=>'full',
-								'upLinkUrl'=>'/joj/upload/create/type/report/classRoom/0',
-								'upLinkExt'=>'zip,rar,txt,sql,ppt,pptx,doc,docx',
-								'upImgUrl'=>'/joj/upload/create/type/report/classRoom/0',
-								'upImgExt'=>'jpg,jpeg,gif,png',	
-								'id'=>'Chapter_description',
-								'name'=>'Chapter[description]'
-								)),
-					)
-			));
-			?>
+		/*	
+		$this->widget('ext.ultraeditor.EditorSelector', array(
+			// you can either use it for model attribute
+			'link' => '#Chapter_content_type',
+			'editor' => '#Chapter_description',
+
+			'options'=>array(
+				ULookup::CONTENT_TYPE_WIKI=>array(
+					'PHPSESSID'=>session_id(),
+					'YII_CSRF_TOKEN'=> Yii::app()->request->csrfToken,
+					'action'=>Yii::app()->urlManager->createUrl('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+					'settings'=>array('previewParserPath'=>Yii::app()->urlManager->createUrl('site/format/wiki2html'),),
+				),
+				ULookup::CONTENT_TYPE_MARKDOWN=>array(
+					'PHPSESSID'=>session_id(),
+					'YII_CSRF_TOKEN'=> Yii::app()->request->csrfToken,
+					'action'=>Yii::app()->urlManager->createUrl('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+					'settings'=>array('previewParserPath'=>Yii::app()->urlManager->createUrl('site/format/markdown2html'),)
+				),
+				ULookup::CONTENT_TYPE_HTML=>array('settings'=>array(
+					'html5Upload'=>false,
+					'tools'=>'full',
+					'upLinkUrl'=>Yii::app()->urlManager->createUrl('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+					'upLinkExt'=>'zip,rar,txt,sql,ppt,pptx,doc,docx',
+					'upImgUrl'=>Yii::app()->urlManager->createUrl('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
+					'upImgExt'=>'jpg,jpeg,gif,png',
+					'id'=>'Chapter_description',
+					'name'=>'Chapter[description]'
+				)),
+			)
+		));
+		*/
+
+		?>
 		<?php //echo $form->textArea($model,'description',array('rows'=>10, 'cols'=>50)); ?>
              <span  id="success-Chapter_description"  class="hid input-notification-success  success png_bg"></span>
            <div><small></small> </div>
@@ -188,26 +197,6 @@ $form=$this->beginWidget('CActiveForm', array(
  <?php   echo  CHtml::submitButton($model->isNewRecord ? 'Submit' : 'Save',array('class' => 'button align-right')); ?>	</div>
  </td>
  <td>
- <? /*$this->widget('ext.EAjaxUpload.EAjaxUploadBasic',
-array(
-        'id'=>'uploadFile',
-        'config'=>array(
-        		'button'=>'js:jQuery("#fileUploader")[0]',
-        		'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
-               'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
-               'sizeLimit'=>10*1024*1024,// maximum file size in bytes
-               'minSizeLimit'=>10,// minimum file size in bytes
-               'onComplete'=>'js:function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}}',
-               //'messages'=>array(
-               //                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
-               //                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
-               //                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
-               //                  'emptyError'=>"{file} is empty, please select files again without it.",
-               //                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
-               //                 ),
-               //'showMessage'=>"js:function(message){ alert(message); }"
-              )
-)); */?>
  </td>
  </tr>
  </table>
@@ -215,49 +204,6 @@ array(
  <?php  $this->endWidget(); ?></div><!-- form -->
 
 </div>
-<?php echo 
-CHtml::script(
-'
-
-	
-	jQuery.fn.extend({
-insertAtCaret: function(myValue){
-  return this.each(function(i) {
-    if (document.selection) {
-      this.focus();
-      sel = document.selection.createRange();
-      sel.text = myValue;
-      this.focus();
-    }
-    else if (this.selectionStart || this.selectionStart == \'0\') {
-      var startPos = this.selectionStart;
-      var endPos = this.selectionEnd;
-      var scrollTop = this.scrollTop;
-      this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
-      this.focus();
-      this.selectionStart = startPos + myValue.length;
-      this.selectionEnd = startPos + myValue.length;
-      this.scrollTop = scrollTop;
-    } else {
-      this.value += myValue;
-      this.focus();
-    }
-  })
-}
-});
-
-function insertFile(fileName,responseJSON)
-{
-	if(responseJSON.ext=="jpg"||responseJSON.ext=="jpeg"||responseJSON.ext=="png"||responseJSON.ext=="gif")
-		//$("#Chapter_description").insertAtCaret(\'\{\{Attachment:\'+responseJSON.fileid+\'|\'+fileName+\'}}\');
-		$("#Chapter_description").insertAtCaret(\'![\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'\'+responseJSON.fileid+\')\');
-	else
-		//$("#Chapter_description").insertAtCaret(\'[[Attachment:\'+responseJSON.fileid+\'|\'+fileName+\']]\');
-		$("#Chapter_description").insertAtCaret(\'[\'+fileName+\']\'+\'('.UCHtml::url('upload/download/').'\'+responseJSON.fileid+\')\');
-}
-'
-);
-?>
 
 <script  type="text/javascript">
     
@@ -278,7 +224,7 @@ function insertFile(fileName,responseJSON)
 <script type="text/javascript">
 /*<![CDATA[*/
 function initControl(){
-	$('#Chapter_content_type').editorselection('#Chapter_description',{'1':{'settings':{'previewParserPath':'/joj/site/format/type/wiki2html'}},'2':{'settings':{'previewParserPath':'/joj/site/format/type/markdown2html'}},'4':{'settings':{'html5Upload':false,'tools':'full','upLinkUrl':'/joj/upload/create/type/report/classRoom/0','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/joj/upload/create/type/report/classRoom/0','upImgExt':'jpg,jpeg,gif,png','id':'Chapter_description','name':'Chapter[description]'}}})
+	$('#Chapter_description').editorselection('#Chapter_content_type',{'1':{'PHPSESSID':'','YII_CSRF_TOKEN':'a2e70f5d2e6ee4c614c29c7ba91c77d8771bdac0','action':'/joj/upload/create/type/chapter/book/15','settings':{'previewParserPath':'/joj/site/format/wiki2html'}},'2':{'PHPSESSID':'','YII_CSRF_TOKEN':'a2e70f5d2e6ee4c614c29c7ba91c77d8771bdac0','action':'/joj/upload/create/type/chapter/book/15','settings':{'previewParserPath':'/joj/site/format/markdown2html'}},'4':{'settings':{'html5Upload':false,'tools':'full','upLinkUrl':'/joj/upload/create/type/chapter/book/15','upLinkExt':'zip,rar,txt,sql,ppt,pptx,doc,docx','upImgUrl':'/joj/upload/create/type/chapter/book/15','upImgExt':'jpg,jpeg,gif,png','id':'Chapter_description','name':'Chapter[description]'}}})
 };
 /*]]>*/
 </script>

@@ -1,8 +1,8 @@
 <?php
+$this->homelink=CHtml::link(CHtml::encode($model->course->title),array('/course/view','id'=>$model->course_id,'class_room_id'=>$model->id), array('class'=>'home'));
 $this->breadcrumbs=array(
-	'My Classes'=>array('/classRoom/index/mine/1'),
-	$model->title=>array('view','id'=>$model->id),
-	'Students'
+	CHtml::encode($model->title)."(".$this->classRoom->begin.")"=>array('view','id'=>$model->id),
+	Yii::t("t",'Students')
 );
 
 $this->menu=array(

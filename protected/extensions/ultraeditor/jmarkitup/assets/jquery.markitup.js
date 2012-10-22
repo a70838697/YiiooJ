@@ -176,7 +176,7 @@
 					title = (button.key) ? (button.name||'')+' [Ctrl+'+button.key+']' : (button.name||'');
 					key   = (button.key) ? 'accesskey="'+button.key+'"' : '';
 					if (button.div) {
-						li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"><div id='+button.id+' style="width:20">'+button.text+'</div></li>').appendTo(ul);
+						li = $('<li class="markItUpButton markItUpButton'+t+(i)+' '+(button.className||'')+'"><div id='+button.id+' style="width:20" title="'+title+'">'+button.text+'</div></li>').appendTo(ul);
 					}else if (button.separator) {
 						li = $('<li class="markItUpSeparator">'+(button.separator||'')+'</li>').appendTo(ul);
 					} else {

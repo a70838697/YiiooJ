@@ -127,6 +127,7 @@ class UploadController extends Controller
 			if($model->save())
 			{
 				$result['fileid']=$model->id;
+				$result['url']=Yii::app()->urlManager->createUrl('upload/download/'.$model->id);
 			}
 			else 
 			{
