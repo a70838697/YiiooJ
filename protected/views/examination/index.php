@@ -1,15 +1,8 @@
 <?php
 if(!isset($nomenu)){
-	$this->breadcrumbs=array(
-			Yii::t('main','Courses')=>array('/course/index')
-	);
-	if($this->getCourse())$this->breadcrumbs[$this->getCourse()->title]=array('/course/view','id'=>$this->getCourseId());
-	$this->breadcrumbs[]=($model->root==$model->id)?Yii::t('course','Course content'): $model->name;
-	
-	
-	
+
 	$toolbar=array(
-			array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->getClassRoomId()),'visible'=>true),
+			array('label'=>Yii::t('course','Course introduction'), 'url'=>array('/course/view','id'=>$this->courseId,'class_room_id'=>$this->classRoomId),'visible'=>true),
 			array(
 					'label'=>Yii::t('main','Refresh'),
 					'icon-position'=>'left',
@@ -18,23 +11,14 @@ if(!isset($nomenu)){
 					'visible'=>true,
 					'linkOptions'=>array('id'=>'reload'),
 			),
-			array(
-					'label'=>Yii::t('course','New multiple choice question'),
-					'url'=>array('/multipleChoice/create','id'=>'xxxxxxyy','class_room_id'=>$this->getClassRoomId()),
-					'linkOptions'=>array('onclick'=>'return gohere(this.href);'),
-					'visible'=>UUserIdentity::isTeacher()|| UUserIdentity::isAdmin(),
-			),
-	
 	);
 	if($this->toolbar!==null)
 	{
 		$this->toolbar=array_merge($this->toolbar,$toolbar);
 	}
 }
-$this->widget('application.components.widgets.MathJax',array());
 $course_url= ($model?("/".$model->id):"").(isset($quiz)&&$quiz!==null?("/quiz/".$quiz):"");
-?>
-<table>
+?><table>
 	<tr>
 		<td width="20%" valign="top" style="vertical-align:top">
 			<div>
@@ -443,3 +427,6 @@ $("#reload").click(function () {
 
 </script>
 
+<?php
+$this->widget('application.components.widgets.MathJax',array());
+?>

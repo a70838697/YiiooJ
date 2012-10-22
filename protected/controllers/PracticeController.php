@@ -100,7 +100,7 @@ class PracticeController extends Controller
 
 		$model=$this->loadModel($id);
 		if($model->chapter)
-			$this->course=$model->chapter->course;
+			$this->course=$model->chapter->book->course;
 		$this->render('view',array(
 			'model'=>$model,
 			'quiz'=>$quiz,
