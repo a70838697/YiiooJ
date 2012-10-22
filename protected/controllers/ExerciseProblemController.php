@@ -105,6 +105,7 @@ class ExerciseProblemController extends Controller
 				if($exercise->save())
 				{
 					$experiment->exercise_id=$exercise->id;
+					$model->exercise_id=$exercise->id;
 					$experiment->save();
 				}
 			}
