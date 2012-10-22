@@ -7,12 +7,13 @@ if(UUserIdentity::isStudent())
 }
 if(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())
 {
-	echo "<th>Operation</th>";
+	echo "<th>Closed</th><th>Operation</th>";
 }
 ?>
 </tr>
 <?php
  foreach($experiments as $experiment): 
+ if((!$experiment->isClosed)|| UUserIdentity::isTeacher() ||UUserIdentity::isAdmin()){
  ?>
 <tr>
 <td>
@@ -52,13 +53,24 @@ if(UUserIdentity::isStudent())
 <?php 
 if(UUserIdentity::isAdmin()||($experiment->classRoom->user_id==Yii::app()->user->id))
 {
-	echo CHtml::link( Yii::t('main',"Delete"),array("classRoom/deleteExperiment","id"=>$experiment->id) ,array('confirm' =>Yii::t('course', 'Are you sure to delete the experiment?')));
-	echo "|".CHtml::link( Yii::t('main',"Update"),array("experiment/update","id"=>$experiment->id));
+?>
+	<div>
+	<font color="<?php echo $experiment->isClosed?"red":"" ?>">
+		<?php echo Yii::t('t',$experiment->isClosed?"Yes":"No"); ?>
+	</font>
+	</div>
+</td>
+<td>
+<?php
+	echo CHtml::link( Yii::t('t',"Delete"),array("classRoom/deleteExperiment","id"=>$experiment->id) ,array('confirm' =>Yii::t('course', 'Are you sure to delete the experiment?')));
+	echo "|".CHtml::link( Yii::t('t',"Update"),array("experiment/update","id"=>$experiment->id));
+	echo "|".CHtml::link( Yii::t('t',$experiment->isClosed?"Open":"Close"),array("classRoom/deleteExperiment/type/close","id"=>$experiment->id) ,$experiment->isClosed?array():array('confirm' =>Yii::t('course', 'Are you sure to close the experiment?')));
 }
 ?>
 <!-- experiment -->
 </td>
 </tr>
 <?php
+}
 endforeach; ?>
 </table>

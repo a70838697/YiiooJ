@@ -27,7 +27,11 @@
 	<b><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</b>
 	<?php echo CHtml::encode($data->user_id); ?>
 	<br />
-
+	
+	<b><?php echo CHtml::encode($data->getAttributeLabel('isClosed')); ?>:</b>
+	<?php echo $data->isClosed?"Yes":'No'; ?>
+	<br />
+	
 	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
 	<?php echo CHtml::encode($data->status); ?>

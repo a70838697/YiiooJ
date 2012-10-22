@@ -74,6 +74,11 @@ $this->widget('zii.widgets.CDetailView', array(
 			'value'=>$gMessages[$model->experiment_type_id],
 		),
 		array(
+			'name'=>'isClosed',
+			'type'=>'raw',
+			'value'=>$model->isClosed?"Yes":"No",
+		),
+		array(
 			'name'=>'due_time',
 			'type'=>'raw',
 			'value'=>date_format(date_create($model->due_time),'Y年m月d日  H:i'),

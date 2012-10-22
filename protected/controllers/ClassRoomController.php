@@ -339,7 +339,12 @@ class ClassRoomController extends CMController
 		$experiment=Experiment::model()->findByPk((int)$id);
 		if(UUserIdentity::isAdmin()||($experiment->classRoom->user_id==Yii::app()->user->id))
 		{
-			$experiment->delete();
+			if(Yii::app()->request->getQuery('type',null)=="close")
+			{
+				$experiment->isClosed=1-$experiment->isClosed;
+				$experiment->save();
+			}
+			else $experiment->delete();
 		}
 		$this->redirect(array('experiments','id'=>$experiment->classRoom->id));
 	}

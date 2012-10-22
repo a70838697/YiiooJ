@@ -53,5 +53,10 @@ return array (
 	
 	
 	//Classroom
-	'Update'=>'修改',	
+	'Update'=>'修改',
+	'Close'=>'关闭',
+	'Open'=>'开放',
+	'Delete'=>'删除',
+	'Yes'=>'是',
+	'No'=>'否',
 );

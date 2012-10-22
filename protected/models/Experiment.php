@@ -20,6 +20,20 @@
  */
 class Experiment extends CActiveRecord
 {
+	const EXPERIMENT_OPTION_CLOSED=65536;
+	private function setFlagStat($bit,$set){
+		if($set)$this->flags |=$bit;
+		else $this->flags &= (~$bit);
+	}
+	public function getIsClosed()
+	{
+		return  ($this->flags & self::EXPERIMENT_OPTION_CLOSED)>0;
+	}
+	public function setIsClosed($value)
+	{
+		$this->setFlagStat(self::EXPERIMENT_OPTION_CLOSED,$value);
+	}
+		
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Experiment the static model class
@@ -66,6 +80,7 @@ class Experiment extends CActiveRecord
 			array('class_room_id, experiment_type_id, status, exercise_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>160),
 			array('aim', 'length', 'min'=>0),
+			array('isClosed', 'boolean'),			
 			array('memo', 'length', 'max'=>256),
 			array('sequence', 'length', 'max'=>20),
 	        array('created','default',
@@ -128,6 +143,7 @@ class Experiment extends CActiveRecord
 			'meo' => 'Memo',
 			'created' => 'Created',
 			'exercise_id' => 'Exercise',
+			'isClosed'=>'Closed',
 		);
 	}
 

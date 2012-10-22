@@ -95,26 +95,27 @@ $columns=array(
 				*/
 		);
 
-foreach($model->experiments as $experiment) 
+foreach($model->experiments as $experiment)
 {
 
 	$isTimeOut=($experiment->afterDeadline())?'true':'false';
-	$columns[]=	array(
-						'header'=>$experiment->sequence,
-						'name'=>'score',
-						'type'=>'raw',
-						'value'=>'$data->getCourseExperimentColumn('.$model->id.','.$experiment->id.','.$isTimeOut.')',
-				);
-	
+	if(!$experiment->isClosed)
+		$columns[]=	array(
+			'header'=>$experiment->sequence,
+			'name'=>'score',
+			'type'=>'raw',
+			'value'=>'$data->getCourseExperimentColumn('.$model->id.','.$experiment->id.','.$isTimeOut.')',
+		);
+
 }
 if(count($model->experiments)>0)
 {
 	$columns[]=	array(
-			'header'=>Yii::t('course',"Average/Times"),
-			'type'=>'raw',
-			'value'=>'$data->getAverageScore('.$model->id.')',
+		'header'=>Yii::t('course',"Average/Times"),
+		'type'=>'raw',
+		'value'=>'$data->getAverageScore('.$model->id.')',
 	);
-	
+
 }
 
 echo UCHtml::cssFile('pager.css');

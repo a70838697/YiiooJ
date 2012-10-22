@@ -90,20 +90,29 @@
 </td></tr>
 <tr><td>
 		<?php echo $form->labelEx($model,'memo'); ?>
-		</td><td colspan=3>
+		</td><td colspan=2>
 		<?php echo $form->textField($model,'memo',array('size'=>60,'maxlength'=>256)); ?>
 		<?php echo $form->error($model,'memo'); ?>
-</td></tr>
+</td>
+<td><table width="40px"><tr><td>
+		<?php echo $form->labelEx($model,'isClosed'); ?>
+		</td><td>
+		<?php echo $form->checkBox($model,'isClosed'); ?>
+		<?php echo $form->error($model,'isClosed'); ?>
+		</td></tr>
+	</table>
+</td>
+</tr>
 <tr><td colspan=4>
 	<div class="row">
 		<?php echo $form->labelEx($model,'aim'); ?>
-		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'aim','style'=>'width:740px;height:100px'),true); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'aim','style'=>'width:840px;height:120px'),true); ?>
 		<?php echo $form->error($model,'aim'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:740px;height:120px','config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'description','style'=>'width:840px;height:160px','config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 	<div class="row buttons">
