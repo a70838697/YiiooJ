@@ -39,11 +39,21 @@ $this->toolbar=array(
         ), 
     );
 ?>
-<center><font size='6'><?php echo CHtml::encode($model->title);?></font></center>
+<center>
+	<font size='6'><?php echo CHtml::encode($model->title);?> </font>
+</center>
 <table>
 	<tr>
-	<td><b><?php echo CHtml::encode($model->getAttributeLabel('user_id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/user/user/view', 'id'=>$model->userinfo->user_id)); ?> |  <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?></td>
+		<td align="right" width=90><b><?php echo CHtml::encode($model->getAttributeLabel('user_id')); ?>
+		</b></td>
+		<td align="left"><?php echo CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),array('/user/user/view', 'id'=>$model->userinfo->user_id)); ?>
+			| <?php echo CHtml::link(Yii::t('main',"send a message"), array("message/compose/". $model->user_id));?>
+		</td>
+	</tr>
+	<tr>
+		<td align="right"><b><?php echo CHtml::encode($model->getAttributeLabel('website_title')); ?></b></td>
+		<td align="left"><?php echo CHtml::encode($model->website_title); ?>
+		</td>
 	</tr>
 </table>
 
