@@ -37,6 +37,12 @@
 		<?php echo $form->labelEx($model,'hasMathFormula'); ?>
 		<?php echo $form->checkBox($model,'hasMathFormula'); ?>
 		<?php echo $form->error($model,'hasMathFormula'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'website_title'); ?>
+		<?php echo $form->checkBox($model,'website_title'); ?>
+		<?php echo $form->error($model,'website_title'); ?>
 	</div>	
 	
 	<div class="row">

@@ -23,6 +23,12 @@
 	<?php echo CHtml::encode($data->memo); ?>
 </td>
 </tr>
+<tr>
+<th><?php echo CHtml::encode($data->getAttributeLabel('website_title')); ?>:</th>
+<td colspan=4>
+	<?php echo CHtml::encode($data->website_title); ?>
+</td>
+</tr>
 <?php 
 if($data->classRooms && count($data->classRooms)>0){
 ?>

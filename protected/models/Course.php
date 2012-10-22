@@ -14,6 +14,7 @@
  * @property string $chapter_id
  * @property integer $created
  * @property integer $flags
+ * @property string $website_title
  * @property boolean $hasMathFormula
  */
 class Course extends CActiveRecord
@@ -73,6 +74,7 @@ class Course extends CActiveRecord
 			array('hasMathFormula', 'boolean'),
 			array('visibility', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>60),
+			array('website_title', 'length', 'max'=>256),
 			array('sequence', 'length', 'max'=>20),
 			array('memo', 'length', 'max'=>100),
 			array('description', 'length', 'min'=>0),
@@ -123,6 +125,7 @@ class Course extends CActiveRecord
 			'memo' => 'Memo',
 			'user_id' => 'Creator',
 			'visibility' => 'Visible',
+			'website_title' => 'Website title',
 			'created' => 'Created',
 			'hasMathFormula'=>'Support Latex math formula',
 		);

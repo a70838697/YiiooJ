@@ -27,7 +27,13 @@
 	<div class="container" id="page">
 		<div id="header">
 			<div id="logo">
-				<?php echo Yii::t("main","CVLPJU: Course & Virtual Lab Platform of Jinan University").($this->course?":".$this->course->title:"");//CHtml::encode(Yii::t("main",Yii::app()->name)); ?>
+				<?php
+				if($this->course && strlen($this->course->website_title)>0)
+				{
+					echo CHtml::encode($this->course->website_title);
+				}
+				else
+					echo Yii::t("main","CVLPJU: Course & Virtual Lab Platform of Jinan University").($this->course?":".$this->course->title:"");//CHtml::encode(Yii::t("main",Yii::app()->name)); ?>
 			</div>
 		</div>
 		<!-- header -->
