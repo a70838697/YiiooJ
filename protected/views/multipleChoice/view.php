@@ -15,7 +15,7 @@ $fill="Fill";
 if($model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_MULTIPLE||
 	$model->question_type==ULookup::EXAMINATION_PROBLEM_TYPE_MULTIPLE_CHOICE_SINGLE
 	)$fill="";
-if($model->chapter->course->hasMathFormula)
+if($model->chapter->book->course->hasMathFormula)
 	$this->widget('application.components.widgets.MathJax',array());
 $this->toolbar= array(
 		array(
