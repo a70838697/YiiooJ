@@ -60,7 +60,7 @@ class ExerciseProblemController extends Controller
 			echo CActiveForm::validate($submition);
 			Yii::app()->end();
 		}
-		if(isset($_POST['Submition']))
+		if(isset($_POST['Submition'])&& !$exerciseProblem->exercise->experiment->isTimeOut())
 		{
 			$submition->attributes=$_POST['Submition'];
 			$submition->user_id=Yii::app()->user->id;

@@ -45,6 +45,8 @@ class Experiment extends CActiveRecord
 
 	public function isTimeOut()
 	{
+		if($this->getIsClosed())return true;
+		
 		$timezone = "Asia/Chongqing";
 		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
 		

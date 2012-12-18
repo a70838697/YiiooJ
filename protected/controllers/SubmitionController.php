@@ -110,6 +110,8 @@ class SubmitionController extends Controller
 
 		
 		$this->checkAccess(array('model'=>$model));
+		if($exercise_problem->exercise->experiment->isTimeOut())$this->denyAccess();
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
