@@ -42,7 +42,7 @@ class GroupController extends Controller
 	 */
 	public function actionSelectStudent($id)
 	{
-		$model=$this->loadModel($id);
+		//$model=$this->loadModel($id);
 		$criteria=new CDbCriteria(array(
 	    ));
 	    $criteria->with=array('profile','unit');
@@ -64,7 +64,7 @@ class GroupController extends Controller
 		$render=Yii::app()->request->isAjaxRequest ? 'renderPartial' : 'render';
 	
 		$this->$render('selectStudent',array(
-			'model'=>$model,
+			'id'=>$id,
 			'dataProvider'=>$dataProvider,
 		));
 	}	

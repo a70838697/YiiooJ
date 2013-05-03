@@ -4,7 +4,7 @@ echo CHtml::script(
 '
 function research()
 {
-	var urlh=\''.CHtml::normalizeUrl(array("group/selectStudent/".$model->id)).'\';
+	var urlh=\''.CHtml::normalizeUrl(array("group/selectStudent/".$id)).'\';
 	if($.trim($(\'#identitynumber\').val())!="")urlh+="/identitynumber/"+escape($.trim($(\'#identitynumber\').val()));
 	$(\'#group-grid > div.keys\').attr(\'title\',urlh);
 	$.fn.yiiGridView.update(\'group-grid\');

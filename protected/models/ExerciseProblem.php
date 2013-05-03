@@ -40,7 +40,41 @@ class ExerciseProblem extends CActiveRecord
 			'title'=>$this->title,
 		));
 	}
-	
+
+	public function scopes()
+	{
+		$alias = $this->getTableAlias(false,false);
+		return array(
+				'titled'=>array(
+					'select'=>array("{$alias}.title","{$alias}.sequence","{$alias}.id"),
+				),
+				'public'=>array(
+					//'condition'=>"{$alias}.visibility=".ULookup::RECORD_STATUS_PUBLIC,
+				),
+				'mine'=>array(
+					'condition'=>(Yii::app()->user->isGuest?"":"{$alias}.user_id=". Yii::app()->user->id ." and " ). "{$alias}.visibility!=".ULookup::RECORD_STATUS_DELETE,
+				),
+				'allCount'=>array(
+				    'with'=>Yii::app()->user->isGuest?array('acceptedCount','submitedCount'):array('acceptedCount','submitedCount','myAcceptedCount','mySubmitedCount'),
+				),
+				'myCount'=>array(
+				    'with'=>array('myAcceptedCount','mySubmitedCount'),
+				),
+				'mySubmited'=>array(
+					'condition'=>"exists(select 'X' from {{submitions}} where {{submitions}}.problem_id={$alias}.id and {{submitions}}.user_id=".Yii::app()->user->id.")",
+					'with'=>array('myAcceptedCount','mySubmitedCount'),
+				),
+				'myAccepted'=>array(
+					'condition'=>"exists(select 'X' from {{submitions}} as cs where cs.problem_id={$alias}.id and cs.user_id=".Yii::app()->user->id." and cs.status=". ULookup::JUDGE_RESULT_ACCEPTED .")",
+					'with'=>array('myAcceptedCount','mySubmitedCount'),
+				),
+				'myNotAccepted'=>array(
+																//'condition'=>"exists(select 'X' from {{submitions}} where {{submitions}}.problem_id={$alias}.id and {{submitions}}.user_id=".Yii::app()->user->id.") and not exists(select 'X' from {{submitions}} as cs where cs.problem_id={$alias}.id  and cs.user_id=".Yii::app()->user->id." and cs.status=". ULookup::JUDGE_RESULT_ACCEPTED .")",
+					'condition'=>"exists(select 'X' from {{submitions}} where {{submitions}}.problem_id={$alias}.id and {{submitions}}.user_id=".Yii::app()->user->id.") and not exists(select 'X' from {{submitions}} as cs where cs.problem_id={$alias}.id  and cs.user_id=".Yii::app()->user->id." and cs.status=". ULookup::JUDGE_RESULT_ACCEPTED .")",
+					'with'=>array('myAcceptedCount','mySubmitedCount'),
+				),
+		);
+	}	
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -74,6 +108,10 @@ class ExerciseProblem extends CActiveRecord
 			'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
 			'submitions'=>array(self::HAS_MANY,"ExerciseSubmition",array("exercise_id"=>"exercise_id","problem_id"=>"problem_id"),
 				'order'=>'submitions.modified ASC',),
+			'submitedCount' => array(self::STAT, 'ExerciseSubmition','','join'=>'LEFT JOIN {{submitions}} on {{submitions}}.problem_id=t.problem_id and {{submitions}}.exercise_id=t.exercise_id ','condition'=>''),
+			'acceptedCount' => array(self::STAT, 'ExerciseSubmition','','foreignKey'=>'','join'=>'LEFT JOIN {{submitions}} on {{submitions}}.problem_id=t.problem_id and {{submitions}}.exercise_id=t.exercise_id ', 'condition'=>' status='.ULookup::JUDGE_RESULT_ACCEPTED,),
+			'mySubmitedCount'=>array(self::STAT, 'ExerciseSubmition','','join'=>'LEFT JOIN {{submitions}} on {{submitions}}.exercise_id=t.exercise_id ','condition'=>' user_id='.Yii::app()->user->id),
+			'myAcceptedCount'=>array(self::STAT, 'ExerciseSubmition','','join'=>'LEFT JOIN {{submitions}} on {{submitions}}.problem_id=t.problem_id and {{submitions}}.exercise_id=t.exercise_id ','condition'=>'myAcceptedCount.problem_id=t.problem_id and myAcceptedCount.exercise_id=t.exercise_id and status='.ULookup::JUDGE_RESULT_ACCEPTED .' and user_id='.Yii::app()->user->id,),
 		);
 	}
 

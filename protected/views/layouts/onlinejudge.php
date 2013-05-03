@@ -38,6 +38,13 @@ function view_problem_by_id()
 					
 				),
 			),
+			array('label'=>'Contest', 'url'=>array('#'),
+					'items'=>array(
+							array('label'=>'List Contest', 'url'=>array('/programmingContest/index')),
+							array('label'=>'Create Contest', 'url'=>array('/progrmamingContest/create')),
+								
+					),
+			),			
 			array('label'=>'Submition', 'url'=>array('#'), 
 				'items'=>array(
 					array('label'=>'Recent Submitions', 'url'=>array('/submition/index/refresh')),
