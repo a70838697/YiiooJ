@@ -12,7 +12,12 @@ else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 		$model->exercise->experiment->title=>array('/experiment/'.$model->exercise->experiment->id),
 		$model->title,
 	);
-
+else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST)
+	$this->breadcrumbs=array(
+			'Contests'=>array('/programmingContest/index'),
+			$model->exercise->programming_contest->name=>array('/programmingContest/'.$model->exercise->programming_contest->id),
+			$model->title,
+	);
 /*
 $this->menu=array(
 	array('label'=>'List Problem', 'url'=>array('index')),

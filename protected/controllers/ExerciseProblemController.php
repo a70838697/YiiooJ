@@ -60,7 +60,9 @@ class ExerciseProblemController extends Controller
 			echo CActiveForm::validate($submition);
 			Yii::app()->end();
 		}
-		if(isset($_POST['Submition'])&& !$exerciseProblem->exercise->experiment->isTimeOut())
+		if(isset($_POST['Submition'])&& (
+			($exerciseProblem->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE && !$exerciseProblem->exercise->experiment->isTimeOut())
+			||($exerciseProblem->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST && !$exerciseProblem->exercise->programming_contest->isTimeOut()) ))
 		{
 			$submition->attributes=$_POST['Submition'];
 			$submition->user_id=Yii::app()->user->id;
@@ -226,6 +228,7 @@ class ExerciseProblemController extends Controller
 	 */
 	public function actionView($id)
 	{
+		
 		if($id!=0)
 			$model=$this->loadModel($id);
 		else
@@ -238,6 +241,13 @@ class ExerciseProblemController extends Controller
 			throw new CHttpException(404,'Please relogin.');
 			return false;
 		}
+		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->layout='course';
+		}
+		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
+		
 		//$this->checkAccess(array('model'=>$model));
 		
 		//$submition=$this->canAccess(array('model'=>$model),'Create','Submition')?$this->newSubmition($model->problem):null;
@@ -290,7 +300,13 @@ class ExerciseProblemController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->layout='course';
+		}
+		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

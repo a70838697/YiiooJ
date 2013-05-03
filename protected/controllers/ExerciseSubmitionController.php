@@ -58,6 +58,9 @@ class ExerciseSubmitionController extends Controller
 		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
 			$this->layout='course';
 		}
+		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
 		
 		//$this->checkAccess(array('model'=>$model));		
 		if(Yii::app()->request->isAjaxRequest )

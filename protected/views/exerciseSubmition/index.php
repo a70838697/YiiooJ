@@ -12,7 +12,18 @@ if($exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
 	}
 	$this->breadcrumbs[]='submitions';
 }
-
+else if($exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST)
+{
+	$this->breadcrumbs=array(
+			'Contests'=>array('/programmingContest/index'),
+			$exercise->programming_contest->name=>array('/programmingContest/'.$exercise->programming_contest->id),
+	);
+	if($exercise_problem!=null)
+	{
+		$this->breadcrumbs[$exercise_problem->sequence.$exercise_problem->title]=array('/exerciseProblem/'.$exercise_problem->id);	
+	}
+	$this->breadcrumbs[]='submitions';
+}
 ?>
 <?php
 $needRefresh=(Yii::app()->request->getQuery('refresh',null)!==null);

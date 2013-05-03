@@ -13,7 +13,18 @@ if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 	$this->breadcrumbs['submitions']=null;
 	
 }
-
+else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST)
+{
+	$this->breadcrumbs=array(
+			'Contests'=>array('/programmingContest/index'),
+			$model->exercise->programming_contest->name=>array('/programmingContest/'.$model->exercise->programming_contest->id),
+	);
+	if($exercise_problem!=null)
+	{
+		$this->breadcrumbs[$exercise_problem->sequence.$exercise_problem->title]=array('/exerciseProblem/'.$exercise_problem->id);
+	}
+	$this->breadcrumbs[]='submitions';
+}
 $this->menu=array(
 	array('label'=>'List Submition', 'url'=>array('index')),
 	array('label'=>'Create Submition', 'url'=>array('create')),
