@@ -85,7 +85,7 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
 	),
 ));
  
- if($model->exercise!==null){
+ if($model->exercise!==null && !$model->isTimeOut()){
 // 	echo "<h3>".Yii::t('t',"Programming problems")."</h3>";
  	$criteria = new CDbCriteria;
  	//$criteria->select ("sequence","problem.title");

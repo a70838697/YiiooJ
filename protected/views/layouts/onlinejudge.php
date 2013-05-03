@@ -41,7 +41,7 @@ function view_problem_by_id()
 			array('label'=>'Contest', 'url'=>array('#'),
 					'items'=>array(
 							array('label'=>'List Contest', 'url'=>array('/programmingContest/index')),
-							array('label'=>'Create Contest', 'url'=>array('/progrmamingContest/create')),
+							array('label'=>'Create Contest', 'url'=>array('/programmingContest/create')),
 								
 					),
 			),			

@@ -89,7 +89,7 @@ class ProgrammingContest extends CActiveRecord
 			'user' => array(self::BELONGS_TO, 'UUser', 'user_id'),
 			'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
 			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.user_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
-			'studentGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'studentGroup.type_id='. (Group::GROUP_TYPE_CLASS_ROOM)),
+			'studentGroup' => array(self::BELONGS_TO, 'Group', 'user_group_id'),
 		);
 	}
 
