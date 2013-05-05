@@ -76,9 +76,9 @@ function view_problem_by_id()
 			Yii::app()->clientScript->registerScriptFile($jqueryslidemenupath.'/jqueryslidemenu.js');
 		?>
 
-		<div id="myslidemenu" class="jqueryslidemenu">
+		<!--div id="myslidemenu" class="jqueryslidemenu">
 		<?php
-			$this->widget('zii.widgets.CMenu',$this->contentMenu);
+		//	$this->widget('zii.widgets.CMenu',$this->contentMenu);
 		?>
 		<br style="clear: left" />
 		</div><!-- myslidemenu-->

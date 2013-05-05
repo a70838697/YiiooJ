@@ -75,7 +75,7 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 ');
 }
  ?>
-<h1><?php echo ((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My ':'';?> Submitions <?php if($exercise_problem!==null) echo  ' for '.CHtml::link($exercise_problem->sequence.'.'.CHtml::encode($exercise_problem->title),array("exerciseproblem/view","id"=>$exercise_problem->id));?></h1>
+<h1><?php echo ((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My ':'';?> Submitions <?php if($exercise_problem!==null) echo  ' for '.CHtml::link($exercise_problem->sequence.'.'.CHtml::encode($exercise_problem->title),array("exerciseProblem/view","id"=>$exercise_problem->id));?></h1>
 <?php
 		if(Yii::app()->request->isAjaxRequest )
 		{
@@ -145,4 +145,3 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 
 	),
 ));
-?>

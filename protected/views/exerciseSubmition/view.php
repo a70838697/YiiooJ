@@ -37,13 +37,13 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon-position'=>'left',
             'url'=>array('create') //urls like 'create', 'update' & 'delete' generates an icon beside the button
         ),
-*/
         array(
             'label'=>'Update this submition',
             'icon-position'=>'left',
 	        'visible'=>$this->canAccess(array('model'=>$model),'update','submition'),
             'url'=>array('update', 'id'=>$model->id),
         ), 
+*/
         array(
             'label'=>'My submitions to the problem',
             'icon-position'=>'left',
@@ -146,4 +146,3 @@ function refreshsubmition()
 refreshsubmition();
 ');
 }
-?>

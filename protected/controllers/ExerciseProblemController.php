@@ -235,13 +235,13 @@ class ExerciseProblemController extends Controller
 		{
 			$model=$this->loadModelByAttr(Yii::app()->request->getQuery('exercise',0),Yii::app()->request->getQuery('problem',0));
 		}
-		$this->classRoom=$model->exercise->experiment->classRoom;
 		if(Yii::app()->user->isGuest)
 		{
 			throw new CHttpException(404,'Please relogin.');
 			return false;
 		}
 		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->classRoom=$model->exercise->experiment->classRoom;
 			$this->layout='course';
 		}
 		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){

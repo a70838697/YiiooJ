@@ -92,6 +92,7 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
  	 	
  	$dataProvider=new EActiveDataProvider('ExerciseProblem',array(
  		'scopes'=>$scopes,
+		'with'=>array('problem'),
  			'criteria' => $criteria));
  	$arraycolums=array();
  	if(UUserIdentity::isTeacher()||UUserIdentity::isAdmin())
@@ -123,6 +124,12 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
  	);
  	*/
  	
+ 	$arraycolums[]=array(
+ 			'name' => 'status',
+ 			'header' => Yii::t('t','Status'),
+ 			'type' => 'raw',
+ 			'value' => 'CHtml::encode($data->problem->id)'
+ 	);
  	$arraycolums[]=array(
  			'name' => 'sequence',
  			'header' => Yii::t('t','Sequence'),

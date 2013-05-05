@@ -30,7 +30,7 @@ class ProgrammingContestController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','students','view'),
+				'actions'=>array('index','students','view','rank'),
 				'roles'=>array('Teacher','Student','Admin'),
 			),
 			array('allow', // allow Student
@@ -67,6 +67,16 @@ class ProgrammingContestController extends Controller
 		));
 	}
 
+	public function actionRank($id)
+	{
+		$programming_contest=$this->loadModel($id);
+		$exercise_problem=Yii::app()->user->isGuest?null:$this->newExerciseProblem($programming_contest);
+		
+		$this->render('rank',array(
+				'model'=>$programming_contest,
+				'exercise_problem'=>$exercise_problem,
+		));
+	}
 	
 	/**
 	 * Creates a new exercise_problem.
