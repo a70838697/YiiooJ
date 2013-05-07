@@ -138,7 +138,7 @@ class ProgrammingContestController extends Controller
 					if($rawData[$record->user_id]['solved'.$record->problem_id]==0)
 					{
 						$rawData[$record->user_id]['solveproblem']++;
-						$rawData[$record->user_id]['score']+=20*$rawData[$record->user_id]['wrong'.$record->problem_id]+CDateTimeParser::parse($record->created,"yyyy-MM-dd hh:mm:ss") -$begin_date;
+						$rawData[$record->user_id]['score']+=1200*$rawData[$record->user_id]['wrong'.$record->problem_id]+CDateTimeParser::parse($record->created,"yyyy-MM-dd hh:mm:ss") -$begin_date;
 					}
 					if($total['solved'.$record->problem_id]==0)$total['solveproblem']++;
 					$rawData[$record->user_id]['solved'.$record->problem_id]++;
