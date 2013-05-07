@@ -113,6 +113,15 @@ class ProgrammingContest extends CActiveRecord
 			'visibility' => 'Visibility',
 		);
 	}
+	public function isAfterMatch()
+	{
+		$timezone = "Asia/Chongqing";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
+	
+		$nowt= time();
+		$end_date=CDateTimeParser::parse($this->end,"yyyy-MM-dd hh:mm:ss") ;
+		return ($nowt>$end_date);
+	}
 	public function isTimeOut()
 	{
 		$timezone = "Asia/Chongqing";

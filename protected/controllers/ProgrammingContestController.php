@@ -109,6 +109,7 @@ class ProgrammingContestController extends Controller
 		$total['score']=0;
 		$total['solvecount']=0;
 		$total['totalcount']=0;
+		$total['solveproblem']=0;
 		foreach($model->exercise->exercise_problems as $exercise_problem){
 			$total['solved'.$exercise_problem->problem_id]=0;
 			$total['total'.$exercise_problem->problem_id]=0;
@@ -139,6 +140,7 @@ class ProgrammingContestController extends Controller
 						$rawData[$record->user_id]['solveproblem']++;
 						$rawData[$record->user_id]['score']+=20*$rawData[$record->user_id]['wrong'.$record->problem_id]+CDateTimeParser::parse($record->created,"yyyy-MM-dd hh:mm:ss") -$begin_date;
 					}
+					if($total['solved'.$record->problem_id]==0)$total['solveproblem']++;
 					$rawData[$record->user_id]['solved'.$record->problem_id]++;
 					$total['solved'.$record->problem_id]++;
 					$rawData[$record->user_id]['solvecount']++;
@@ -171,19 +173,16 @@ class ProgrammingContestController extends Controller
 				$oldsolveproblem=$item['solveproblem'];
 				$oldscore=$item['score'];
 				$oldrank=$rank;
-			}
+			}else $oldrank="";
 			$item['rank']=$oldrank;
 			$rank++;
 		}
 		unset($item);
+		$total['rank']='';
 		
+		$rawData[]=$total;
 		$dataProvider=new CArrayDataProvider($rawData, array(
 				'id'=>'id',
-				'sort'=>array(
-						'attributes'=>array(
-								'score', 'username',
-						),
-				),
 				'pagination'=>array(
 						'pageSize'=>200,
 				),
