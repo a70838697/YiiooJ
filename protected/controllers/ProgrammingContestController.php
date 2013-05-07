@@ -69,13 +69,130 @@ class ProgrammingContestController extends Controller
 
 	public function actionRank($id)
 	{
-		$programming_contest=$this->loadModel($id);
-		$exercise_problem=Yii::app()->user->isGuest?null:$this->newExerciseProblem($programming_contest);
+		$model=$this->loadModel($id);
+		
+		$criteria=new CDbCriteria(array(
+		));
+		$criteria->select='username,id';
+		$criteria->with=array('info','schoolInfo','group');
+		$criteria->params=array(':group_id'=>$model->user_group_id);
+		
+		$dataProvider=new EActiveDataProvider('ClassRoomUser',
+				array(
+						'criteria'=>$criteria,
+				)
+		);
+		
+		$dataProvider->setPagination(false);
+		$rawData = array();
+		foreach($dataProvider->getData() as $record) {
+			
+			$items=array();
+			$items['id']=$record->id;
+			$items['username']=	$record->schoolInfo==null?$record->username:CHtml::link(CHtml::encode($record->info->lastname.$record->info->firstname),array("schoolInfo/view","id"=>$record->schoolInfo->user_id));
+			$items['studentid']=$record->schoolInfo==null?"":$record->schoolInfo->identitynumber;
+			$items['score']=0;
+			$items['solvecount']=0;
+			$items['solveproblem']=0;
+			$items['totalcount']=0;
+			foreach($model->exercise->exercise_problems as $exercise_problem){
+				$items['solved'.$exercise_problem->problem_id]=0;
+				$items['total'.$exercise_problem->problem_id]=0;
+				$items['wrong'.$exercise_problem->problem_id]=0;
+			}
+			$rawData[$record->id] = $items;
+		}
+		$total=array();
+		$total['id']=99999999;
+		$total['username']=	"Total";
+		$total['studentid']="";
+		$total['score']=0;
+		$total['solvecount']=0;
+		$total['totalcount']=0;
+		foreach($model->exercise->exercise_problems as $exercise_problem){
+			$total['solved'.$exercise_problem->problem_id]=0;
+			$total['total'.$exercise_problem->problem_id]=0;
+			$total['wrong'.$exercise_problem->problem_id]=0;
+		}
+		$criteria=new CDbCriteria(array(
+		));
+		$criteria->select="t.user_id,t.created,t.status,t.problem_id";
+		//$criteria->compare('t.status',ULookup::JUDGE_RESULT_PENDING,true);
+		$criteria->compare('t.exercise_id',$model->exercise_id);
+		$criteria->order="t.created";
+		$dataProvider=new EActiveDataProvider('Submition',
+				array(
+						'criteria'=>$criteria,
+				)
+		);
+		$dataProvider->setPagination(false);
+		$begin_date=CDateTimeParser::parse($model->begin,"yyyy-MM-dd hh:mm:ss") ;
+		foreach($dataProvider->getData() as $record) {
+			if(isset($rawData[$record->user_id]))
+			{
+				$rawData[$record->user_id]['total'.$record->problem_id]++;
+				$total['total'.$record->problem_id]++;
+				if($record->status==ULookup::JUDGE_RESULT_ACCEPTED)
+				{
+					if($rawData[$record->user_id]['solved'.$record->problem_id]==0)
+					{
+						$rawData[$record->user_id]['solveproblem']++;
+						$rawData[$record->user_id]['score']+=20*$rawData[$record->user_id]['wrong'.$record->problem_id]+CDateTimeParser::parse($record->created,"yyyy-MM-dd hh:mm:ss") -$begin_date;
+					}
+					$rawData[$record->user_id]['solved'.$record->problem_id]++;
+					$total['solved'.$record->problem_id]++;
+					$rawData[$record->user_id]['solvecount']++;
+				}
+				else if($record->status!=ULookup::JUDGE_RESULT_PENDING)
+				{
+					$total['wrong'.$record->problem_id]++;
+					$rawData[$record->user_id]['wrong'.$record->problem_id]++;
+				}
+			}
+			else echo $record->user_id.'xxxxx';
+		}
+		
+		function cmp($a, $b)
+		{
+			if($a['solveproblem']==$b['solveproblem'])return $a['score']-$b['score'];
+			return $b['solveproblem']-$a['solveproblem'];
+		}
+		usort($rawData,'cmp');
+		
+		
+		
+		$rank=1;
+		$oldrank=1;
+		$oldscore=-1;
+		$oldsolveproblem=-1;
+		foreach ($rawData as &$item) {
+			if( $oldsolveproblem!=$item['solveproblem'] || $oldscore!=$item['score'] )
+			{
+				$oldsolveproblem=$item['solveproblem'];
+				$oldscore=$item['score'];
+				$oldrank=$rank;
+			}
+			$item['rank']=$oldrank;
+			$rank++;
+		}
+		unset($item);
+		
+		$dataProvider=new CArrayDataProvider($rawData, array(
+				'id'=>'id',
+				'sort'=>array(
+						'attributes'=>array(
+								'score', 'username',
+						),
+				),
+				'pagination'=>array(
+						'pageSize'=>200,
+				),
+		));
 		
 		$this->render('rank',array(
-				'model'=>$programming_contest,
-				'exercise_problem'=>$exercise_problem,
-		));
+				'model'=>$model,
+				'dataProvider'=>$dataProvider,
+		));		
 	}
 	
 	/**

@@ -229,7 +229,7 @@ class ExerciseSubmitionController extends Controller
 		);
 		$this->render('/exerciseSubmition/index',array(
 			'dataProvider'=>$dataProvider,
-			'exercise_problem'=>$exercise_problem,
+			//'exercise_problem'=>$exercise_problem,
 			'exercise'=>$exercise,
 		));
 	}

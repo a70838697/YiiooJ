@@ -25,6 +25,18 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 				'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
 				'linkOptions'=>array('onclick'=>'return approveall();',)
 		),
+		array(
+			'label'=>'Rank',
+			'icon-position'=>'left',
+			'visible'=>true,
+			'url'=>array('rank', 'id'=>$model->id),
+		),
+		array(
+				'label'=>'Submitions',
+				'icon-position'=>'left',
+				'visible'=>true,
+				'url'=>array('/exerciseSubmition/index', 'exercise'=>$model->exercise_id),
+		),
 		),
 		'htmlOptions' => array('style' => 'clear: both;'),
 ));

@@ -54,7 +54,7 @@ class ULookup
 		self::JUDGE_RESULT_MEMORY_LIMIT_EXCEED=>"Memory Limit Exceed",
 		self::JUDGE_RESULT_RUNTIME_ERROR=>'Runtime Error',
 		self::JUDGE_RESULT_OUTPUT_BUFFER_EXCEED=>'Output Buffer Exceed',
-		self::JUDGE_RESULT_NO_THIS_COMPILER=>'No this compiler',
+		self::JUDGE_RESULT_NO_THIS_COMPILER=>'No this compiler or no test data',
 	);
 	
 	const PRACTICE_STATUS_PUBLIC=0;

@@ -49,6 +49,19 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 					'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
 					'linkOptions'=>array('class'=>'create')
 			),
+				array(
+						'label'=>Yii::t('course','View contest'),
+						'icon-position'=>'left',
+						'icon'=>'circle-plus', // This a CSS class starting with ".ui-icon-"
+						'url'=>array('view','id'=>$model->id),
+						'visible'=>(UUserIdentity::isTeacher()&& $model->user_id==Yii::app()->user->id) ||UUserIdentity::isAdmin(),
+				),
+				array(
+						'label'=>'Submitions',
+						'icon-position'=>'left',
+						'visible'=>true,
+						'url'=>array('/exerciseSubmition/index', 'exercise'=>$model->exercise_id),
+				),
 			/*			
 				array(
 						'label'=>'Rank',
@@ -78,126 +91,36 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
         ),
 	),
 ));
- 
- if($model->exercise!==null && (UUserIdentity::isTeacher()||!$model->isTimeOut())){
-// 	echo "<h3>".Yii::t('t',"Programming problems")."</h3>";
- 	$criteria = new CDbCriteria;
- 	//$criteria->select ("sequence","problem.title");
- 	$criteria->compare('exercise_id',$model->exercise_id);
- 	$criteria->order='sequence ASC';
- 	$scopes=array('titled');
- 	if((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)
- 		$scopes[]='mine';
- 	else $scopes[]='public';
- 	 	
- 	$dataProvider=new EActiveDataProvider('ExerciseProblem',array(
- 		'scopes'=>$scopes,
-		'with'=>array('problem'),
- 			'criteria' => $criteria));
- 	$arraycolums=array();
- 	if(UUserIdentity::isTeacher()||UUserIdentity::isAdmin())
- 	{
- 		$arraycolums[]=array(
- 				'class'=>'CButtonColumn',
- 				'template'=> '{view}{update}{delete}',
- 				'viewButtonUrl' => 'array("exerciseProblem/view",
- 				"id"=>$data->id)',
- 				'buttons'=>array(
- 						'update' =>array('url'=>'Yii::app()->createUrl("exerciseProblem/update",array("id"=>$data->id))',
- 								'options'=>array('class'=>'update'),
- 						),
- 				),
- 				'deleteButtonUrl' => 'array("exerciseProblem/delete",
- 				"id"=>$data->id)',
- 		);
- 
- 	}
- 	/*
- 	$arraycolums[]=array(
- 			'name'=>'solved',
- 			'visible'=>!Yii::app()->user->isGuest,
- 			'type'=>'raw',
- 			'value'=>'$data->mySubmitedCount==0?"":(UCHtml::image($data->myAcceptedCount>0?"done.gif":"tried.gif").
- 			($data->myAcceptedCount==0?"0":CHtml::link($data->myAcceptedCount,array("'.$this->prefix.'submition/index/mine/1/problem/".$data->id)))
- 			."/".CHtml::link($data->mySubmitedCount,array("'.$this->prefix.'submition/index/mine/1/problem/".$data->id))
- 	)',
+$columns=array(
+				array(
+					'name'=>'rank',
+					'value'=>'$data["rank"]',
+				),
+				array(
+						'type' => 'raw',
+						'name'=>'name',
+						'value'=>'$data["username"]',
+				),
+				array(
+						'name'=>'solved',
+						'value'=>'$data["solveproblem"]',
+				),
+				array(
+						'name'=>'used time',
+						'value'=>'sprintf("%02d:%02d:%02d",$data["score"]/3600,$data["score"]/60%60,$data["score"]%60)',
+						//'htmlOptions'=>array('style'=>'width:10px;')
+				),
+		);
+ foreach($model->exercise->exercise_problems as $exercise_problem){
+ 	$columns[]=array(
+		'name'=>$exercise_problem->sequence,
+		'value'=>'$data["solved'.$exercise_problem->problem_id.'"].\'/\'.$data["total'.$exercise_problem->problem_id.'"]'
  	);
- 	*/
- 	
- 	$arraycolums[]=array(
- 			'name' => 'status',
- 			'header' => Yii::t('t','Status'),
- 			'type' => 'raw',
- 			'value' => 'CHtml::encode($data->problem->id)'
- 	);
- 	$arraycolums[]=array(
- 			'name' => 'sequence',
- 			'header' => Yii::t('t','Sequence'),
- 			'type' => 'raw',
- 			'value' => 'CHtml::encode($data["sequence"])'
- 	);
- 	$arraycolums[]=array(
- 			'name' => 'title',
- 			'header' => Yii::t('t','Problem title'),
- 			'type' => 'raw',
- 			'value' => ' CHtml::link(nl2br(CHtml::encode($data->title)),$data->getUrl(null),array("target"=>"_blank"))',
- 	);
- 	$arraycolums[]=array(
- 			'name' => 'memo',
- 			'header' => Yii::t('t','Memo'),
- 	);
- 	$this->widget('zii.widgets.grid.CGridView', array(
- 			//here might be a bug
- 			'afterAjaxUpdate'=>'js:function(id,data){$("a.update").formDialog({"onSuccess":function(data, e){alert(data.message);window.location.reload();},"close":function(){if($.clearScripts)$.clearScripts();$(this).detach()},"title":"'.Yii::t("t","Update a programming problem").'","minWidth":800,"height":710,"modal":true,"id":"yw1"});}',
- 			'dataProvider' => $dataProvider,
- 			'columns' => $arraycolums,
- 	));
  }
- 
- /*$this->widget('comments.widgets.ECommentsListWidget', array(
- 		'model' => $model,
- ));
- */
- 
- $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.create',
- 		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
- 				'dialogClass'=>'rbam-dialog',
- 				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
- 				'title'=>Yii::t('t', 'Add a programming problem'),
- 				'minWidth'=>800,
- 				'height'=>710,
- 				'modal'=>true,
- 		)
- ));
- 
- $this->widget('application.extensions.formDialog.FormDialog', array('link'=>'a.update',
- 		'options'=>array('onSuccess'=>'js:function(data, e){alert(data.message);window.location.reload();}',
- 				'dialogClass'=>'rbam-dialog',
- 				'close'=>'js:function(){if($.clearScripts)$.clearScripts();$(this).detach()}',
- 				'title'=>Yii::t('t', 'Update a programming problem'),
- 				'minWidth'=>800,
- 				'height'=>710,
- 				'modal'=>true,
- 		)
- ));
- $this->widget('ext.EAjaxUpload.EAjaxUploadBasic',
- 		array(
- 				'id'=>'uploadFile',
- 				'config'=>array(
- 						'button'=>'js:jQuery("#fileUploader")[0]',
- 						'action'=>UCHtml::url('upload/create/type/chapter'.(isset($model->root)?('/book/'.(int)($model->root)):'')),
- 						'allowedExtensions'=>array("jpg","jpeg","png","gif","txt","rar","zip","ppt","chm","pdf","doc","7z"),//array("jpg","jpeg","gif","exe","mov" and etc...
- 						'sizeLimit'=>10*1024*1024,// maximum file size in bytes
- 						'minSizeLimit'=>10,// minimum file size in bytes
- 						'onComplete'=>'js:function(id, fileName, responseJSON){ if (typeof(responseJSON.success)!="undefined" && responseJSON.success){insertFile(fileName,responseJSON);}}',
- 						//'messages'=>array(
- 						//                  'typeError'=>"{file} has invalid extension. Only {extensions} are allowed.",
- 						//                  'sizeError'=>"{file} is too large, maximum file size is {sizeLimit}.",
- 						//                  'minSizeError'=>"{file} is too small, minimum file size is {minSizeLimit}.",
- 						//                  'emptyError'=>"{file} is empty, please select files again without it.",
- 						//                  'onLeave'=>"The files are being uploaded, if you leave now the upload will be cancelled."
- 						//                 ),
- 						//'showMessage'=>"js:function(message){ alert(message); }"
- 				)
- 		));
-// if($model->classRoom->hasMathFormula)$this->widget('application.components.widgets.MathJax',array());
+$this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'effectivepolicy-grid',
+		'dataProvider'=>$dataProvider,
+		'emptyText'=>'no data found.',
+		'nullDisplay'=>'-',
+		'columns'=>$columns,
+));

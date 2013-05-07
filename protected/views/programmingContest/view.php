@@ -49,15 +49,19 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 					'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
 					'linkOptions'=>array('class'=>'create')
 			),
-			/*			
 				array(
 						'label'=>'Rank',
 						'icon-position'=>'left',
-						'visible'=>!Yii::app()->user->isGuest,
-						'icon'=>'circle-plus',
-						'url'=>array('/'.$this->prefix.'submition/index/problem/'.$model->id.'/mine/1'),
+						'visible'=>true,
+						'url'=>array('rank', 'id'=>$model->id),
 				),
-				*/
+				array(
+						'label'=>'Submitions',
+						'icon-position'=>'left',
+						'visible'=>true,
+						'url'=>array('/exerciseSubmition/index', 'exercise'=>$model->exercise_id),
+				),
+				
 		),
 		'htmlOptions' => array('style' => 'clear: both;'),
 ));

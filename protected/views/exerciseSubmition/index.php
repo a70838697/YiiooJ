@@ -18,7 +18,7 @@ else if($exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST)
 			'Contests'=>array('/programmingContest/index'),
 			$exercise->programming_contest->name=>array('/programmingContest/'.$exercise->programming_contest->id),
 	);
-	if($exercise_problem!=null)
+	if(isset($exercise_problem) && $exercise_problem!=null)
 	{
 		$this->breadcrumbs[$exercise_problem->sequence.$exercise_problem->title]=array('/exerciseProblem/'.$exercise_problem->id);	
 	}
@@ -75,7 +75,7 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 ');
 }
  ?>
-<h1><?php echo ((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My ':'';?> Submitions <?php if($exercise_problem!==null) echo  ' for '.CHtml::link($exercise_problem->sequence.'.'.CHtml::encode($exercise_problem->title),array("exerciseProblem/view","id"=>$exercise_problem->id));?></h1>
+<h1><?php echo ((!Yii::app()->user->isGuest) && Yii::app()->request->getQuery('mine',null)!==null)?'My ':'';?> Submitions <?php 	if(isset($exercise_problem) && $exercise_problem!=null) echo  ' for '.CHtml::link($exercise_problem->sequence.'.'.CHtml::encode($exercise_problem->title),array("exerciseProblem/view","id"=>$exercise_problem->id));?></h1>
 <?php
 		if(Yii::app()->request->isAjaxRequest )
 		{
@@ -114,7 +114,7 @@ $(".mes").qtip({\'position\':{\'corner\':{\'target\':\'rightMiddle\',\'tooltip\'
 		array(
 			'name'=>'problem',
 			'type'=>'raw',
-			'visible'=>($exercise_problem==null),
+			'visible'=>!isset($exercise_problem)||($exercise_problem==null),
 			'value'=>'CHtml::link(CHtml::encode($data->problem->title),array("exerciseProblem/view/0/problem/".$data->problem_id."/exercise/".$data->exercise_id))',
 		),
 		'created',
