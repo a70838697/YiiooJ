@@ -52,18 +52,18 @@ $columns=array(
 						'header'=>Yii::t('classRoom','Student number'),
 						'name'=>'schoolInfo.identitynumber',
 						'type'=>'raw',
-						'value'=>'CHtml::encode($data->schoolInfo->identitynumber)',
+						'value'=>'$data->schoolInfo==null?"":CHtml::encode($data->schoolInfo->identitynumber)',
 				),
 				array(
 						'header'=>Yii::t('course','Name'),
 						'name'=>'name',
 						'type'=>'raw',
-						'value'=>'CHtml::link(CHtml::encode($data->info->lastname.$data->info->firstname),array("schoolInfo/view","id"=>$data->schoolInfo->user_id))',
+						'value'=>'$data->schoolInfo==null?"":CHtml::link(CHtml::encode($data->info->lastname.$data->info->firstname),array("schoolInfo/view","id"=>$data->schoolInfo->user_id))',
 				),
 				array(
 						'header'=>Yii::t('course','Operation'),
 						'type'=>'raw',
-						'value'=>'CHtml::link(Yii::t("main","send a message"),array("message/compose","id"=>$data->schoolInfo->user_id))',
+						'value'=>'$data->schoolInfo==null?"":CHtml::link(Yii::t("main","send a message"),array("message/compose","id"=>$data->schoolInfo->user_id))',
 				),
 		/*
 				array(

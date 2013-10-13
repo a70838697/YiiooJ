@@ -160,10 +160,16 @@ class ExperimentController extends CMController
 
 		if(!$this->classRoom)throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 		
+		$timezone = "Asia/Chongqing";
+		if(function_exists('date_default_timezone_set')) date_default_timezone_set($timezone);
 		$model=new Experiment;
 		$model->aim="<ul><li>aim<br/></li></ul><br />";
 		$model->user_id=Yii::app()->user->id;
 		$model->class_room_id=$id;
+		$model->sequence="01";
+		$model->due_time=date("Y-m-d 08:00:00",mktime(23, 59, 59, date("m"), date("d")+1, date("Y")));
+		$model->begin=date("Y-m-d H:i:s");
+		$model->end=date("Y-m-d 23:59:59",mktime(23, 59, 59, date("m")+1, date("d"), date("Y")));
 		$model->exercise_id=0;
 		
 		// Uncomment the following line if AJAX validation is needed

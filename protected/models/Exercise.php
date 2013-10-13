@@ -12,7 +12,8 @@
 class Exercise extends CActiveRecord
 {
 	const EXERCISE_TYPE_COLLECTION=1;
-	const EXERCISE_TYPE_COURSE=2;	
+	const EXERCISE_TYPE_COURSE=2;
+	const EXERCISE_TYPE_PROGRAMMING_CONTEST=4;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Exercise the static model class
@@ -55,6 +56,7 @@ class Exercise extends CActiveRecord
 		return array(
 			'exercise_problems' => array(self::HAS_MANY, 'ExerciseProblem', 'exercise_id'),
 			'experiment' => array(self::BELONGS_TO, 'Experiment', 'belong_to_id'),
+			'programming_contest' => array(self::BELONGS_TO, 'ProgrammingContest', 'belong_to_id'),
 		);
 		
 	}

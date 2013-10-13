@@ -173,7 +173,7 @@ class ClassRoom extends CActiveRecord
 			'userinfo' => array(self::BELONGS_TO, 'Profile', 'user_id'),
        		'book' => array(self::BELONGS_TO, 'Chapter', 'chapter_id'),
 			'myMemberShip' => array(self::HAS_ONE, 'GroupUser', '','select'=>'myMemberShip.status','on'=>' myMemberShip.group_id = t.user_group_id and myMemberShip.user_id=' . Yii::app()->user->id),
-			'studentGroup' => array(self::HAS_ONE, 'Group', 'belong_to_id','on'=>'studentGroup.type_id='. (Group::GROUP_TYPE_CLASS_ROOM)),
+			'studentGroup' => array(self::BELONGS_TO, 'Group', 'user_group_id'),
 			//'studentCount' => array(self::STAT, 'GroupUser', '','select'=>'count(GroupUser.*)','condition'=>' GroupUser.user_id=t.user_group_id'),
 			'experiments' => array(self::HAS_MANY, 'Experiment', 'class_room_id','order'=>'sequence'),
 			'experimentCount' => array(self::STAT, 'Experiment', 'class_room_id'),

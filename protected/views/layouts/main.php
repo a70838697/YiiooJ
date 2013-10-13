@@ -43,6 +43,8 @@
 			$this->getClassRoom();
 			$items=array(
 					array('label'=>Yii::t('main','Home'), 'url'=>array('/site/index'),'visible'=>true),
+					array('label'=>Yii::t('main','ACM'), 'url'=>array('/problem'),'visible'=>true),
+					array('label'=>Yii::t('main','Contest'), 'url'=>array('/programmingContest'),'visible'=>true),
 					array('url'=>$this->course!=null?array('/course/view','id'=>$this->getCourseId(),'class_room_id'=>$this->classRoomId):array('/course/index/mine'), 'label'=>Yii::t('t',"Courses"). ($this->course!=null?":".$this->course->title:""),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_course\'}'), 'visible'=>(UUserIdentity::isAdmin()||UUserIdentity::isTeacher())),
 					// array('url'=>array('/course/index'), 'label'=>Yii::t('main',"All courses"), 'visible'=>true),
 					array('url'=>$this->classRoom!=null?array('/classRoom/view','id'=>$this->classRoomId):array('/classRoom/index/mine/1/term/1'), 'label'=>Yii::t('t',"Classrooms"). ($this->classRoom!=null?":".$this->classRoom->title."(".$this->classRoom->begin.")":""),'itemOptions'=>array('class'=>'rootVoice {menu: \'box_menu_classroom\'}'), 'visible'=>$this->course!==null||UUserIdentity::canHaveCourses()),

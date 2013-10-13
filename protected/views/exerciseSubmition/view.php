@@ -13,7 +13,18 @@ if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE)
 	$this->breadcrumbs['submitions']=null;
 	
 }
-
+else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST)
+{
+	$this->breadcrumbs=array(
+			'Contests'=>array('/programmingContest/index'),
+			$model->exercise->programming_contest->name=>array('/programmingContest/'.$model->exercise->programming_contest->id),
+	);
+	if($exercise_problem!=null)
+	{
+		$this->breadcrumbs[$exercise_problem->sequence.$exercise_problem->title]=array('/exerciseProblem/'.$exercise_problem->id);
+	}
+	$this->breadcrumbs[]='submitions';
+}
 ?>
 <h1>View Submition #<?php echo $model->id; ?> <?php echo  ' to '.CHtml::link($exercise_problem->sequence.'.'.CHtml::encode($exercise_problem->title),array("exerciseProblem/view","id"=>$exercise_problem->id));?></h1>
 <?php
@@ -26,13 +37,13 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
             'icon-position'=>'left',
             'url'=>array('create') //urls like 'create', 'update' & 'delete' generates an icon beside the button
         ),
-*/
         array(
             'label'=>'Update this submition',
             'icon-position'=>'left',
 	        'visible'=>$this->canAccess(array('model'=>$model),'update','submition'),
             'url'=>array('update', 'id'=>$model->id),
         ), 
+*/
         array(
             'label'=>'My submitions to the problem',
             'icon-position'=>'left',
@@ -135,4 +146,3 @@ function refreshsubmition()
 refreshsubmition();
 ');
 }
-?>

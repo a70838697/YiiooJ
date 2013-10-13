@@ -107,9 +107,15 @@ class SubmitionController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		if($model->exercise_id>0){
+			$exercise_problem=ExerciseProblem::model()->find('exercise_id='.$model->exercise_id.' and problem_id ='.$model->problem_id );
+			if($exercise_problem->exercise->type_id==Exercise::EXERCISE_TYPE_COURSE && $exercise_problem->exercise->experiment->isTimeOut())$this->denyAccess();
+		}else{
+			$this->denyAccess();
+		}
 		
 		$this->checkAccess(array('model'=>$model));
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

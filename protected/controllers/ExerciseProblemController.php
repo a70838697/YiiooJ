@@ -28,7 +28,7 @@ class ExerciseProblemController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','addProblemToExperiment'),
+				'actions'=>array('index','view','addProblemToExperiment','addProblemToProgrammingContest'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,7 +60,9 @@ class ExerciseProblemController extends Controller
 			echo CActiveForm::validate($submition);
 			Yii::app()->end();
 		}
-		if(isset($_POST['Submition']))
+		if(isset($_POST['Submition'])&& (
+			($exerciseProblem->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE && !$exerciseProblem->exercise->experiment->isTimeOut())
+			||($exerciseProblem->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST && !$exerciseProblem->exercise->programming_contest->isTimeOut()) ))
 		{
 			$submition->attributes=$_POST['Submition'];
 			$submition->user_id=Yii::app()->user->id;
@@ -149,6 +151,75 @@ class ExerciseProblemController extends Controller
 			$this->render('create',array('model'=>$model,));
 	}
 	
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionAddProblemToProgrammingContest($id)
+	{
+		$programming_contest=ProgrammingContest::model()->findByPk((int)$id);
+		if($programming_contest===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		//if($this->classRoom->denyStudent())$this->denyAccess();
+	
+		$model=new ExerciseProblem;
+		$model->exercise_id=$programming_contest->exercise_id;
+	
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+		if(isset($_POST['ExerciseProblem']))
+		{
+			if($programming_contest->exercise_id==0)
+			{
+				$exercise=new Exercise;
+				$exercise->type_id = Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST;
+				$exercise->belong_to_id=$programming_contest->id;
+				if($exercise->save())
+				{
+					$programming_contest->exercise_id=$exercise->id;
+					$model->exercise_id=$exercise->id;
+					$programming_contest->save();
+				}
+			}
+			$model->attributes=$_POST['ExerciseProblem'];
+			$problem = Problem::model()->findByPk((int)$model->problem_id);
+			if($problem==null || !$this->canAccess(array('model'=>$problem),'view','problem'))
+			{
+				$model->addError('problem_id','Not a validate problem id.');
+			}
+			if(ExerciseProblem::model()->find('exercise_id='.$programming_contest->exercise_id.' and problem_id ='.(int)$model->problem_id)!=null)
+			{
+				$model->addError('problem_id','This problem already exists.');
+			}
+			if($model->title==null||strlen(trim($model->title))==0)
+			{
+				$model->title=$problem->title;
+			}
+			if( (!$model->hasErrors()) && $model->save())
+			{
+				if (Yii::app()->request->isAjaxRequest)
+				{
+					echo CJSON::encode(array(
+							'status'=>'success',
+							'message'=>Yii::t('t',"Success!")
+					));
+					exit;
+				}
+				else
+					$this->redirect(array('programmingContest/view','id'=>$programming_contest->id));
+			}
+		}
+	
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			echo CJSON::encode(array(
+					'status'=>'failure',
+					'form'=>$this->renderPartial('_form', array('model'=>$model), true)));
+			exit;
+		}
+		else
+			$this->render('create',array('model'=>$model,));
+	}
 	
 	
 	/**
@@ -157,18 +228,26 @@ class ExerciseProblemController extends Controller
 	 */
 	public function actionView($id)
 	{
+		
 		if($id!=0)
 			$model=$this->loadModel($id);
 		else
 		{
 			$model=$this->loadModelByAttr(Yii::app()->request->getQuery('exercise',0),Yii::app()->request->getQuery('problem',0));
 		}
-		$this->classRoom=$model->exercise->experiment->classRoom;
 		if(Yii::app()->user->isGuest)
 		{
 			throw new CHttpException(404,'Please relogin.');
 			return false;
 		}
+		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->classRoom=$model->exercise->experiment->classRoom;
+			$this->layout='course';
+		}
+		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
+		
 		//$this->checkAccess(array('model'=>$model));
 		
 		//$submition=$this->canAccess(array('model'=>$model),'Create','Submition')?$this->newSubmition($model->problem):null;
@@ -221,7 +300,13 @@ class ExerciseProblemController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		if($model->exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->layout='course';
+		}
+		else if($model->exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
