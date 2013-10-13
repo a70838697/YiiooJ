@@ -112,6 +112,8 @@ $experiment='<div>
 	<td style="font-size: 14pt;  font-family: 宋体;"><b>三、实验内容</b></td>
 </tr>';
 
+$highlighter = new CTextHighlighter();
+    
 $submition_content="";
 if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exercise_problems as $exerciseProblem){ 
 	$experiment.='
@@ -127,9 +129,10 @@ if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exer
 	<td style="font-size: 10pt;  font-family: 宋体;"><b>'. $exerciseProblem->sequence.".".CHtml::encode($exerciseProblem->title).'提交'. count($submitions) .'次</b></td>
 	</tr>';
 	if(count($submitions)>0){
-	$submition_content.='<tr >'.
+	$submition_content.='<tr ><td>'.
 		'<table style="font-size: 10pt;  font-family: 宋体;"><tr><th>ID</th><th>状态</th><th>提交时间</th><th>修改次数</th><th>名次</th></tr>';
 		$isfirstAccept=UUserIdentity::isTeacher() || UUserIdentity::isAdmin();
+		$answer=null;
 		foreach($submitions as $submition){
 			$submition_content.="<tr><td>".CHtml::link($submition->id,array("exerciseSubmition/view","id"=>$submition->id), array('target'=>'_blank'))."</td>
 			<td>".ULookup::$JUDGE_RESULT_MESSAGES[$submition->status]."</td>"
@@ -137,9 +140,17 @@ if($model->experiment->exercise!=null)foreach($model->experiment->exercise->exer
 			."<td>".$submition->modification_times."</td>"
 			."<td>".( ($isfirstAccept&&$submition->status== ULookup::JUDGE_RESULT_ACCEPTED)?($submition->acceptedRank+1):"") ."</td>"
 			."</tr>";
-			if(($isfirstAccept&& $submition->status== ULookup::JUDGE_RESULT_ACCEPTED))$isfirstAccept=false;
+			if(($isfirstAccept&& $submition->status== ULookup::JUDGE_RESULT_ACCEPTED)){
+				$isfirstAccept=false;
+				$answer=$submition;
+			}
 		}
-		$submition_content.='</table></tr>';
+		if($answer==null)$answer=$submition;
+		$submition_content.='</table></td></tr>';
+		$highlighter->language =  strtoupper(UCompilerLookup::ext($answer->compiler_id));
+		if($highlighter->language=="C")$highlighter->language="CPP";
+		$submition_content.='<tr><td>Final solution status: '.ULookup::$JUDGE_RESULT_MESSAGES[$submition->status].',source code:</td></tr>';
+		$submition_content.='<tr><td>'.$highlighter->highlight($answer->source).'</td></tr>';
 	}
 }
 $experiment.='
