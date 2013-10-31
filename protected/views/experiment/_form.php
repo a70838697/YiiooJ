@@ -106,7 +106,7 @@
 <tr><td colspan=4>
 	<div class="row">
 		<?php echo $form->labelEx($model,'aim'); ?>
-		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'aim','style'=>'width:840px;height:120px'),true); ?>
+		<?php echo $this->renderPartial('/inc/_xheditor',array('model'=>$model,'field'=>'aim','style'=>'width:840px;height:120px','config'=>array('upLinkUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upLinkExt'=>"zip,rar,txt,sql,ppt,pptx,doc,docx",'upImgUrl'=>UCHtml::url('upload/create/type/report/classRoom/0'),'upImgExt'=>"jpg,jpeg,gif,png",)),true); ?>
 		<?php echo $form->error($model,'aim'); ?>
 	</div>
 
