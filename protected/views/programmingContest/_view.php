@@ -23,7 +23,7 @@
 	<td><?php echo CHtml::encode($data->description); ?></td>
 	<td><b>Status:</b></td>
 	<td><?php
-	if(UUserIdentity::isStudent()){
+	if(UUserIdentity::isStudent()&&!$data->isAfterMatch()){
 		if($data->myMemberShip==null && $data->application_option!=ClassRoom::STUDENT_APPLICATION_OPTION_DENY) echo '<input class="apply" tag="'.$data->id.'" type=button value="Apply"/>';
 		else if($data->myMemberShip->status==GroupUser::USER_STATUS_APPLIED) echo '<input type=button class="capply" tag="'.$data->id.'" value="Cancel"/>';
 		else if($data->myMemberShip->status==GroupUser::USER_STATUS_ACCEPTED) echo Yii::t('t','Selected classroom').".";

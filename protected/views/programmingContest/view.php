@@ -18,7 +18,7 @@ $canUpdate=!Yii::app()->user->isGuest && UUserIdentity::isTeacher();
 
 ?>
 
-<h1>View ProgrammingContest #<?php echo $model->name; ?></h1>
+<center><h1><?php echo $model->name; ?></h1></center>
 <?php
 $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 		'items' => array(
@@ -49,15 +49,19 @@ $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
 					'visible'=>UUserIdentity::isTeacher()||UUserIdentity::isAdmin(),
 					'linkOptions'=>array('class'=>'create')
 			),
-			/*			
 				array(
 						'label'=>'Rank',
 						'icon-position'=>'left',
-						'visible'=>!Yii::app()->user->isGuest,
-						'icon'=>'circle-plus',
-						'url'=>array('/'.$this->prefix.'submition/index/problem/'.$model->id.'/mine/1'),
+						'visible'=>true,
+						'url'=>array('rank', 'id'=>$model->id),
 				),
-				*/
+				array(
+						'label'=>'Submitions',
+						'icon-position'=>'left',
+						'visible'=>true,
+						'url'=>array('/exerciseSubmition/index', 'exercise'=>$model->exercise_id),
+				),
+				
 		),
 		'htmlOptions' => array('style' => 'clear: both;'),
 ));
@@ -66,12 +70,6 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
 	'data'=>$model,
 	'attributes'=>array(
         //'name',
-		array(
-			'name'=>'user_id',
-            'type'=>'raw',
-            'value'=>CHtml::link(CHtml::encode($model->userinfo->lastname.$model->userinfo->firstname),
-                                 array('user/user/view','id'=>$model->user_id)),
-        ),
 		array(
 			'label'=>'Begin ~ End',
             'type'=>'raw',
@@ -85,7 +83,7 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
 	),
 ));
  
- if($model->exercise!==null && !$model->isTimeOut()){
+ if($model->exercise!==null && (UUserIdentity::isTeacher()||!$model->isTimeOut()||$model->isAfterMatch())){
 // 	echo "<h3>".Yii::t('t',"Programming problems")."</h3>";
  	$criteria = new CDbCriteria;
  	//$criteria->select ("sequence","problem.title");
@@ -139,7 +137,7 @@ $APPPLICATION_MSG=ClassRoom::getApplicationOptionMessage();
  			'name' => 'title',
  			'header' => Yii::t('t','Problem title'),
  			'type' => 'raw',
- 			'value' => ' CHtml::link(nl2br(CHtml::encode($data->title)),$data->getUrl(null))',
+ 			'value' => ' CHtml::link(nl2br(CHtml::encode($data->title)),$data->getUrl(null),array("target"=>"_blank"))',
  	);
  	$arraycolums[]=array(
  			'name' => 'memo',

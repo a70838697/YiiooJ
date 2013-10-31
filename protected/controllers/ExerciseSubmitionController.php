@@ -184,7 +184,14 @@ class ExerciseSubmitionController extends Controller
 		$exercise_id=(int)Yii::app()->request->getQuery('exercise',null);
 		$exercise= Exercise::model()->find('id='.$exercise_id);
 		if($exercise==null)$this->denyAccess();	
-		$this->classRoom=$exercise->experiment->classRoom;
+		if($exercise->type_id== Exercise::EXERCISE_TYPE_COURSE){
+			$this->classRoom=$exercise->experiment->classRoom;
+			$this->layout='course';
+		}
+		else if($exercise->type_id== Exercise::EXERCISE_TYPE_PROGRAMMING_CONTEST){
+			$this->layout='onlinejudge';
+		}
+		
 		
 		$scopes=array('list');
 		if(Yii::app()->request->getQuery('refresh',null)!==null)$scopes[]='recent';
@@ -222,7 +229,7 @@ class ExerciseSubmitionController extends Controller
 		);
 		$this->render('/exerciseSubmition/index',array(
 			'dataProvider'=>$dataProvider,
-			'exercise_problem'=>$exercise_problem,
+			//'exercise_problem'=>$exercise_problem,
 			'exercise'=>$exercise,
 		));
 	}
