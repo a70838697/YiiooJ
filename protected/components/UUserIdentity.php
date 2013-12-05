@@ -29,7 +29,8 @@ class UUserIdentity extends UserIdentity
 	}
 	public static function isCommonUser()
 	{
-		return  (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_USER);
+		//don't know why  a bug to add registered user
+		return  (!Yii::app()->user->isGuest) && (Yii::app()->user->group==self::GROUP_USER||Yii::app()->user->group==self::GROUP_REGISTERED);
 	}
 	public static function isStudent()
 	{
