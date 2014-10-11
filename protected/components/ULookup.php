@@ -44,6 +44,10 @@ class ULookup
 	const JUDGE_RESULT_RUNTIME_ERROR=7;
 	const JUDGE_RESULT_OUTPUT_BUFFER_EXCEED=8;
 	const JUDGE_RESULT_NO_THIS_COMPILER=9;
+	const JUDGE_RESULT_CAN_NOT_JUDGE=10;
+	const JUDGE_RESULT_JUDGER_INTERNAL_ERROR=11;
+	const JUDGE_RESULT_JUDGER_SPECIAL_JUDGER_ERRORR=12;
+	
 	public static $JUDGE_RESULT_MESSAGES=array(
 		self::JUDGE_RESULT_PENDING=>'Pending',
 		self::JUDGE_RESULT_ACCEPTED=>'Accepted',
@@ -55,6 +59,10 @@ class ULookup
 		self::JUDGE_RESULT_RUNTIME_ERROR=>'Runtime Error',
 		self::JUDGE_RESULT_OUTPUT_BUFFER_EXCEED=>'Output Buffer Exceed',
 		self::JUDGE_RESULT_NO_THIS_COMPILER=>'No this compiler or no test data',
+		self::JUDGE_RESULT_CAN_NOT_JUDGE=>'Can not judge',
+		self::JUDGE_RESULT_JUDGER_INTERNAL_ERROR=>'The judger has a fatal error',
+		self::JUDGE_RESULT_JUDGER_SPECIAL_JUDGER_ERRORR=>'The special judger has a fatal error',
+		
 	);
 	
 	const PRACTICE_STATUS_PUBLIC=0;
