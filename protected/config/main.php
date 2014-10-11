@@ -194,19 +194,19 @@ return array(
 		// uncomment the following to use a MySQL database
 		*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=202.116.25.11;dbname=csp_yiiooj',
+			'connectionString' => 'mysql:host=localhost;dbname=csp_yiiooj',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => 'hicasper',
+			'password' => '',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),
 		'db2'=>array(
 			'class'=> 'CDbConnection' ,
-			'connectionString' => 'mysql:host=202.116.25.11;dbname=csp_yiiooj_data',
+			'connectionString' => 'mysql:host=localhost;dbname=csp_yiiooj_data',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => 'hicasper',
+			'password' => '',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),			
